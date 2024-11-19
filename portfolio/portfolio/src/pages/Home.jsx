@@ -356,22 +356,6 @@ const Home = () => {
           </div>
   
           {/* Scroll Indicator */}
-          <motion.div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white flex flex-col items-center gap-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [1, 0.5, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <p className="text-sm font-light">Scroll to explore</p>
-            <motion.div
-              className="w-6 h-10 border-2 border-white rounded-full p-2"
-              initial={{ y: 0 }}
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <div className="w-1.5 h-1.5 bg-white rounded-full" />
-            </motion.div>
-          </motion.div>
         </section>
   
          {/* Skills Section */}
@@ -468,8 +452,7 @@ const Home = () => {
       </section>
 
 
-      {/* Projects Section */}
-       {/* Projects Section */}
+      
        <section 
         id="projects"
         className={`min-h-screen py-20 px-8 bg-gradient-to-br ${gradients.third}`}
@@ -511,7 +494,7 @@ const Home = () => {
                     <img 
                       src={project.image}
                       alt={project.title}
-                      className="absolute inset-0 w-full h-full object-contain scale-75 transform transition-all duration-500 group-hover:scale-85" 
+                      className="absolute inset-0 w-full h-full object-contain scale-105 transform transition-all duration-500 group-hover:scale-85" 
                       // Changed to object-contain and added initial scale-75
                     />
                   </div>
