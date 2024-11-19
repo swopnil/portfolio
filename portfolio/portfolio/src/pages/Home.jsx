@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useInView } from 'framer-motion';
 import WordCloud from './WordCloud';
-
+import { useNavigate } from 'react-router-dom';
+import MyStory from './MyStory';
 import { 
   GithubIcon, LinkedinIcon, Mail, Download, Book, Briefcase, Code,
   Brain, Server, Layout, Shield, Terminal, Globe
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+
 const gradients = {
   first: "from-blue-600 to-purple-600",
   second: "from-purple-600 to-indigo-600",
@@ -281,79 +282,105 @@ const Home = () => {
             />
           </div>
   
-          {/* Content */}
-          <div className="relative z-10 max-w-7xl mx-auto h-screen flex flex-col items-center justify-center px-8">
-            {/* Projects Orbit */}
-  
-              {/* Center Content */}
-              <div className="relative z-20 text-center space-y-8">
-              <WordCloud /> 
+         {/* Content */}
+<div className="relative z-10 max-w-7xl mx-auto h-screen flex flex-col items-center justify-center px-8">
+  {/* Projects Orbit */}
 
-              
-                
-                <motion.p
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="text-xl max-w-2xl mx-auto"
-                >
-                  Passionate about building technology that better lives, combining my love for AI/ML and software development to turn creative ideas into real solutions.
-                </motion.p>
-                <motion.p
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="text-xl max-w-2xl mx-auto"
-                >
-                  Click My Story to see my journey of learning and growing or scroll down to see my projects, experiences, and skills. 
-                </motion.p>
-  
-                <motion.div
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                  className="flex justify-center gap-4 flex-wrap"
-                >
-                  <a 
-                    href="https://github.com/swopnil" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-                  >
-                    <GithubIcon size={24} />
-                  </a>
-                  <a 
-                    href="https://www.linkedin.com/in/swopnil-panday-6b582b257/" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-                  >
-                    <LinkedinIcon size={24} />
-                  </a>
-                  <a 
-                    href="mailto:spanday@villanova.edu" 
-                    className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-                  >
-                    <Mail size={24} />
-                  </a>
-                  <a 
-                    href="Resumeintern.pdf" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors"
-                  >
-                    <Download size={20} />
-                    Resume
-                  </a>
-                  <button
-                    onClick={() => navigate('/my-story')}
-                    className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg transition-colors"
-                  >
-                    My Story
-                  </button>
-                </motion.div>
-              </div>
-          </div>
+  {/* Center Content */}
+  <div className="relative z-20 text-center space-y-8">
+    <WordCloud /> 
+
+    <motion.p
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.5 }}
+      className="text-xl max-w-2xl mx-auto"
+    >
+      Passionate about building technology that better lives, combining my love for AI/ML and software development to turn creative ideas into real solutions.
+    </motion.p>
+    
+    <motion.div
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.7 }}
+      className="flex justify-center gap-4 flex-wrap relative z-50"  // Added z-50
+    >
+      <a 
+        href="https://github.com/swopnil" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.open('https://github.com/swopnil', '_blank');
+        }}
+        className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors cursor-pointer z-50"
+      >
+        <GithubIcon size={24} />
+      </a>
+      <a 
+        href="https://www.linkedin.com/in/swopnil-panday-6b582b257/" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.open('https://www.linkedin.com/in/swopnil-panday-6b582b257/', '_blank');
+        }}
+        className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors cursor-pointer z-50"
+      >
+        <LinkedinIcon size={24} />
+      </a>
+      <a 
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Email clicked');
+    const emailAddress = 'spanday@villanova.edu';
+    const mailtoLink = `mailto:${emailAddress}`;
+    try {
+      window.location = mailtoLink;
+      // Fallback if the above doesn't work
+      if (!window.location.href.startsWith('mailto')) {
+        window.open(mailtoLink, '_blank');
+      }
+    } catch (error) {
+      console.error('Error opening email:', error);
+      // Final fallback
+      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${emailAddress}`, '_blank');
+    }
+  }}
+  className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors cursor-pointer z-50"
+>
+  <Mail size={24} />
+</a>
+      <a 
+        href="/Resumeintern.pdf" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.open('/Resumeintern.pdf', '_blank');
+        }}
+        className="flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer z-50"
+      >
+        <Download size={20} />
+        Resume
+      </a>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          navigate('/my-story');
+        }}
+        className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg transition-colors cursor-pointer z-50"
+      >
+        My Story
+      </button>
+    </motion.div>
+  </div>
+</div>
   
           {/* Scroll Indicator */}
         </section>
