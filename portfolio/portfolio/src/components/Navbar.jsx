@@ -19,13 +19,19 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { name: 'Home', to: 'hero' },
-    { name: 'My Story', to: '/my-story', isRoute: true },
-    { name: 'Skills', to: 'skills' },
-    { name: 'Projects', to: 'projects' },
-    { name: 'Experience', to: 'experience' }
-  ];
+  const navItems = location.pathname === '/my-story' 
+    ? [
+        { name: 'Home', to: '/', isRoute: true },
+        { name: 'My Story', to: '/my-story' }
+
+      ]
+    : [
+        { name: 'Home', to: 'hero' },
+        { name: 'My Story', to: '/my-story', isRoute: true },
+        { name: 'Skills', to: 'skills' },
+        { name: 'Projects', to: 'projects' },
+        { name: 'Experience', to: 'experience' }
+      ];
 
   const isActive = (item) => {
     if (item.isRoute) {
@@ -38,7 +44,6 @@ const Navbar = () => {
     const baseClasses = 'cursor-pointer transition-colors duration-300';
     const activeClasses = 'text-white font-medium';
     const inactiveClasses = 'text-white/80 hover:text-white';
-
     return `${baseClasses} ${isActive(item) ? activeClasses : inactiveClasses}`;
   };
 
@@ -51,15 +56,7 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo/Name */}
-            <Link 
-              to="/"
-              className="text-xl font-bold text-white"
-            >
-              SP
-            </Link>
-
-            {/* Desktop Navigation */}
+            <Link to="/" className="text-xl font-bold text-white">SP</Link>
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
                 item.isRoute ? (
@@ -86,8 +83,6 @@ const Navbar = () => {
                 )
               ))}
             </div>
-
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 rounded-lg text-white"
@@ -98,7 +93,6 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -140,7 +134,7 @@ const Navbar = () => {
                       {item.name}
                     </ScrollLink>
                   )
-              ))}
+                ))}
               </div>
             </motion.div>
           </motion.div>

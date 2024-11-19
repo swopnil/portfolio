@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useInView } from 'framer-motion';
+import WordCloud from './WordCloud';
+
 import { 
   GithubIcon, LinkedinIcon, Mail, Download, Book, Briefcase, Code,
   Brain, Server, Layout, Shield, Terminal, Globe
@@ -285,27 +287,9 @@ const Home = () => {
   
               {/* Center Content */}
               <div className="relative z-20 text-center space-y-8">
-                <motion.div
-                  initial={{ scale: 0.5, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 1 }}
-                  className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-2xl mx-auto mb-8"
-                >
-                  <img
-                    src="s.jpeg"
-                    alt="Swopnil Panday"
-                    className="w-full h-full object-cover"
-                  />
-                </motion.div>
-                
-                <motion.h1
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-7xl font-bold"
-                >
-                  Swopnil Panday
-                </motion.h1>
+              <WordCloud /> 
+
+              
                 
                 <motion.p
                   initial={{ y: 50, opacity: 0 }}
