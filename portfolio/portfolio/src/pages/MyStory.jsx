@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import { motion, useScroll, useInView } from 'framer-motion';
 
 // Story Section Component
 const StorySection = ({ story, index }) => {

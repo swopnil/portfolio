@@ -1,9 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useInView } from 'framer-motion';
 import { 
   GithubIcon, LinkedinIcon, Mail, Download, Book, Briefcase, Code,
-  Brain, Server, Layout, Zap, Shield, Database, Terminal, Globe, 
-  Award, Rocket, Gift
+  Brain, Server, Layout, Shield, Terminal, Globe
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 const gradients = {
@@ -16,89 +15,6 @@ const gradients = {
 // ProjectOrbit Component
 
 
-
-// Skill Card Component
-const SkillCard = ({ icon: Icon, title, description, projects, className }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-100px 0px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.8 }}
-      className={`bg-white rounded-xl shadow-xl p-8 ${className}`}
-    >
-      <div className="flex items-start gap-4">
-        <div className="p-3 rounded-lg bg-blue-100 text-blue-600">
-          <Icon size={24} />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-          <p className="text-gray-600 mb-4">{description}</p>
-          <div className="space-y-2">
-            {projects.map((project, index) => (
-              <div key={index} className="flex items-start gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-600 mt-2" />
-                <p className="text-gray-700">{project}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-// Project Card Component
-const ProjectCard = ({ project, index, isInView }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-    transition={{ duration: 0.8, delay: index * 0.2 }}
-    className={`flex items-center gap-12 ${index % 2 === 0 ? '' : 'flex-row-reverse'}`}
-  >
-    <div className="flex-1 space-y-4">
-      <h3 className="text-2xl font-bold text-blue-600">{project.title}</h3>
-      <p className="text-gray-600">{project.description}</p>
-      <div className="flex flex-wrap gap-2">
-        {project.tech.map((tech, i) => (
-          <span key={i} className="bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full">
-            {tech}
-          </span>
-        ))}
-      </div>
-    </div>
-    <div className="flex-1">
-      <img 
-        src={project.image}
-        alt={project.title}
-        className="rounded-lg shadow-lg transform transition-all duration-500 hover:scale-105"
-      />
-    </div>
-  </motion.div>
-);
-
-// Experience Card Component
-const ExperienceCard = ({ experience, index, isInView }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 50 }}
-    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-    transition={{ duration: 0.8, delay: index * 0.2 }}
-    className="bg-white rounded-lg shadow-lg p-8"
-  >
-    <h3 className="text-2xl font-bold text-blue-600">{experience.title}</h3>
-    <p className="text-lg text-gray-600">{experience.company}</p>
-    <p className="text-gray-500 mb-4">{experience.date}</p>
-    <p className="text-gray-600 mb-4">{experience.description}</p>
-    <ul className="list-disc list-inside space-y-2">
-      {experience.achievements.map((achievement, i) => (
-        <li key={i} className="text-gray-600">{achievement}</li>
-      ))}
-    </ul>
-  </motion.div>
-);
 
 // Main Component
 const Home = () => {
