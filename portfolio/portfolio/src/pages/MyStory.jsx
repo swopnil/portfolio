@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useInView } from 'framer-motion';
 
-// Story Section Component
 const StorySection = ({ story, index }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { margin: "-100px 0px" });
@@ -11,19 +10,19 @@ const StorySection = ({ story, index }) => {
       ref={ref}
       className={`min-h-screen flex items-center ${index % 2 === 0 ? 'bg-gradient-to-br from-blue-600 to-purple-600' : 'bg-gradient-to-br from-purple-600 to-blue-600'}`}
     >
-      <div className="max-w-7xl mx-auto px-8 py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         <motion.div
-          className={`flex items-center gap-16 ${index % 2 === 0 ? '' : 'flex-row-reverse'}`}
+          className={`flex flex-col md:flex-row items-center gap-8 md:gap-16 ${index % 2 === 0 ? '' : 'md:flex-row-reverse'}`}
           initial={{ opacity: 0, y: 100 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="flex-1 text-white space-y-6">
+          <div className="flex-1 text-white space-y-4 sm:space-y-6">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl font-light"
+              className="text-lg sm:text-xl font-light"
             >
               {story.year}
             </motion.div>
@@ -31,7 +30,7 @@ const StorySection = ({ story, index }) => {
               initial={{ opacity: 0, x: -50 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-5xl font-bold"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold"
             >
               {story.title}
             </motion.h2>
@@ -39,13 +38,13 @@ const StorySection = ({ story, index }) => {
               initial={{ opacity: 0, x: -50 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-xl leading-relaxed"
+              className="text-base sm:text-lg md:text-xl leading-relaxed"
             >
               {story.description}
             </motion.p>
           </div>
           <motion.div
-            className="flex-1"
+            className="flex-1 w-full"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -53,7 +52,7 @@ const StorySection = ({ story, index }) => {
             <img
               src={story.image}
               alt={story.title}
-              className="rounded-2xl shadow-2xl w-full h-[600px] object-cover"
+              className="rounded-2xl shadow-2xl w-full h-48 sm:h-64 md:h-[600px] object-cover"
             />
           </motion.div>
         </motion.div>
@@ -75,19 +74,19 @@ const ProgressBar = ({ progress }) => {
 const ScrollIndicator = () => {
   return (
     <motion.div
-      className="fixed bottom-8 left-1/2 -translate-x-1/2 text-white flex flex-col items-center gap-2 z-50"
+      className="fixed bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 text-white flex flex-col items-center gap-2 z-50"
       initial={{ opacity: 1 }}
       animate={{ opacity: [1, 0.5, 1] }}
       transition={{ duration: 2, repeat: Infinity }}
     >
-      <p className="text-sm font-light">Scroll to explore my journey</p>
+      <p className="text-xs sm:text-sm font-light">Scroll to explore my journey</p>
       <motion.div
-        className="w-6 h-10 border-2 border-white rounded-full p-2"
+        className="w-4 sm:w-6 h-8 sm:h-10 border-2 border-white rounded-full p-2"
         initial={{ y: 0 }}
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 1.5, repeat: Infinity }}
       >
-        <div className="w-1.5 h-1.5 bg-white rounded-full" />
+        <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 bg-white rounded-full" />
       </motion.div>
     </motion.div>
   );
@@ -204,8 +203,8 @@ const MyStory = () => {
     }
 ];
 
+
 useEffect(() => {
-  // Enable smooth scrolling for this page
   document.documentElement.style.scrollBehavior = 'smooth';
   return () => {
     document.documentElement.style.scrollBehavior = 'auto';
@@ -220,16 +219,15 @@ return (
       ref={containerRef}
       className="h-screen overflow-y-auto"
     >
-      {/* Header Section */}
       <motion.div 
         className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-600 text-white relative"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <div className="text-center space-y-6 max-w-4xl px-8">
+        <div className="text-center space-y-4 sm:space-y-6 max-w-4xl px-4 sm:px-8">
           <motion.h1 
-            className="text-7xl font-bold"
+            className="text-4xl sm:text-5xl md:text-7xl font-bold"
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -237,7 +235,7 @@ return (
             My Journey
           </motion.h1>
           <motion.p 
-            className="text-2xl font-light"
+            className="text-lg sm:text-xl md:text-2xl font-light"
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -248,21 +246,19 @@ return (
         <ScrollIndicator />
       </motion.div>
 
-      {/* Story Sections */}
       {timeline.map((story, index) => (
         <StorySection key={index} story={story} index={index} />
       ))}
 
-      {/* Footer Section */}
       <motion.div 
         className="h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-blue-600 text-white"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <div className="text-center space-y-6 max-w-4xl px-8">
+        <div className="text-center space-y-4 sm:space-y-6 max-w-4xl px-4 sm:px-8">
           <motion.h2 
-            className="text-5xl font-bold"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold"
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -270,7 +266,7 @@ return (
             The Journey Continues
           </motion.h2>
           <motion.p 
-            className="text-2xl font-light"
+            className="text-lg sm:text-xl md:text-2xl font-light"
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -279,7 +275,7 @@ return (
           </motion.p>
           <motion.button
             onClick={() => window.history.back()}
-            className="mt-8 px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+            className="mt-6 sm:mt-8 px-6 sm:px-8 py-3 sm:py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-sm sm:text-base"
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
