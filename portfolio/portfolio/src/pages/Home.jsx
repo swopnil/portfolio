@@ -332,28 +332,16 @@ const Home = () => {
         <LinkedinIcon size={24} />
       </a>
       <a 
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Email clicked');
-    const emailAddress = 'spanday@villanova.edu';
-    const mailtoLink = `mailto:${emailAddress}`;
-    try {
-      window.location = mailtoLink;
-      // Fallback if the above doesn't work
-      if (!window.location.href.startsWith('mailto')) {
-        window.open(mailtoLink, '_blank');
-      }
-    } catch (error) {
-      console.error('Error opening email:', error);
-      // Final fallback
-      window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${emailAddress}`, '_blank');
-    }
-  }}
-  className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors cursor-pointer z-50"
->
-  <Mail size={24} />
-</a>
+        href="mailto:spanday@villanova.edu" 
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = 'mailto:spanday@villanova.edu';
+        }}
+        className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors cursor-pointer z-50"
+      >
+        <Mail size={24} />
+      </a>
       <a 
         href="/Resumeintern.pdf" 
         target="_blank" 
