@@ -108,7 +108,7 @@ const MyStory = () => {
       year: "Childhood",
       title: "First Spark of Technology",
       description: "My fascination with technology began with my father's Nokia phone, sparking a lifelong passion for innovation. A small gadget, but capability enough to make others view at magic. The phone introduced me to the tech world and sparked a curiosity to understand what is tech.",
-      image: "nok.png"
+      image: "nok.jpeg"
     },
     {
       year: "Grade 7",
