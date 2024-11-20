@@ -115,7 +115,7 @@ const Home = () => {
         "Started with simple webpage creation in grade 7",
         "Built dynamic websites using Django and React.js",
         "Developed audit management system at Eminence Ways",
-        "Created HackNepal platform for rural tech connection"
+        "Created various websites for VSE club and clients."
       ]
     },
     {
