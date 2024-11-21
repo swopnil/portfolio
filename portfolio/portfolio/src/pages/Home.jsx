@@ -296,7 +296,7 @@ const Home = () => {
       transition={{ delay: 0.5 }}
       className="text-xl max-w-2xl mx-auto"
     >
-      Passionate about building technology that better lives, combining my love for AI/ML and software development to turn creative ideas into real solutions.
+      Passionate about building technology that better lives, combining my love for AI/ML and software development to turn creative ideas into real solutions. Visit My Story to see my journey so far.
     </motion.p>
     
     <motion.div
@@ -343,13 +343,13 @@ const Home = () => {
         <Mail size={24} />
       </a>
       <a 
-        href="/Resumeintern.pdf" 
+        href="/finres.pdf" 
         target="_blank" 
         rel="noopener noreferrer" 
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          window.open('/Resumeintern.pdf', '_blank');
+          window.open('/finres.pdf', '_blank');
         }}
         className="flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer z-50"
       >
