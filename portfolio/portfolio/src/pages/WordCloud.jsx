@@ -5,9 +5,7 @@ const words = [
   { text: "HIKING", color: "text-blue-300", side: "left", delay: 0 },
   { text: "MOTORBIKES", color: "text-purple-300", side: "right", delay: 0 },
   { text: "SOFTWARE DEVELOPMENT", color: "text-indigo-300", side: "top", delay: 1.5 },
-  { text: "CYBERSECURITY", color: "text-cyan-300", side: "left", delay: 1.5 },
-  { text: "SOCCER", color: "text-teal-300", side: "right", delay: 3 },
-  { text: "INNOVATION", color: "text-green-300", side: "top", delay:3  }
+  { text: "SOCCER", color: "text-teal-300", side: "right", delay: 1.5 },
 ];
 
 const getStartPosition = (side) => {
@@ -60,7 +58,7 @@ const WordCloud = () => {
     const explosionTimer = setTimeout(() => {
       setShowExplosion(true);
       setTimeout(() => setShowProfile(true), 200);
-    }, 7400); // 4500ms (word animations) + 200ms buffer
+    }, 6000); // 4500ms (word animations) + 200ms buffer
     return () => clearTimeout(explosionTimer);
   }, []);
 

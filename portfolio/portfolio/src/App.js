@@ -8,6 +8,8 @@ import MyStory from './pages/MyStory';
 const App = () => {
   return (
     <Routes>
+      <Route path="my-story" element={<MyStory />} />
+
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="my-story" element={<MyStory />} />
