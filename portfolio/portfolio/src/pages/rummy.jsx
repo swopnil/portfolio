@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Users, Settings, Volume2, Trophy, Star, Play, Zap, Crown, ArrowLeft, RotateCcw, Target, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -74,8 +73,8 @@ const shuffleArray = (array) => {
 };
 
 // Game logic functions
-const getCardValue = (rank) => {
-  if (rank === 'ace') return 1;
+const getCardValue = (rank, isHigh = false) => {
+  if (rank === 'ace') return isHigh ? 14 : 1;
   if (['jack', 'queen', 'king'].includes(rank)) return ['jack', 'queen', 'king'].indexOf(rank) + 11;
   return parseInt(rank);
 };
@@ -211,8 +210,6 @@ const isValidRun = (cards, jokers) => {
   if (isValidTanala(cards)) return true;
 
   const isJoker = (card) => checkIsJoker(card, jokers);
-  const getValue = (card) => getCardValue(card.rank);
-
   const jokerCards = cards.filter(isJoker);
   const nonJokers = cards.filter(c => !isJoker(c));
 
@@ -222,61 +219,64 @@ const isValidRun = (cards, jokers) => {
   const suit = nonJokers[0].suit;
   if (!nonJokers.every(card => card.suit === suit)) return false;
 
-  // Get all unique values and sort them
-  const values = [...new Set(nonJokers.map(getValue))].sort((a, b) => a - b);
+  // Try both ace-low and ace-high interpretations
+  const trySequence = (useHighAce) => {
+    const values = nonJokers.map(card => getCardValue(card.rank, useHighAce && card.rank === 'ace'));
+    const sortedValues = [...values].sort((a, b) => a - b);
+    
+    // Remove duplicates and check if we lost any (means duplicates existed)
+    const uniqueValues = [...new Set(sortedValues)];
+    if (uniqueValues.length !== sortedValues.length) return false;
+    
+    // Calculate gaps in the sequence
+    let gaps = 0;
+    for (let i = 1; i < uniqueValues.length; i++) {
+      const diff = uniqueValues[i] - uniqueValues[i - 1];
+      if (diff === 1) continue;
+      else if (diff > 1) gaps += diff - 1;
+      else return false;
+    }
+    
+    // Can jokers fill all gaps?
+    return jokerCards.length >= gaps;
+  };
 
-  // If any duplicate values, invalid
-  if (values.length !== nonJokers.length) return false;
-
-  // Count total gaps needed
-  let gaps = 0;
-  for (let i = 1; i < values.length; i++) {
-    const diff = values[i] - values[i - 1];
-    if (diff === 1) continue;
-    else if (diff > 1) gaps += diff - 1;
-    else return false; // non-consecutive backwards
-  }
-
-  // Can jokers fill the gaps?
-  return jokerCards.length >= gaps;
+  // Try ace-low first, then ace-high
+  return trySequence(false) || trySequence(true);
 };
 
 
 const isValidStraightRun = (cards, jokers) => {
-    if (cards.length < 3) return false;
-  
-    // Sort by value
-    const sorted = [...cards].sort((a, b) => a.value - b.value);
-  
-    // Check if any card is a joker substitute
-    const containsJoker = sorted.some(card => checkIsJoker(card, jokers));
-  
-    // If any card is a joker, this is not a strict straight run
-    if (containsJoker) return false;
-  
-    // All cards must be same suit
-    const suit = sorted[0].suit;
-    if (!sorted.every(card => card.suit === suit)) return false;
-  
-    // Special case: tanala (3 same card of same suit) is allowed
-    const allSame = sorted.every(card => card.rank === sorted[0].rank);
-    if (allSame && sorted.length === 3) return true; // Tanala
-  
-    // Check if values are strictly consecutive
+  if (cards.length < 3) return false;
+
+  // Straight runs cannot contain jokers
+  const containsJoker = cards.some(card => checkIsJoker(card, jokers));
+  if (containsJoker) return false;
+
+  // All cards must be same suit
+  const suit = cards[0].suit;
+  if (!cards.every(card => card.suit === suit)) return false;
+
+  // Special case: tanala (3 same card of same suit) is allowed
+  const allSame = cards.every(card => card.rank === cards[0].rank);
+  if (allSame && cards.length === 3) return true;
+
+  // Try both ace interpretations for sequences
+  const tryAceInterpretation = (useHighAce) => {
+    const values = cards.map(card => getCardValue(card.rank, useHighAce && card.rank === 'ace'));
+    const sorted = [...values].sort((a, b) => a - b);
+    
+    // Check for strictly consecutive values
     for (let i = 1; i < sorted.length; i++) {
-      if (sorted[i].value !== sorted[i - 1].value + 1) {
-        // Handle A-2-3 and Q-K-A special cases
-        if (
-          sorted[i - 1].rank === 'K' && sorted[i].rank === 'A'
-        ) {
-          continue;
-        }
+      if (sorted[i] !== sorted[i - 1] + 1) {
         return false;
       }
     }
-  
     return true;
   };
+
+  return tryAceInterpretation(false) || tryAceInterpretation(true);
+};
   
 
 // Enhanced winning hand check with detailed validation
