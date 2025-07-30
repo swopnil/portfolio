@@ -42,3 +42,73 @@ body {
   padding: 0;
   overflow-x: hidden;
 }
+
+/* Landscape orientation styles */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  .landscape-only {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .landscape-only .rotate-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: rotate 2s ease-in-out infinite alternate;
+  }
+  
+  .landscape-only h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  
+  .landscape-only p {
+    font-size: 1rem;
+    opacity: 0.9;
+    max-width: 300px;
+  }
+  
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(90deg); }
+  }
+}
+
+/* Hide rotation message in landscape */
+@media screen and (orientation: landscape) {
+  .landscape-only {
+    display: none !important;
+  }
+}
+
+/* Mobile landscape specific optimizations */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  /* Reduce vertical spacing on mobile landscape */
+  .mobile-landscape-compact {
+    min-height: calc(100vh - 60px) !important;
+  }
+  
+  /* Make elements more compact */
+  .mobile-landscape-spacing > * + * {
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Optimize button sizes for landscape */
+  .mobile-landscape-btn {
+    padding: 0.5rem 1.5rem !important;
+    font-size: 0.875rem !important;
+  }
+}

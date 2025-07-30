@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Users, Settings, Volume2, Trophy, Star, Play, Zap, Crown, ArrowLeft, RotateCcw, Target, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import LandscapeOnly from '../components/LandscapeOnly';
 
 // ========================================
 // GAME LOGIC COMPONENTS
@@ -474,10 +475,11 @@ const Card = ({
   const [isDragging, setIsDragging] = useState(false);
   
   const sizeClasses = {
-    small: 'w-12 h-16',
-    normal: 'w-16 h-22',
-    large: 'w-20 h-28',
-    hand: 'w-24 h-36' // Increased card size
+    small: 'w-8 h-11 md:w-12 md:h-16',
+    normal: 'w-10 h-14 md:w-16 md:h-22',
+    medium: 'w-12 h-16 md:w-18 md:h-24',
+    large: 'w-14 h-19 md:w-20 md:h-28',
+    hand: 'w-12 h-17 md:w-24 md:h-36' // Much smaller mobile hand cards
   };
 
   const handleDragStart = (e) => {
@@ -509,13 +511,39 @@ const Card = ({
       draggable={isDraggable}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      className={`${sizeClasses[size]} relative cursor-pointer transition-all duration-300 group ${
+      onTouchStart={(e) => {
+        // For mobile: handle both drag start and click
+        if (isDraggable) {
+          setIsDragging(true);
+          onDragStart?.(card);
+          // Set data for mobile drag
+          e.currentTarget.setAttribute('data-card', JSON.stringify(card));
+        } else {
+          // Only handle click if not draggable (for selection)
+          onClick?.(card);
+        }
+      }}
+      onTouchEnd={(e) => {
+        if (isDraggable) {
+          setIsDragging(false);
+          onDragEnd?.(card);
+        }
+      }}
+      onTouchMove={(e) => {
+        // Prevent default only if dragging to avoid interfering with scroll
+        if (isDraggable && isDragging) {
+          e.preventDefault();
+        }
+      }}
+      onClick={() => onClick?.(card)}
+      className={`${sizeClasses[size]} relative cursor-pointer transition-all duration-300 group touch-manipulation ${
         isDraggable ? 'hover:scale-105 hover:-translate-y-2' : ''
       } ${isSelected ? 'transform -translate-y-3 scale-105' : ''} ${
         isDragging ? 'opacity-70 scale-110 rotate-3' : ''
       } ${className}`}
       style={{
         zIndex: isSelected || isDragging ? 100 : 'auto',
+        touchAction: isDraggable ? 'none' : 'auto',
         ...style
       }}
     >
@@ -581,9 +609,9 @@ const Card = ({
 // Enhanced Player Avatar Component (Outside Green Table)
 const PlayerAvatar = ({ player, isActive, position, timeRemaining }) => {
   const positionClasses = {
-    left: 'absolute left-4 top-1/2 transform -translate-y-1/2',
-    top: 'absolute top-4 left-1/2 transform -translate-x-1/2',
-    right: 'absolute right-4 top-1/2 transform -translate-y-1/2'
+    left: 'absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-50',
+    top: 'absolute top-2 md:top-4 left-1/2 transform -translate-x-1/2 z-50',
+    right: 'absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 z-50'
   };
 
   const formatChips = (amount) => {
@@ -596,48 +624,55 @@ const PlayerAvatar = ({ player, isActive, position, timeRemaining }) => {
 
   return (
     <div className={positionClasses[player.position]}>
-      <div className={`flex flex-col items-center space-y-2 ${isActive ? 'scale-105' : ''}`}>
-        {/* Profile with Timer */}
-        <div className="relative">
-          <TurnTimer 
-            isActive={isActive} 
-            timeRemaining={timeRemaining}
+      <div className={`flex flex-col items-center space-y-0.5 md:space-y-2 ${isActive ? 'scale-105' : ''}`}>
+        {/* Profile - Mobile Responsive */}
+        <div className={`w-8 h-8 md:w-16 md:h-16 rounded-full border-2 md:border-4 overflow-hidden shadow-lg transition-all duration-300 ${
+          isActive ? 'border-yellow-400 shadow-yellow-400/50' : 'border-white/30'
+        }`}>
+          <img 
+            src={`/user${player.id + 1}.jpg`} 
+            alt={player.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback to default avatar
+              e.target.style.display = 'none';
+              const fallback = e.target.nextSibling;
+              if (fallback) fallback.style.display = 'flex';
+            }}
           />
-          
-          <div className={`w-16 h-16 rounded-full border-4 overflow-hidden shadow-lg transition-all duration-300 ${
-            isActive ? 'border-yellow-400 shadow-yellow-400/50' : 'border-white/30'
-          }`}>
-            <img 
-              src={`/user${player.id + 1}.jpg`} 
-              alt={player.name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Fallback to default avatar
-                e.target.style.display = 'none';
-                const fallback = e.target.nextSibling;
-                if (fallback) fallback.style.display = 'flex';
-              }}
-            />
-            <div className={`w-full h-full bg-gradient-to-br ${player.color} flex items-center justify-center text-2xl hidden`}>
-              {player.defaultAvatar}
-            </div>
+          <div className={`w-full h-full bg-gradient-to-br ${player.color} flex items-center justify-center text-lg md:text-2xl hidden`}>
+            {player.defaultAvatar}
           </div>
         </div>
         
-        {/* Name */}
-        <div className="bg-black/70 backdrop-blur-sm text-white font-bold text-sm px-3 py-1 rounded-lg border border-white/20">
-          {player.name}
+        {/* Name with Timer Ring - Mobile Responsive */}
+        <div className="relative">
+          {isActive && (
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 32 16">
+              <rect
+                x="1"
+                y="1"
+                width="30"
+                height="14"
+                rx="7"
+                stroke={timeRemaining < 2000 ? '#ef4444' : timeRemaining < 5000 ? '#f59e0b' : '#22c55e'}
+                strokeWidth="1"
+                fill="none"
+                strokeDasharray={`${(timeRemaining / TURN_DURATION) * 48} 48`}
+                className="transition-all duration-100"
+              />
+            </svg>
+          )}
+          <div className="bg-black/70 backdrop-blur-sm text-white font-semibold text-xs px-1 md:px-3 py-0.5 md:py-1 rounded border border-white/20 relative z-10">
+            {player.name}
+          </div>
         </div>
         
-        {/* Chips */}
-        <div className="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+        {/* Chips - Mobile Responsive */}
+        <div className="bg-green-600 text-white px-1 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-medium">
           💰 {formatChips(player.chips || 0)}
         </div>
         
-        {/* Score */}
-        <div className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-          🎯 {player.score || 0}
-        </div>
         
         {/* Active indicator */}
         {isActive && (
@@ -654,7 +689,7 @@ const PlayerAvatar = ({ player, isActive, position, timeRemaining }) => {
 // Game Table Component
 const GameTable = ({ children, className = "" }) => {
   return (
-    <div className={`relative w-[85%] h-[65%] ${className}`}>
+    <div className={`relative w-[75%] h-[45%] md:w-[85%] md:h-[65%] ${className}`}>
       <div className="absolute inset-0 rounded-[40%] bg-gradient-to-br from-emerald-800 via-green-800 to-emerald-900 shadow-2xl">
         <div className="absolute inset-0 rounded-[40%] bg-gradient-to-br from-emerald-600/20 to-transparent"></div>
         <div className="absolute inset-0 rounded-[40%]" style={{
@@ -677,13 +712,19 @@ const CardHand = ({
   onCardReorder,
   jokers = null,
   addToLog = () => {},
-  canDeclare = false
+  canDeclare = false,
+  mobileDraggedCard = null,
+  setMobileDraggedCard = null
 }) => {
   const [draggedCard, setDraggedCard] = useState(null);
   const [dropIndex, setDropIndex] = useState(null);
   const [previewCards, setPreviewCards] = useState([...cards]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [containerRef, setContainerRef] = useState(null);
+  const [touchStartPos, setTouchStartPos] = useState(null);
+  const [isDraggingTouch, setIsDraggingTouch] = useState(false);
+  const [touchDraggedCard, setTouchDraggedCard] = useState(null);
+  const [mobileDragData, setMobileDragData] = useState(null);
 
   // Calculate curve rotation for natural card fan - less curvy
   const calculateRotation = (index, totalCards) => {
@@ -810,13 +851,125 @@ const CardHand = ({
     }
   };
 
+  // Enhanced touch-based drag and drop handlers
+  const handleTouchDragOver = (touchX, touchY) => {
+    if (touchDraggedCard && containerRef) {
+      const rect = containerRef.getBoundingClientRect();
+      const relativeX = touchX - rect.left;
+      
+      // Account for the padding offset
+      const paddingOffset = Math.max(0, (cards.length - 1) * (window.innerWidth < 768 ? 8 : 15));
+      const adjustedX = relativeX - paddingOffset;
+      
+      const cardWidth = window.innerWidth < 768 ? 48 : 96; // Mobile vs desktop card width
+      const overlap = window.innerWidth < 768 ? 18 : 30;
+      const visibleWidth = cardWidth - overlap;
+      
+      // Calculate position based on touch - allow any position like desktop
+      let insertPosition = 0;
+      for (let i = 0; i <= cards.length; i++) {
+        const cardCenter = i * visibleWidth;
+        if (adjustedX < cardCenter + visibleWidth / 2) {
+          insertPosition = i;
+          break;
+        }
+      }
+      
+      insertPosition = Math.min(insertPosition, cards.length);
+      
+      if (dropIndex !== insertPosition) {
+        setDropIndex(insertPosition);
+        const oldIndex = cards.findIndex(c => c.id === touchDraggedCard.id);
+        if (oldIndex !== -1 && oldIndex !== insertPosition) {
+          const newPreview = [...cards];
+          newPreview.splice(oldIndex, 1);
+          newPreview.splice(insertPosition, 0, touchDraggedCard);
+          setPreviewCards(newPreview);
+          
+          // Don't immediately update cards on mobile - let it preview like desktop
+          // The actual reorder will happen on touchEnd
+        }
+      }
+    }
+  };
+
+  const handleTouchStart = (card, e) => {
+    if (onCardReorder) {
+      const touch = e.touches[0];
+      setTouchStartPos({ x: touch.clientX, y: touch.clientY });
+      setTouchDraggedCard(card);
+      setIsDraggingTouch(false);
+      setMobileDragData(card);
+      
+      // Set initial dropIndex to current card position (like desktop)
+      const currentIndex = cards.findIndex(c => c.id === card.id);
+      setDropIndex(currentIndex);
+      
+      // Set global mobile drag state
+      if (setMobileDraggedCard) {
+        setMobileDraggedCard(card);
+      }
+      // Prevent context menu on long press
+      e.preventDefault();
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (touchDraggedCard && touchStartPos) {
+      const touch = e.touches[0];
+      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+      
+      // Always call handleTouchDragOver to set dropIndex, even for tiny movements
+      handleTouchDragOver(touch.clientX, touch.clientY);
+      
+      // Start visual dragging if moved more than 2px
+      if (deltaX > 2 || deltaY > 2) {
+        e.preventDefault();
+        setIsDraggingTouch(true);
+      }
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    // Mobile touch end should work like desktop drop - check touchDraggedCard and dropIndex
+    if (touchDraggedCard && dropIndex !== null) {
+      const oldIndex = cards.findIndex(c => c.id === touchDraggedCard.id);
+      
+      if (oldIndex !== -1 && oldIndex !== dropIndex) {
+        const newCards = [...cards];
+        newCards.splice(oldIndex, 1);
+        newCards.splice(dropIndex, 0, touchDraggedCard);
+        onCardReorder?.(newCards);
+        addToLog(`Card moved from position ${oldIndex + 1} to position ${dropIndex + 1}`);
+      }
+    }
+    
+    // Reset touch drag state
+    setTouchDraggedCard(null);
+    setTouchStartPos(null);
+    setIsDraggingTouch(false);
+    setDropIndex(null);
+    setPreviewCards([...cards]);
+    setMobileDragData(null);
+    // Clear global mobile drag state
+    if (setMobileDraggedCard) {
+      setMobileDraggedCard(null);
+    }
+  };
+
   return (
     <div className={`relative flex justify-center items-end ${className}`}>
       <div 
         ref={setContainerRef}
         className="relative flex justify-center" 
-        style={{ paddingLeft: `${Math.max(0, (cards.length - 1) * 15)}px` }}
+        style={{ 
+          paddingLeft: `${Math.max(0, (cards.length - 1) * (window.innerWidth < 768 ? 8 : 15))}px`,
+          touchAction: 'none' // Prevent default touch behaviors
+        }}
         onDragOver={(e) => handleDragOverEnhanced(e)}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onDrop={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -840,15 +993,22 @@ const CardHand = ({
           setPreviewCards([...cards]);
         }}
       >
-        {(draggedCard ? previewCards : cards).map((card, index) => {
-          const rotation = calculateRotation(index, cards.length);
-          const xOffset = index * -30; // Overlap amount
+        {(draggedCard || touchDraggedCard ? previewCards : cards).map((card, index) => {
+          const rotation = calculateRotation(index, (draggedCard || touchDraggedCard ? previewCards : cards).length);
+          const xOffset = index * (window.innerWidth < 768 ? -18 : -30); // Responsive overlap amount
           const yOffset = Math.abs(rotation) * 2; // Slight curve effect
-          const isLastCard = index === cards.length - 1;
+          const isLastCard = index === (draggedCard || touchDraggedCard ? previewCards : cards).length - 1;
           const isDiscardCandidate = isLastCard && cards.length === 14 && canDeclare;
+          const isDraggedCard = draggedCard?.id === card.id || touchDraggedCard?.id === card.id;
           
           return (
-            <div key={`${card.id}-${index}`} className="relative">
+            <div 
+              key={`${card.id}-${index}`} 
+              className="relative"
+              onTouchStart={(e) => handleTouchStart(card, e)}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <Card
                 card={card}
                 isSelected={selectedCards.includes(card.id)}
@@ -858,16 +1018,27 @@ const CardHand = ({
                 isDraggable={onCardReorder !== null} // Only draggable if rearrangement is allowed
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
+                onClick={(card) => {
+                  // Disable card selection via clicking - only allow drag and drop
+                  // Only select if not dragging and not in mobile mode
+                  if (!isDraggingTouch && !draggedCard && window.innerWidth >= 768) {
+                    onCardSelect?.(card);
+                  }
+                }}
                 style={{
                   transform: `
                     translateX(${xOffset}px) 
                     ${selectedCards.includes(card.id) ? 'translateY(-15px) scale(1.05)' : ''}
                     ${isDiscardCandidate ? 'translateY(-5px)' : ''}
+                    ${isDraggedCard && isDraggingTouch ? 'scale(1.1) rotate(3deg)' : ''}
+                    ${window.innerWidth < 768 && isDraggedCard ? 'translateY(-10px)' : ''}
                   `,
-                  zIndex: selectedCards.includes(card.id) ? 100 + index : 50 + index,
-                  transition: draggedCard?.id === card.id ? 'none' : 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                  opacity: draggedCard?.id === card.id ? 0.3 : 1,
-                  filter: draggedCard?.id === card.id ? 'blur(1px)' : 'none'
+                  zIndex: selectedCards.includes(card.id) ? 100 + index : 
+                          isDraggedCard ? 200 + index : 50 + index,
+                  transition: isDraggedCard ? 'none' : (window.innerWidth < 768 ? 'all 0.15s ease-out' : 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'),
+                  opacity: isDraggedCard ? (window.innerWidth < 768 ? 1 : 0.5) : 1,
+                  filter: isDraggedCard ? (window.innerWidth < 768 ? 'none' : 'blur(0.5px)') : 'none',
+                  touchAction: 'none' // Prevent scrolling when touching cards
                 }}
               />
               
@@ -878,8 +1049,10 @@ const CardHand = ({
                 </div>
               )}
               
-              {/* Dark separator line after each card */}
-              {index < cards.length - 1 && (
+
+              
+              {/* Dark separator line after each card - Hidden on mobile */}
+              {index < cards.length - 1 && window.innerWidth >= 768 && (
                 <div 
                   className="absolute top-0 bottom-0 w-px bg-black shadow-sm"
                   style={{
@@ -894,12 +1067,12 @@ const CardHand = ({
         })}
         
         {/* Visual indicator for drop position */}
-        {draggedCard && dropIndex !== null && (
+        {(draggedCard || touchDraggedCard) && dropIndex !== null && (
           <div 
             className="absolute top-0 bottom-0 w-2 bg-yellow-400 z-50 rounded"
             style={{
-              left: `${dropIndex * 66 - 33 + Math.max(0, (cards.length - 1) * 15)}px`, // Position at the drop location with padding offset
-              height: '144px',
+              left: `${dropIndex * (window.innerWidth < 768 ? 30 : 66) - (window.innerWidth < 768 ? 15 : 33) + Math.max(0, (cards.length - 1) * (window.innerWidth < 768 ? 8 : 15))}px`, // Responsive positioning
+              height: window.innerWidth < 768 ? '68px' : '144px', // Responsive height
               boxShadow: '0 0 8px rgba(250, 204, 21, 0.8)'
             }}
           />
@@ -1058,7 +1231,10 @@ const ModularCardGame = () => {
   const [hasDrawnCard, setHasDrawnCard] = useState(false);
   const [canRearrange, setCanRearrange] = useState(true);
   const [showRules, setShowRules] = useState(false);
+  const [showPointsTable, setShowPointsTable] = useState(false);
+  const [showGameLog, setShowGameLog] = useState(false);
   const [declarationError, setDeclarationError] = useState('');
+  const [mobileDraggedCard, setMobileDraggedCard] = useState(null);
 
   const [gameState, setGameState] = useState({
     players: [
@@ -1286,9 +1462,10 @@ const ModularCardGame = () => {
       });
       
       // Update game message and state
+
       if (currentPlayerIndex === 0) {
         setHasDrawnCard(true);
-        setGameMessage('A card must be thrown!');
+          setGameMessage('A card must be thrown!');
       }
     }, 300); // Smooth animation delay
   };
@@ -1724,63 +1901,63 @@ const ModularCardGame = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-xl animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-yellow-300 rounded-full blur-lg animate-bounce"></div>
-          <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-green-300 rounded-full blur-2xl animate-pulse"></div>
+          <div className="absolute top-4 left-4 w-16 h-16 sm:top-6 sm:left-6 sm:w-20 sm:h-20 md:top-10 md:left-10 md:w-32 md:h-32 bg-white rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute top-20 right-8 w-12 h-12 sm:top-24 sm:right-12 sm:w-16 sm:h-16 md:top-40 md:right-20 md:w-24 md:h-24 bg-yellow-300 rounded-full blur-lg animate-bounce"></div>
+          <div className="absolute bottom-8 left-1/4 w-20 h-20 sm:bottom-12 sm:w-24 sm:h-24 md:bottom-20 md:w-40 md:h-40 bg-green-300 rounded-full blur-2xl animate-pulse"></div>
         </div>
 
-        <div className="relative z-10 flex justify-between items-center p-6">
-          <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-2xl">😊</span>
+        <div className="relative z-10 flex justify-between items-center p-3 md:p-6">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-lg md:text-2xl">😊</span>
             </div>
             <div>
-              <div className="text-white font-bold">G-2473946</div>
-              <div className="text-blue-200 text-sm">🇺🇸</div>
+              <div className="text-white font-bold text-sm md:text-base">G-2473946</div>
+              <div className="text-blue-200 text-xs md:text-sm">🇺🇸</div>
             </div>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <div className="bg-orange-500 rounded-full px-4 py-2 flex items-center space-x-2 shadow-lg">
-              <span className="text-white font-bold">2.5K</span>
-              <div className="w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <div className="bg-orange-500 rounded-full px-2 py-1 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 shadow-lg">
+              <span className="text-white font-bold text-sm md:text-base">2.5K</span>
+              <div className="w-4 h-4 md:w-6 md:h-6 bg-yellow-400 rounded-full flex items-center justify-center">
                 <span className="text-xs">+</span>
               </div>
             </div>
-            <div className="bg-purple-500 rounded-full px-4 py-2 flex items-center space-x-2 shadow-lg">
-              <span className="text-white font-bold">10</span>
-              <div className="w-6 h-6 bg-cyan-400 rounded-full flex items-center justify-center">
+            <div className="bg-purple-500 rounded-full px-2 py-1 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 shadow-lg">
+              <span className="text-white font-bold text-sm md:text-base">10</span>
+              <div className="w-4 h-4 md:w-6 md:h-6 bg-cyan-400 rounded-full flex items-center justify-center">
                 <span className="text-xs">+</span>
               </div>
             </div>
-            <Settings className="w-8 h-8 text-white cursor-pointer hover:scale-110 transition-transform" />
+            <Settings className="w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform" />
           </div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] space-y-8">
-          <div className="text-center mb-8">
-            <h1 className="text-6xl font-bold text-white mb-4 drop-shadow-lg">
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] space-y-2 sm:space-y-3 md:space-y-8 px-4">
+          <div className="text-center mb-2 sm:mb-3 md:mb-8">
+            <h1 className="text-2xl sm:text-3xl md:text-6xl font-bold text-white mb-1 sm:mb-2 md:mb-4 drop-shadow-lg">
               Royal Card Game
             </h1>
-            <p className="text-xl text-blue-100">Choose Your Game Mode</p>
+            <p className="text-base sm:text-lg md:text-xl text-blue-100">Choose Your Game Mode</p>
           </div>
 
-          <div className="flex space-x-8">
+          <div className="flex flex-col sm:flex-row md:flex-row space-y-3 sm:space-y-0 sm:space-x-4 md:space-x-8 w-full sm:max-w-2xl md:w-auto">
             <div 
               onClick={() => {
                 setGameType(GAME_TYPES.MARRIAGE);
                 setGamePhase('setup');
               }}
-              className="bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl p-8 w-80 h-48 flex flex-col items-center justify-center cursor-pointer transform hover:scale-105 transition-all shadow-2xl"
+              className="bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-8 w-full sm:w-1/2 md:w-80 h-28 sm:h-32 md:h-48 flex flex-col items-center justify-center cursor-pointer transform hover:scale-105 transition-all shadow-2xl"
             >
-              <div className="flex items-center space-x-2 mb-4">
-                <span className="text-4xl">👑</span>
-                <span className="text-4xl">💍</span>
+              <div className="flex items-center space-x-1 sm:space-x-2 mb-1 sm:mb-2 md:mb-4">
+                <span className="text-lg sm:text-xl md:text-4xl">👑</span>
+                <span className="text-lg sm:text-xl md:text-4xl">💍</span>
               </div>
-              <div className="bg-orange-500 rounded-full px-6 py-2">
-                <span className="text-white font-bold text-lg">MARRIAGE</span>
+              <div className="bg-orange-500 rounded-full px-3 py-1 sm:px-4 sm:py-2 md:px-6 md:py-2">
+                <span className="text-white font-bold text-sm sm:text-base md:text-lg">MARRIAGE</span>
               </div>
-              <div className="text-orange-100 mt-2 text-center text-sm">
+              <div className="text-orange-100 mt-0 sm:mt-1 md:mt-2 text-center text-xs sm:text-xs md:text-sm hidden md:block">
                 Traditional Nepali Card Game
               </div>
             </div>
@@ -1790,16 +1967,16 @@ const ModularCardGame = () => {
                 setGameType(GAME_TYPES.RUMMY);
                 setGamePhase('setup');
               }}
-              className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl p-8 w-80 h-48 flex flex-col items-center justify-center cursor-pointer transform hover:scale-105 transition-all shadow-2xl"
+              className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-8 w-full sm:w-1/2 md:w-80 h-28 sm:h-32 md:h-48 flex flex-col items-center justify-center cursor-pointer transform hover:scale-105 transition-all shadow-2xl"
             >
-              <div className="flex items-center space-x-2 mb-4">
-                <span className="text-4xl">🃏</span>
-                <span className="text-4xl">🎯</span>
+              <div className="flex items-center space-x-1 sm:space-x-2 mb-1 sm:mb-2 md:mb-4">
+                <span className="text-lg sm:text-xl md:text-4xl">🃏</span>
+                <span className="text-lg sm:text-xl md:text-4xl">🎯</span>
               </div>
-              <div className="bg-blue-500 rounded-full px-6 py-2">
-                <span className="text-white font-bold text-lg">13 CARDS</span>
+              <div className="bg-blue-500 rounded-full px-3 py-1 sm:px-4 sm:py-2 md:px-6 md:py-2">
+                <span className="text-white font-bold text-sm sm:text-base md:text-lg">13 CARDS</span>
               </div>
-              <div className="text-blue-100 mt-2 text-center text-sm">
+              <div className="text-blue-100 mt-0 sm:mt-1 md:mt-2 text-center text-xs sm:text-xs md:text-sm hidden md:block">
                 Classic Indian Rummy
               </div>
             </div>
@@ -1807,7 +1984,7 @@ const ModularCardGame = () => {
 
           <button 
             onClick={() => setGamePhase('setup')}
-            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl transform hover:scale-105 transition-all"
+            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-8 sm:py-3 sm:px-10 md:py-4 md:px-12 rounded-2xl text-base sm:text-lg md:text-xl shadow-2xl transform hover:scale-105 transition-all"
           >
             PLAY NOW
           </button>
@@ -1820,76 +1997,76 @@ const ModularCardGame = () => {
   if (gamePhase === 'setup') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 relative overflow-hidden">
-        <div className="flex justify-between items-center p-6">
+        <div className="flex justify-between items-center p-3 md:p-6">
           <button 
             onClick={() => setGamePhase('menu')}
-            className="flex items-center space-x-2 text-white hover:text-yellow-300 transition-colors"
+            className="flex items-center space-x-1 md:space-x-2 text-white hover:text-yellow-300 transition-colors"
           >
-            <ArrowLeft className="w-6 h-6" />
-            <span>Back to Menu</span>
+            <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
+            <span className="text-sm md:text-base">Back to Menu</span>
           </button>
           
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-xl md:text-3xl font-bold text-white">
             {gameType === GAME_TYPES.MARRIAGE ? 'MARRIAGE GAME' : 'KICK OUT'}
           </h1>
           
-          <div className="flex items-center space-x-4">
-            <div className="bg-orange-500 rounded-full px-4 py-2 flex items-center space-x-2">
-              <span className="text-white font-bold">2.5K</span>
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <div className="bg-orange-500 rounded-full px-2 py-1 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2">
+              <span className="text-white font-bold text-sm md:text-base">2.5K</span>
               <span className="text-yellow-300">+</span>
             </div>
-            <div className="bg-purple-500 rounded-full px-4 py-2 flex items-center space-x-2">
-              <span className="text-white font-bold">10</span>
+            <div className="bg-purple-500 rounded-full px-2 py-1 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2">
+              <span className="text-white font-bold text-sm md:text-base">10</span>
               <span className="text-cyan-300">+</span>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-120px)] space-y-8">
-          <div className="flex space-x-4">
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-120px)] space-y-2 sm:space-y-3 md:space-y-8 px-4">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:space-x-4 md:gap-0">
             {[5, 10, 25, 50, 100].map(bet => (
               <button
                 key={bet}
                 onClick={() => setGameState(prev => ({ ...prev, selectedBet: bet }))}
-                className={`w-32 h-20 rounded-2xl border-4 flex flex-col items-center justify-center transition-all transform hover:scale-105 ${
+                className={`w-16 h-12 sm:w-20 sm:h-14 md:w-32 md:h-20 rounded-xl sm:rounded-2xl border-2 md:border-4 flex flex-col items-center justify-center transition-all transform hover:scale-105 ${
                   gameState.selectedBet === bet
                     ? 'bg-green-500 border-green-300 shadow-lg shadow-green-400/50'
                     : 'bg-white border-gray-300 hover:border-gray-400'
                 }`}
               >
                 <div className="flex items-center space-x-1">
-                  <div className="w-6 h-6 bg-orange-400 rounded-full flex items-center justify-center">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 bg-orange-400 rounded-full flex items-center justify-center">
                     <span className="text-white text-xs font-bold">$</span>
                   </div>
-                  <span className={`font-bold text-lg ${gameState.selectedBet === bet ? 'text-white' : 'text-gray-700'}`}>
+                  <span className={`font-bold text-xs sm:text-sm md:text-lg ${gameState.selectedBet === bet ? 'text-white' : 'text-gray-700'}`}>
                     {bet}
                   </span>
                 </div>
                 {gameState.selectedBet === bet && (
-                  <div className="w-6 h-6 bg-green-300 rounded-full flex items-center justify-center">
-                    <span className="text-green-700 text-sm">✓</span>
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 bg-green-300 rounded-full flex items-center justify-center">
+                    <span className="text-green-700 text-xs md:text-sm">✓</span>
                   </div>
                 )}
               </button>
             ))}
           </div>
 
-          <div className="text-white bg-black/30 backdrop-blur-sm rounded-lg px-6 py-2">
+          <div className="text-white bg-black/30 backdrop-blur-sm rounded-lg px-4 py-2 sm:px-6 text-center text-sm sm:text-base">
             Prizes will be distributed from points won
           </div>
 
-          <div className="flex items-center space-x-4">
-            <span className="text-white font-bold text-lg">Opponents:</span>
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <span className="text-white font-bold text-base sm:text-lg">Opponents:</span>
             <div className="flex space-x-2">
               {gameState.players.slice(1).map((player, index) => (
-                <div key={index} className={`w-12 h-12 rounded-full bg-gradient-to-br ${player.color} flex items-center justify-center text-2xl border-2 border-white shadow-lg`}>
+                <div key={index} className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br ${player.color} flex items-center justify-center text-lg sm:text-2xl border-2 border-white shadow-lg`}>
                   {player.defaultAvatar}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-black/30 backdrop-blur-sm rounded-lg px-6 py-2 text-white">
+          <div className="bg-black/30 backdrop-blur-sm rounded-lg px-4 py-2 sm:px-6 text-white text-center text-sm sm:text-base">
             <span className="font-bold">{gameType === GAME_TYPES.MARRIAGE ? 'Marriage' : 'Rummy'}</span> | 
             {gameType === GAME_TYPES.MARRIAGE ? (
               <>🛡️ <span className="font-bold">21 Cards</span> | 🃏 <span className="font-bold">Tiplu System</span></>
@@ -1900,7 +2077,7 @@ const ModularCardGame = () => {
 
           <button 
             onClick={initializeGame}
-            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl transform hover:scale-105 transition-all"
+            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-8 sm:py-3 sm:px-10 md:py-4 md:px-12 rounded-2xl text-base sm:text-lg md:text-xl shadow-2xl transform hover:scale-105 transition-all"
           >
             START GAME
           </button>        
@@ -1921,45 +2098,63 @@ const ModularCardGame = () => {
           <div className="absolute inset-0 bg-gradient-radial from-emerald-800/20 via-transparent to-slate-900/50"></div>
         </div>
 
-        {/* Header */}
-        <div className="absolute top-0 left-0 right-0 z-40 p-6">
+        {/* Header - Responsive */}
+        <div className="absolute top-0 left-0 right-0 z-40 p-3 md:p-6">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-2 md:space-x-6">
               <button 
                 onClick={() => setGamePhase('menu')}
                 className="text-white hover:text-yellow-300 transition-colors"
               >
-                <ArrowLeft className="w-6 h-6" />
+                <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
               </button>
-              <div className="bg-gradient-to-br from-yellow-400 to-amber-600 rounded-xl p-3 shadow-xl">
-                {gameType === GAME_TYPES.MARRIAGE ? <Crown className="w-8 h-8 text-white" /> : <Trophy className="w-8 h-8 text-white" />}
+              <div className="bg-gradient-to-br from-yellow-400 to-amber-600 rounded-xl p-2 md:p-3 shadow-xl">
+                {gameType === GAME_TYPES.MARRIAGE ? <Crown className="w-6 h-6 md:w-8 md:h-8 text-white" /> : <Trophy className="w-6 h-6 md:w-8 md:h-8 text-white" />}
               </div>
               <div className="text-white">
-                <h1 className="text-3xl font-bold drop-shadow-lg bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">
+                <h1 className="text-lg md:text-3xl font-bold drop-shadow-lg bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent">
                   {gameType === GAME_TYPES.MARRIAGE ? 'Marriage Game' : 'KICK OUT'}
                 </h1>
-                <p className="text-lg opacity-90 drop-shadow font-semibold">Round {gameState.round} • Pot: ${gameState.pot}</p>
+                <p className="text-sm md:text-lg opacity-90 drop-shadow font-semibold">Round {gameState.round} • Pot: ${gameState.pot}</p>
               </div>
             </div>
             
-            <div className="flex items-center space-x-3">
-              <div className="bg-orange-500 rounded-full px-4 py-2 flex items-center space-x-2 shadow-lg">
-                <span className="text-white font-bold">💰 {gameState.players[0].chips.toLocaleString()}</span>
+            <div className="flex items-center space-x-1 md:space-x-3">
+              <div className="bg-orange-500 rounded-full px-1 py-0.5 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 shadow-lg">
+                <span className="text-white font-bold text-xs md:text-sm">💰 {gameState.players[0].chips.toLocaleString()}</span>
               </div>
-              <div className="bg-red-500 rounded-full px-4 py-2 flex items-center space-x-2 shadow-lg">
-                <span className="text-white font-bold">🎯 {gameState.players[0].score}</span>
+              <div className="relative">
+                <div className="bg-red-500 rounded-full px-1 py-0.5 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 shadow-lg cursor-pointer hover:bg-red-600 transition-all"
+                     onClick={() => setShowPointsTable(!showPointsTable)}>
+                  <span className="text-white font-bold text-xs md:text-sm">🎯 Points</span>
+                  <ChevronDown className="w-3 h-3 md:w-4 md:h-4 text-white" />
+                </div>
+                {showPointsTable && (
+                  <div className="absolute top-full right-0 mt-2 bg-black/90 backdrop-blur-sm rounded-lg p-3 min-w-48 z-50">
+                    <h3 className="text-white font-bold text-sm mb-2">Player Points</h3>
+                    {gameState.players.map((player, index) => (
+                      <div key={index} className="flex justify-between items-center py-1">
+                        <span className="text-white text-xs">{player.name}</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-yellow-400 text-xs">💰 {player.chips?.toLocaleString() || 0}</span>
+                          <span className="text-red-400 text-xs">🎯 {player.score || 0}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <button 
                 onClick={() => setShowRules(true)}
-                className="bg-blue-600 hover:bg-blue-700 backdrop-blur-sm rounded-xl p-3 text-white transition-all"
+                className="bg-blue-600 hover:bg-blue-700 backdrop-blur-sm rounded-xl p-2 md:p-3 text-white transition-all"
               >
-                <span className="text-sm font-bold">📖 Rules</span>
+                <span className="text-xs md:text-sm font-bold">📖</span>
               </button>
-              <button className="bg-white/20 backdrop-blur-sm rounded-xl p-3 text-white hover:bg-white/30 transition-all">
-                <Volume2 className="w-6 h-6" />
+              <button className="bg-white/20 backdrop-blur-sm rounded-xl p-2 md:p-3 text-white hover:bg-white/30 transition-all">
+                <Volume2 className="w-4 h-4 md:w-6 md:h-6" />
               </button>
-              <button className="bg-white/20 backdrop-blur-sm rounded-xl p-3 text-white hover:bg-white/30 transition-all">
-                <Settings className="w-6 h-6" />
+              <button className="bg-white/20 backdrop-blur-sm rounded-xl p-2 md:p-3 text-white hover:bg-white/30 transition-all">
+                <Settings className="w-4 h-4 md:w-6 md:h-6" />
               </button>
             </div>
           </div>
@@ -1978,10 +2173,10 @@ const ModularCardGame = () => {
         
 
 
-        {/* Shrinkable Game Log */}
+        {/* Desktop Game Log */}
         <GameLog 
           logs={gameLog}
-          className="absolute top-20 right-4 w-64"
+          className="hidden md:block absolute top-16 md:top-20 right-2 md:right-4 w-32 md:w-64"
         />
         
         {/* Game Rules Popup */}
@@ -1992,41 +2187,43 @@ const ModularCardGame = () => {
         
 
 
-        {/* Main Game Area - Green Table */}
-        <div className="absolute inset-0 flex items-center justify-center z-10">
+        {/* Main Game Area - Green Table - Mobile Responsive */}
+        <div className="absolute inset-0 flex items-center justify-center z-10 pt-8 md:pt-0">
           <GameTable>
-            {/* Draw Pile */}
-            <div className="absolute left-1/3 top-1/2 transform -translate-y-1/2">
+            {/* Draw Pile - Responsive positioning */}
+            <div className="absolute left-1/4 md:left-1/3 top-1/2 transform -translate-y-1/2">
+              
               <div className="relative">
                 <div 
                   className="cursor-pointer"
                   onClick={() => isPlayerTurn && drawCard(false)}
                 >
-                  <Card card={null} faceDown={true} size="large" />
+                  <Card card={null} faceDown={true} size="normal" className="md:!w-20 md:!h-28" />
                 </div>
               </div>
               
-              {/* Wildcard display - face up and same size as deck */}
+              {/* Wildcard display - Responsive positioning */}
               {gameState.wildcard && (
-                <div className="absolute left-1/3 top-1/2 transform -translate-y-1/2 -translate-x-32">
+                <div className="absolute left-1/4 md:left-1/3 top-1/2 transform -translate-y-1/2 -translate-x-16 md:-translate-x-32">
                   <div className="relative">
                     <Card 
                       card={gameState.wildcard} 
-                      size="large" 
+                      size="normal" 
+                      className="md:!w-20 md:!h-28"
                     />
-                    <div className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                    <div className="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-yellow-500 text-black text-xs font-bold rounded-full w-4 h-4 md:w-6 md:h-6 flex items-center justify-center">
                       W
                     </div>
-                    <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded px-2 py-1 text-white text-xs">
-                      Wildcard
+                    <div className="absolute -bottom-6 md:-bottom-8 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded px-1 md:px-2 py-1 text-white text-xs">
+                      Wild
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Discard Pile */}
-            <div className="absolute right-1/3 top-1/2 transform -translate-y-1/2">
+            {/* Discard Pile - Responsive positioning */}
+            <div className="absolute right-1/4 md:right-1/3 top-1/2 transform -translate-y-1/2">
               {gameState.discardPile.length > 0 ? (
                 <div className="relative">
                   <div 
@@ -2035,16 +2232,40 @@ const ModularCardGame = () => {
                   >
                     <Card 
                       card={gameState.discardPile[gameState.discardPile.length - 1]} 
-                      size="large"
+                      size="normal"
+                      className="md:!w-20 md:!h-28"
                     />
                   </div>
                 </div>
               ) : (
-                <div className="w-20 h-28 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
+                <div className="w-14 h-18 md:w-20 md:h-28 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
                   <span className="text-gray-400 text-xs text-center">DISCARD<br/>PILE</span>
                 </div>
               )}
             </div>
+
+            {/* Mobile Warning Messages - Above Deck and Pile */}
+            <div className="md:hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -translate-y-8 flex flex-col items-center space-y-1">
+              {isPlayerTurn && !hasDrawnCard && (
+                <span className="text-amber-200 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide">⚠️ Pick or draw a card!</span>
+              )}
+              {isPlayerTurn && hasDrawnCard && gameState.players[0].hand.length === 14 && turnTimeRemaining >= 5000 && (
+                <span className="text-yellow-300 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide animate-pulse">⚠️ Must throw a card!</span>
+              )}
+              {isPlayerTurn && gameState.players[0].hand.length === 14 && turnTimeRemaining < 5000 && (
+                <span className="text-red-400 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide animate-pulse">🚨 THROW CARD NOW!</span>
+              )}
+              {declarationError && (
+                <span className="text-red-300 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide animate-pulse">❌ {declarationError}</span>
+              )}
+              {canDeclare() && gameState.players[0].hand.length === 14 && (
+                <span className="text-emerald-300 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide animate-pulse">✅ Ready to declare!</span>
+              )}
+            </div>
+
+          
+            
+
 
             {/* Drop Zone in Middle of Table - Only for throwing, not rearrangement */}
             {isPlayerTurn && hasDrawnCard && gameState.players[0].hand.length === 14 && (
@@ -2073,6 +2294,68 @@ const ModularCardGame = () => {
                     console.log('Invalid card data dropped');
                   }
                 }}
+                onTouchStart={(e) => {
+                  e.currentTarget.classList.add('bg-yellow-400/30', 'border-yellow-300', 'scale-110');
+                }}
+                onTouchMove={(e) => {
+                  // Handle mobile drag over drop zone
+                  if (window.innerWidth < 768) {
+                    e.preventDefault();
+                    e.currentTarget.classList.add('bg-yellow-400/50', 'border-yellow-200', 'scale-120');
+                  }
+                }}
+                onTouchEnd={(e) => {
+                  e.currentTarget.classList.remove('bg-yellow-400/30', 'border-yellow-300', 'scale-110', 'bg-yellow-400/50', 'border-yellow-200', 'scale-120');
+                  
+                  // Enhanced mobile drop handling
+                  if (window.innerWidth < 768) {
+                    // Check if we have a selected card or mobile drag data
+                    let cardToDiscard = null;
+                    
+                    // First check for selected cards
+                    if (selectedCards.length > 0) {
+                      cardToDiscard = gameState.players[0].hand.find(c => c.id === selectedCards[0]);
+                    }
+                    
+                    // If no selected card, check for global mobile dragged card
+                    if (!cardToDiscard && mobileDraggedCard) {
+                      cardToDiscard = gameState.players[0].hand.find(c => c.id === mobileDraggedCard.id);
+                    }
+                    
+                    // If no selected card, check for mobile drag data from card elements
+                    if (!cardToDiscard) {
+                      const cardElements = document.querySelectorAll('[data-card]');
+                      for (const element of cardElements) {
+                        try {
+                          const cardData = JSON.parse(element.getAttribute('data-card'));
+                          if (cardData) {
+                            cardToDiscard = gameState.players[0].hand.find(c => c.id === cardData.id);
+                            if (cardToDiscard) break;
+                          }
+                        } catch (error) {
+                          console.log('Invalid card data in element');
+                        }
+                      }
+                    }
+                    
+                    // If still no card, try to get the last card as fallback
+                    if (!cardToDiscard && gameState.players[0].hand.length > 0) {
+                      cardToDiscard = gameState.players[0].hand[gameState.players[0].hand.length - 1];
+                    }
+                    
+                    if (cardToDiscard) {
+                      discardCard(cardToDiscard);
+                      // Clear mobile drag state
+                      setMobileDraggedCard(null);
+                    }
+                  } else if (selectedCards.length > 0) {
+                    // Desktop: drop selected card
+                    const cardToDiscard = gameState.players[0].hand.find(c => c.id === selectedCards[0]);
+                    if (cardToDiscard) {
+                      discardCard(cardToDiscard);
+                    }
+                  }
+                }}
               >
                 <div className="text-center">
                   <span className="text-yellow-400 text-xs text-center font-bold block">DROP CARD HERE</span>
@@ -2083,7 +2366,7 @@ const ModularCardGame = () => {
 
             {/* Game Message */}
             {gameMessage && (
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-lg px-6 py-3 text-white text-center">
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-lg px-6 py-3 text-white text-center hidden md:block">
                 <div className="text-lg font-bold text-yellow-300">{gameMessage}</div>
               </div>
             )}
@@ -2091,8 +2374,8 @@ const ModularCardGame = () => {
           </GameTable>
         </div>
 
-        {/* Main Player (Bottom) - Outside Green Table */}
-        <div className="absolute bottom-0 left-0 right-0 z-30 p-6">
+        {/* Main Player (Bottom) - Mobile Responsive */}
+        <div className="absolute bottom-0 left-0 right-0 z-30 pb-0 pl-16 pr-1 pt-1 md:p-6">
           <div className="max-w-6xl mx-auto">
             {/* Card Hand with Curved Layout */}
             <CardHand
@@ -2104,102 +2387,83 @@ const ModularCardGame = () => {
               jokers={gameState.jokers}
               addToLog={addToLog}
               canDeclare={canDeclare()}
-              className="mb-4"
+              className="mb-0 md:mb-4"
               key={`hand-${gameState.players[0].hand.length}`} // Force re-render when hand changes
+              mobileDraggedCard={mobileDraggedCard}
+              setMobileDraggedCard={setMobileDraggedCard}
             />
 
-            {/* Action Messages Below Cards - Static Position */}
-            <div className="flex justify-center mb-4 h-12">
+            {/* Action Messages Below Cards - Mobile Responsive */}
+            <div className="flex justify-center mb-0 md:mb-4 h-0 md:h-12">
               {isPlayerTurn && !hasDrawnCard && (
-                <div className="bg-blue-600 text-white font-bold px-6 py-2 rounded-lg animate-pulse flex items-center space-x-2">
-                  <span>⚠️ Pick or draw a card!</span>
+                <div className="hidden md:flex bg-blue-600 text-white font-bold px-3 md:px-6 py-1 md:py-2 rounded-lg animate-pulse items-center space-x-1 md:space-x-2">
+                  <span className="text-sm md:text-base">⚠️ Pick or draw a card!</span>
                 </div>
               )}
               
               {isPlayerTurn && hasDrawnCard && gameState.players[0].hand.length === 14 && (
-                <div className="bg-red-600 text-white font-bold px-6 py-2 rounded-lg animate-pulse flex items-center space-x-2">
-                  <span>⚠️ Must throw a card!</span>
+                <div className="bg-red-600 text-white font-bold px-3 md:px-6 py-1 md:py-2 rounded-lg animate-pulse flex items-center space-x-1 md:space-x-2">
+                  <span className="text-sm md:text-base">⚠️ Must throw a card!</span>
                 </div>
               )}
               
               {declarationError && (
-                <div className="bg-red-600 text-white font-bold px-6 py-2 rounded-lg animate-pulse flex items-center space-x-2">
-                  <span>❌ {declarationError}</span>
+                <div className="bg-red-600 text-white font-bold px-3 md:px-6 py-1 md:py-2 rounded-lg animate-pulse flex items-center space-x-1 md:space-x-2">
+                  <span className="text-sm md:text-base">❌ {declarationError}</span>
                 </div>
               )}
               
               {canDeclare() && gameState.players[0].hand.length === 14 && (
-                <div className="bg-green-600 text-white font-bold px-6 py-2 rounded-lg animate-pulse flex items-center space-x-2">
-                  <span>✅ Ready to declare!</span>
+                <div className="bg-green-600 text-white font-bold px-3 md:px-6 py-1 md:py-2 rounded-lg animate-pulse flex items-center space-x-1 md:space-x-2">
+                  <span className="text-sm md:text-base">✅ Ready to declare!</span>
                 </div>
               )}
             </div>
 
-            {/* Controls Area - Sort and Declare on right */}
-            <div className="flex justify-between items-center">
-              <div className="flex space-x-4">
-                {selectedCards.length > 0 && gameState.players[0].hand.length === 14 && (
-                  <button
-                    onClick={() => {
-                      const cardToDiscard = gameState.players[0].hand.find(c => c.id === selectedCards[0]);
-                      if (cardToDiscard) {
-                        discardCard(cardToDiscard);
-                      }
-                    }}
-                    className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all flex items-center space-x-2 animate-pulse"
-                  >
-                    <Target className="w-5 h-5" />
-                    <span>Drop ({selectedCards.length})</span>
-                  </button>
-                )}
+            {/* Controls Area - Mobile Responsive */}
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-0 md:space-y-0">
+              <div className="flex flex-wrap justify-center md:justify-start gap-2 md:space-x-4">
                 
-                {canDeclare() && gameState.players[0].hand.length === 14 && (
-                  <button
-                    onClick={autoDiscardLastCard}
-                    className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all flex items-center space-x-2 animate-pulse"
-                  >
-                    <Target className="w-5 h-5" />
-                    <span>Auto-Discard Last Card</span>
-                  </button>
-                )}
-                
-                {/* Warning when must throw card */}
-                {isPlayerTurn && gameState.players[0].hand.length === 14 && turnTimeRemaining < 5000 && (
-                  <div className="bg-red-600 text-white font-bold px-4 py-2 rounded-lg animate-pulse flex items-center space-x-2">
-                    <Clock className="w-4 h-4" />
-                    <span>THROW CARD NOW!</span>
-                  </div>
-                )}
+                {/* Warning when must throw card - Desktop only */}
+                <div className="hidden md:flex">
+                  {isPlayerTurn && gameState.players[0].hand.length === 14 && turnTimeRemaining < 5000 && (
+                    <div className="bg-red-600 text-white font-bold px-2 md:px-4 py-1 md:py-2 rounded-lg animate-pulse flex items-center space-x-1 md:space-x-2">
+                      <Clock className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="text-xs md:text-sm">THROW CARD NOW!</span>
+                    </div>
+                  )}
+                </div>
               </div>
               
-              <div className="flex space-x-4">
+              {/* Desktop buttons */}
+              <div className="hidden md:flex flex-wrap justify-center gap-2 md:space-x-4">
                 <button
                   onClick={sortCards}
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all flex items-center space-x-2"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold px-2 md:px-6 py-1 md:py-3 rounded-lg md:rounded-xl shadow-lg transform hover:scale-105 transition-all flex items-center space-x-1 md:space-x-2"
                 >
-                  <RotateCcw className="w-5 h-5" />
-                  <span>Sort</span>
+                  <RotateCcw className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="text-sm md:text-base">Sort</span>
                 </button>
                 
                 <button
                   onClick={organizeForDeclaration}
                   disabled={!isPlayerTurn || gameState.players[0].hand.length !== 14}
-                  className={`font-bold px-6 py-3 rounded-xl shadow-lg transform transition-all flex items-center space-x-2 ${
+                  className={`font-bold px-2 md:px-6 py-1 md:py-3 rounded-lg md:rounded-xl shadow-lg transform transition-all flex items-center space-x-1 md:space-x-2 ${
                     isPlayerTurn && gameState.players[0].hand.length === 14
                       ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white hover:scale-105'
                       : 'bg-gray-600 text-gray-300 cursor-not-allowed'
                   }`}
                 >
-                  <Target className="w-5 h-5" />
-                  <span>Organize</span>
+                  <Target className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="text-sm md:text-base">Organize</span>
                 </button>
                 
                 <button
                   onClick={debugDeclaration}
-                  className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white font-bold px-6 py-3 rounded-xl shadow-lg transform hover:scale-105 transition-all flex items-center space-x-2"
+                  className="bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white font-bold px-2 md:px-6 py-1 md:py-3 rounded-lg md:rounded-xl shadow-lg transform hover:scale-105 transition-all flex items-center space-x-1 md:space-x-2"
                 >
-                  <Zap className="w-5 h-5" />
-                  <span>Debug</span>
+                  <Zap className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="text-sm md:text-base">Debug</span>
                 </button>
                 
                 <button
@@ -2212,18 +2476,66 @@ const ModularCardGame = () => {
                     declareWin();
                   }}
                   disabled={!isPlayerTurn || !canDeclare()}
-                  className={`font-bold px-6 py-3 rounded-xl shadow-lg transform transition-all flex items-center space-x-2 ${
+                  className={`font-bold px-2 md:px-6 py-1 md:py-3 rounded-lg md:rounded-xl shadow-lg transform transition-all flex items-center space-x-1 md:space-x-2 ${
                     canDeclare() && isPlayerTurn
                       ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white hover:scale-105'
                       : 'bg-gray-600 text-gray-300 cursor-not-allowed'
                   }`}
                 >
-                  <Star className="w-5 h-5" />
-                  <span>Declare ({gameState.players[0].hand.length}/14)</span>
+                  <Star className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="text-sm md:text-base">Declare ({gameState.players[0].hand.length}/14)</span>
                 </button>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Mobile Game Log - Bottom Left */}
+        <div className="md:hidden fixed bottom-4 left-4 z-50">
+          <div className="relative">
+            <button
+              onClick={() => setShowGameLog(!showGameLog)}
+              className="bg-black/80 backdrop-blur-sm text-white font-bold px-2 py-1 rounded-full shadow-xl flex items-center space-x-1"
+            >
+              <span className="text-xs">📋</span>
+              <ChevronUp className="w-3 h-3" />
+            </button>
+            {showGameLog && (
+              <div className="absolute bottom-full left-0 mb-2 bg-black/90 backdrop-blur-sm rounded-lg p-2 min-w-48 max-h-32 overflow-y-auto">
+                <h3 className="text-white font-bold text-xs mb-1">Game Log</h3>
+                {gameLog.slice(-5).map((log, index) => (
+                  <div key={index} className="text-white text-xs py-0.5 border-b border-white/20 last:border-0">
+                    {log}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+
+
+        {/* Mobile Declare Button - Bottom Right */}
+        <div className="md:hidden fixed bottom-4 right-4 z-50">
+          <button
+            onClick={() => {
+              console.log('Declare button clicked!');
+              console.log('Current hand:', gameState.players[0].hand.map(c => `${c.rank} of ${c.suit}`));
+              console.log('Jokers:', gameState.jokers);
+              console.log('Is player turn:', isPlayerTurn);
+              console.log('Can declare:', canDeclare());
+              declareWin();
+            }}
+            disabled={!isPlayerTurn || !canDeclare()}
+            className={`font-bold px-3 py-2 rounded-full shadow-2xl transform transition-all flex items-center space-x-2 ${
+              canDeclare() && isPlayerTurn
+                ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white hover:scale-110'
+                : 'bg-gray-600 text-gray-300 cursor-not-allowed'
+            }`}
+          >
+            <Star className="w-5 h-5" />
+            <span className="text-sm font-bold">Declare</span>
+          </button>
         </div>
 
         {/* Ambient Particles Effect */}
@@ -2525,4 +2837,12 @@ const ModularCardGame = () => {
   return null;
 };
 
-export default ModularCardGame;
+const ModularCardGameWithOrientation = () => {
+  return (
+    <LandscapeOnly>
+      <ModularCardGame />
+    </LandscapeOnly>
+  );
+};
+
+export default ModularCardGameWithOrientation;
