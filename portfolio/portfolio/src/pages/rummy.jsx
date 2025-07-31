@@ -2287,6 +2287,8 @@ const ModularCardGame = () => {
   const [bgMusic, setBgMusic] = useState(null);
   const [gamePoints] = useState(100); // Points per game
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isMobileFullscreen, setIsMobileFullscreen] = useState(false);
+  const [showPWAInstallPrompt, setShowPWAInstallPrompt] = useState(false);
 
   const [gameState, setGameState] = useState({
     players: [
@@ -3257,8 +3259,50 @@ const ModularCardGame = () => {
     playSound('button', true);
   };
 
-  // Fullscreen functionality
+  // Fullscreen functionality with mobile support
   const toggleFullscreen = () => {
+    // Check if we're on mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // Toggle mobile fullscreen mode
+      setIsMobileFullscreen(!isMobileFullscreen);
+      
+      if (!isMobileFullscreen) {
+        // Enter mobile fullscreen
+        document.body.style.position = 'fixed';
+        document.body.style.top = '0';
+        document.body.style.left = '0';
+        document.body.style.width = '100vw';
+        document.body.style.height = '100vh';
+        document.body.style.overflow = 'hidden';
+        document.body.style.zIndex = '9999';
+        
+        // Hide mobile browser UI elements
+        const meta = document.querySelector('meta[name="viewport"]');
+        if (meta) {
+          meta.setAttribute('content', 'width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover, minimal-ui');
+        }
+      } else {
+        // Exit mobile fullscreen
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.width = '';
+        document.body.style.height = '';
+        document.body.style.overflow = '';
+        document.body.style.zIndex = '';
+        
+        // Restore viewport
+        const meta = document.querySelector('meta[name="viewport"]');
+        if (meta) {
+          meta.setAttribute('content', 'width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover');
+        }
+      }
+      return;
+    }
+
+    // Desktop fullscreen
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().then(() => {
         setIsFullscreen(true);
@@ -3282,6 +3326,21 @@ const ModularCardGame = () => {
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  // Check for PWA installation capability
+  useEffect(() => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+    
+    if (isMobile && !isStandalone) {
+      // Show PWA install prompt after 3 seconds
+      const timer = setTimeout(() => {
+        setShowPWAInstallPrompt(true);
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   const currentPlayer = gameState.players[currentPlayerIndex];
@@ -3370,12 +3429,20 @@ const ModularCardGame = () => {
             <button
               onClick={toggleFullscreen}
               className="flex items-center justify-center w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform bg-green-500 rounded"
-              title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+              title={isMobileDevice() ? (isMobileFullscreen ? "Exit Mobile Fullscreen" : "Enter Mobile Fullscreen") : (isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen")}
             >
-              {isFullscreen ? (
-                <Minimize2 className="w-4 h-4 md:w-6 md:h-6" />
+              {isMobileDevice() ? (
+                isMobileFullscreen ? (
+                  <Minimize2 className="w-4 h-4 md:w-6 md:h-6" />
+                ) : (
+                  <Maximize2 className="w-4 h-4 md:w-6 md:h-6" />
+                )
               ) : (
-                <Maximize2 className="w-4 h-4 md:w-6 md:h-6" />
+                isFullscreen ? (
+                  <Minimize2 className="w-4 h-4 md:w-6 md:h-6" />
+                ) : (
+                  <Maximize2 className="w-4 h-4 md:w-6 md:h-6" />
+                )
               )}
             </button>
             <Settings className="w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform" />
@@ -4348,6 +4415,64 @@ const ModularCardGame = () => {
             >
               Continue Game
             </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // PWA Installation Prompt
+  if (showPWAInstallPrompt) {
+    return (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-white text-2xl">📱</span>
+            </div>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">
+              Install Royal Card Game
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Get the best fullscreen experience by installing this game as an app on your device.
+            </p>
+            
+            <div className="space-y-3 text-sm text-gray-700">
+              <div className="flex items-center space-x-2">
+                <span className="text-blue-500">1.</span>
+                <span>Tap the share button (📤)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-blue-500">2.</span>
+                <span>Select "Add to Home Screen"</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-blue-500">3.</span>
+                <span>Launch from your home screen</span>
+              </div>
+            </div>
+            
+            <div className="flex space-x-3 mt-6">
+              <button
+                onClick={() => setShowPWAInstallPrompt(false)}
+                className="flex-1 bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
+              >
+                Maybe Later
+              </button>
+              <button
+                onClick={() => {
+                  setShowPWAInstallPrompt(false);
+                  // Try to trigger PWA install
+                  if ('serviceWorker' in navigator && 'BeforeInstallPromptEvent' in window) {
+                    // This will trigger the browser's install prompt
+                    window.dispatchEvent(new Event('beforeinstallprompt'));
+                  }
+                }}
+                className="flex-1 bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Install Now
+              </button>
+            </div>
           </div>
         </div>
       </div>
