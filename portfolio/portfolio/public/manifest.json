@@ -18,9 +18,13 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
+  "start_url": "/rummy",
+  "display": "fullscreen",
   "orientation": "landscape",
   "theme_color": "#0ea5e9",
-  "background_color": "#0c4a6e"
+  "background_color": "#0c4a6e",
+  "scope": "/",
+  "categories": ["games", "entertainment"],
+  "description": "A full-featured Rummy card game with AI opponents",
+  "lang": "en"
 }

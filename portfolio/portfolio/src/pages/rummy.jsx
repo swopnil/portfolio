@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Users, Settings, Volume2, Trophy, Star, Play, Zap, Crown, ArrowLeft, RotateCcw, Target, Clock, ChevronDown, ChevronUp } from 'lucide-react';
+import { Users, Settings, Volume2, Trophy, Star, Play, Zap, Crown, ArrowLeft, RotateCcw, Target, Clock, ChevronDown, ChevronUp, Maximize2, Minimize2 } from 'lucide-react';
 import LandscapeOnly from '../components/LandscapeOnly';
 
 // Sound utility using custom audio files
@@ -2286,6 +2286,7 @@ const ModularCardGame = () => {
   const [bgMusicEnabled, setBgMusicEnabled] = useState(false);
   const [bgMusic, setBgMusic] = useState(null);
   const [gamePoints] = useState(100); // Points per game
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const [gameState, setGameState] = useState({
     players: [
@@ -3256,6 +3257,33 @@ const ModularCardGame = () => {
     playSound('button', true);
   };
 
+  // Fullscreen functionality
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      }).catch(err => {
+        console.log('Error attempting to enable fullscreen:', err);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false);
+      }).catch(err => {
+        console.log('Error attempting to exit fullscreen:', err);
+      });
+    }
+  };
+
+  // Listen for fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
   const currentPlayer = gameState.players[currentPlayerIndex];
   const isPlayerTurn = currentPlayerIndex === 0;
 
@@ -3338,6 +3366,17 @@ const ModularCardGame = () => {
               title="Test Sound"
             >
               🔊
+            </button>
+            <button
+              onClick={toggleFullscreen}
+              className="flex items-center justify-center w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform bg-green-500 rounded"
+              title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+            >
+              {isFullscreen ? (
+                <Minimize2 className="w-4 h-4 md:w-6 md:h-6" />
+              ) : (
+                <Maximize2 className="w-4 h-4 md:w-6 md:h-6" />
+              )}
             </button>
             <Settings className="w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform" />
           </div>

@@ -3,18 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="logo192.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0ea5e9" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Royal Card Game">
     <meta name="screen-orientation" content="landscape">
     <meta name="orientation" content="landscape">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="msapplication-tap-highlight" content="no">
     <meta
-      name="Swopnil's Website"
-      content="Web site created for Swopnil"
+      name="description"
+      content="A full-featured Rummy card game with AI opponents - Play in fullscreen mode for the best experience"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-startup-image" href="%PUBLIC_URL%/logo512.png">
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -29,7 +34,35 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Swopnil's Website</title>
+    <title>Royal Card Game</title>
+    <style>
+      /* Prevent zoom on double tap */
+      * { touch-action: manipulation; }
+      
+      /* Hide scrollbars for fullscreen experience */
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      /* Prevent text selection */
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      /* Allow text selection in specific areas if needed */
+      .selectable {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
