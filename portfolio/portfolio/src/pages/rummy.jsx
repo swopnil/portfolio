@@ -3,6 +3,40 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Users, Settings, Volume2, Trophy, Star, Play, Zap, Crown, ArrowLeft, RotateCcw, Target, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import LandscapeOnly from '../components/LandscapeOnly';
 
+// Sound utility using custom audio files
+const playSound = (soundType, enabled = true) => {
+  if (!enabled) return;
+  
+  try {
+    // Define sound file paths
+    const soundFiles = {
+      cardDraw: '/flipcard.mp3',
+      cardDiscard: '/flipcard.mp3',
+      cardPick: '/flipcard.mp3',
+      declare: '/declare.mp3',
+      win: '/declare.mp3',
+      button: '/flipcard.mp3',
+      error: '/flipcard.mp3',
+      start: '/start.mp3'
+    };
+    
+    const audio = new Audio();
+    audio.src = soundFiles[soundType] || soundFiles.button;
+    audio.volume = 0.4; // Set volume to 40%
+    
+    // Add event listeners for debugging
+    audio.addEventListener('loadstart', () => console.log(`Loading sound: ${soundType}`));
+    audio.addEventListener('canplay', () => console.log(`Sound ready: ${soundType}`));
+    audio.addEventListener('error', (e) => console.log(`Sound error: ${soundType}`, e));
+    
+    audio.play().catch(err => {
+      console.log('Sound play failed:', err);
+    });
+  } catch (error) {
+    console.log('Audio error:', error);
+  }
+};
+
 // ========================================
 // GAME LOGIC COMPONENTS
 // ========================================
@@ -2248,6 +2282,9 @@ const ModularCardGame = () => {
   const [mobileDraggedCard, setMobileDraggedCard] = useState(null);
   const [winningHandData, setWinningHandData] = useState(null);
   const [showContinueGame, setShowContinueGame] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [bgMusicEnabled, setBgMusicEnabled] = useState(false);
+  const [bgMusic, setBgMusic] = useState(null);
   const [gamePoints] = useState(100); // Points per game
 
   const [gameState, setGameState] = useState({
@@ -2439,6 +2476,9 @@ const ModularCardGame = () => {
   };
 
   const initializeGame = useCallback(() => {
+    // Play start sound for starting game
+    playSound('start', soundEnabled);
+    
     // Create 3 decks as per rules
     const shuffledDeck = createDecks(3);
     
@@ -2534,6 +2574,9 @@ const ModularCardGame = () => {
   }, [gameType, gameState.selectedBet]);
 
   const drawCard = (fromDiscard = false) => {
+    // Play sound for drawing card
+    playSound(fromDiscard ? 'cardPick' : 'cardDraw', soundEnabled);
+    
     // Add smooth animation delay
     setTimeout(() => {
       setGameState(prev => {
@@ -2576,6 +2619,9 @@ const ModularCardGame = () => {
   };
 
   const discardCard = (cardToDiscard) => {
+    // Play sound for discarding card
+    playSound('cardDiscard', soundEnabled);
+    
     // Add smooth throwing animation
     setTimeout(() => {
       setGameState(prev => {
@@ -2674,6 +2720,9 @@ const ModularCardGame = () => {
   const selectCard = (card) => {
     if (currentPlayerIndex !== 0) return;
     
+    // Play button sound for card selection
+    playSound('button', soundEnabled);
+    
     setSelectedCards(prev => {
       if (prev.includes(card.id)) {
         return prev.filter(id => id !== card.id);
@@ -2684,6 +2733,9 @@ const ModularCardGame = () => {
   };
 
   const sortCards = () => {
+    // Play button sound for sorting
+    playSound('button', soundEnabled);
+    
     console.log('Sorting cards strategically...');
     setGameState(prev => {
       const newState = { ...prev };
@@ -2775,6 +2827,9 @@ const ModularCardGame = () => {
   };
 
   const organizeForDeclaration = () => {
+    // Play button sound for organizing
+    playSound('button', soundEnabled);
+    
     console.log('Organizing cards for declaration...');
     setGameState(prev => {
       const newState = { ...prev };
@@ -2978,6 +3033,7 @@ const ModularCardGame = () => {
   const declareWin = () => {
     if (gameState.players[0].hand.length !== 14) {
       setDeclarationError('Must have exactly 14 cards to declare');
+      playSound('error', soundEnabled);
       return;
     }
     
@@ -2985,6 +3041,7 @@ const ModularCardGame = () => {
     
     if (!validation.valid) {
       setDeclarationError(validation.error);
+      playSound('error', soundEnabled);
       // Deduct 50 points for invalid declaration
       setGameState(prev => ({
         ...prev,
@@ -2996,6 +3053,9 @@ const ModularCardGame = () => {
       addToLog(`${gameState.players[0].name} penalized 50 points for invalid declaration`);
       return;
     }
+    
+    // Play win sound for successful declaration
+    playSound('declare', soundEnabled);
     
     // Clear any previous errors
     setDeclarationError('');
@@ -3053,6 +3113,7 @@ const ModularCardGame = () => {
     
     if (eliminatedPlayers.length > 0) {
       // Game ends, show elimination screen
+      playSound('win', soundEnabled);
       setGameState(prev => ({
         ...prev,
         players: updatedPlayers,
@@ -3063,6 +3124,7 @@ const ModularCardGame = () => {
       setGamePhase('elimination');
     } else {
       // Continue game, show round results
+      playSound('win', soundEnabled);
       setGameState(prev => ({
         ...prev,
         players: updatedPlayers,
@@ -3148,6 +3210,52 @@ const ModularCardGame = () => {
     addToLog(`Game continued! All players reset to ${nextHighestScore} points`);
   };
 
+  // Background music functions
+  const startBgMusic = () => {
+    if (bgMusicEnabled && !bgMusic) {
+      console.log('Starting background music...');
+      const music = new Audio('/gamebg.mp3');
+      music.loop = true;
+      music.volume = 0.3;
+      
+      // Add event listeners for debugging
+      music.addEventListener('loadstart', () => console.log('Loading background music'));
+      music.addEventListener('canplay', () => console.log('Background music ready'));
+      music.addEventListener('error', (e) => console.log('Background music error:', e));
+      
+      music.play().catch(err => {
+        console.log('Background music failed to start:', err);
+      });
+      setBgMusic(music);
+    }
+  };
+
+  const stopBgMusic = () => {
+    if (bgMusic) {
+      bgMusic.pause();
+      bgMusic.currentTime = 0;
+      setBgMusic(null);
+    }
+  };
+
+  const toggleBgMusic = () => {
+    if (bgMusicEnabled) {
+      setBgMusicEnabled(false);
+      stopBgMusic();
+    } else {
+      setBgMusicEnabled(true);
+      if (gamePhase === 'playing') {
+        startBgMusic();
+      }
+    }
+  };
+
+  // Test sound function for debugging
+  const testSound = () => {
+    console.log('Testing sound...');
+    playSound('button', true);
+  };
+
   const currentPlayer = gameState.players[currentPlayerIndex];
   const isPlayerTurn = currentPlayerIndex === 0;
 
@@ -3160,6 +3268,15 @@ const ModularCardGame = () => {
   useEffect(() => {
     console.log('Scores changed:', gameState.players.map(p => `${p.name}: ${p.score}`));
   }, [gameState.players]);
+
+  // Start background music when game phase changes to playing
+  useEffect(() => {
+    if (gamePhase === 'playing' && bgMusicEnabled) {
+      startBgMusic();
+    } else if (gamePhase !== 'playing') {
+      stopBgMusic();
+    }
+  }, [gamePhase, bgMusicEnabled]);
 
   // Menu Screen
   if (gamePhase === 'menu') {
@@ -3195,6 +3312,33 @@ const ModularCardGame = () => {
                 <span className="text-xs">+</span>
               </div>
             </div>
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className="flex items-center justify-center w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform"
+            >
+              {soundEnabled ? (
+                <Volume2 className="w-6 h-6 md:w-8 md:h-8" />
+              ) : (
+                <Volume2 className="w-6 h-6 md:w-8 md:h-8 opacity-50" />
+              )}
+            </button>
+            <button
+              onClick={toggleBgMusic}
+              className="flex items-center justify-center w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform"
+            >
+              {bgMusicEnabled ? (
+                <Play className="w-6 h-6 md:w-8 md:h-8" />
+              ) : (
+                <Play className="w-6 h-6 md:w-8 md:h-8 opacity-50" />
+              )}
+            </button>
+            <button
+              onClick={testSound}
+              className="flex items-center justify-center w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform bg-blue-500 rounded"
+              title="Test Sound"
+            >
+              🔊
+            </button>
             <Settings className="w-6 h-6 md:w-8 md:h-8 text-white cursor-pointer hover:scale-110 transition-transform" />
           </div>
         </div>
