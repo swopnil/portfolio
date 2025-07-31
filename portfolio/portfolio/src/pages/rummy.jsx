@@ -1071,7 +1071,7 @@ const getResponsiveSizing = () => {
       cardWidth: 80, // Bigger than mobile (62-64) but not too big
       cardHeight: 112, // Bigger than mobile (86-88) but not too big
       overlap: 20, // Slightly more overlap for bigger cards
-      padding: 6, // More padding for tablet
+      padding: 0, // More padding for tablet
       deckWidth: 100, // Bigger deck size for tablet
       deckHeight: 140
     };
