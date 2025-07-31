@@ -136,54 +136,6 @@ const isValidTanala = (cards) => {
   );
 };
 
-const isStraightRun = (cards, jokers) => {
-  if (cards.length < 3) return false;
-  
-  // Check for tanala first (three identical cards) - counts as straight run
-  if (isValidTanala(cards)) return true;
-  
-  // Sort by suit and value
-  const sortedCards = cards.sort((a, b) => {
-    if (a.suit !== b.suit) return SUITS.indexOf(a.suit) - SUITS.indexOf(b.suit);
-    return getCardValue(a.rank) - getCardValue(b.rank);
-  });
-  
-  // Group by suit
-  const bySuit = {};
-  sortedCards.forEach(card => {
-    if (!bySuit[card.suit]) bySuit[card.suit] = [];
-    bySuit[card.suit].push(card);
-  });
-  
-  // Check for straight runs in each suit
-  for (const suit in bySuit) {
-    const suitCards = bySuit[suit];
-    if (suitCards.length < 3) continue;
-    
-    // Check for consecutive cards without jokers
-    for (let i = 0; i <= suitCards.length - 3; i++) {
-      const run = suitCards.slice(i, i + 3);
-      const nonJokerCards = run.filter(card => !checkIsJoker(card, jokers));
-      
-      if (nonJokerCards.length >= 3) {
-        // Check if they are consecutive
-        const values = nonJokerCards.map(card => getCardValue(card.rank)).sort((a, b) => a - b);
-        let isConsecutive = true;
-        
-        for (let j = 1; j < values.length; j++) {
-          if (values[j] !== values[j-1] + 1) {
-            isConsecutive = false;
-            break;
-          }
-        }
-        
-        if (isConsecutive) return true;
-      }
-    }
-  }
-  
-  return false;
-};
 
 const isValidSet = (cards, jokers) => {
   if (cards.length < 3) return false;
@@ -251,13 +203,15 @@ const isValidRun = (cards, jokers) => {
 const isValidStraightRun = (cards, jokers) => {
   if (cards.length < 3) return false;
 
-  // Straight runs cannot contain jokers
-  const containsJoker = cards.some(card => checkIsJoker(card, jokers));
-  if (containsJoker) return false;
+  const isJoker = (card) => checkIsJoker(card, jokers);
+  const jokerCards = cards.filter(isJoker);
+  const nonJokers = cards.filter(c => !isJoker(c));
 
-  // All cards must be same suit
-  const suit = cards[0].suit;
-  if (!cards.every(card => card.suit === suit)) return false;
+  if (nonJokers.length === 0) return false;
+
+  // All non-joker cards must be same suit
+  const suit = nonJokers[0].suit;
+  if (!nonJokers.every(card => card.suit === suit)) return false;
 
   // Special case: tanala (3 same card of same suit) is allowed
   const allSame = cards.every(card => card.rank === cards[0].rank);
@@ -265,16 +219,24 @@ const isValidStraightRun = (cards, jokers) => {
 
   // Try both ace interpretations for sequences
   const tryAceInterpretation = (useHighAce) => {
-    const values = cards.map(card => getCardValue(card.rank, useHighAce && card.rank === 'ace'));
+    const values = nonJokers.map(card => getCardValue(card.rank, useHighAce && card.rank === 'ace'));
     const sorted = [...values].sort((a, b) => a - b);
     
-    // Check for strictly consecutive values
-    for (let i = 1; i < sorted.length; i++) {
-      if (sorted[i] !== sorted[i - 1] + 1) {
-        return false;
-      }
+    // Remove duplicates and check if we lost any (means duplicates existed)
+    const uniqueValues = [...new Set(sorted)];
+    if (uniqueValues.length !== sorted.length) return false;
+    
+    // Calculate gaps in the sequence
+    let gaps = 0;
+    for (let i = 1; i < uniqueValues.length; i++) {
+      const diff = uniqueValues[i] - uniqueValues[i - 1];
+      if (diff === 1) continue;
+      else if (diff > 1) gaps += diff - 1;
+      else return false;
     }
-    return true;
+    
+    // Can jokers fill all gaps to make a consecutive sequence?
+    return jokerCards.length >= gaps && (uniqueValues.length + jokerCards.length === cards.length);
   };
 
   return tryAceInterpretation(false) || tryAceInterpretation(true);
@@ -336,9 +298,269 @@ const checkWinningHand = (hand, jokers) => {
     }
 
   
-    return { valid: false, error: 'No valid grouping found satisfying Rummy rules' };
+      return { valid: false, error: 'No valid grouping found satisfying Rummy rules' };
+};
+
+
+
+
+
+// Efficient function to find winning combination using smart grouping
+const findWinningCombination = (hand, jokers) => {
+  if (hand.length !== 14) {
+    return { valid: false, error: 'Must have exactly 14 cards to declare' };
+  }
+
+  const cardsToCheck = hand.slice(0, 13); // Ignore last card
+  
+  // Smart approach: Find all possible valid combinations first
+  const findValidCombinations = (cards, jokers) => {
+    const combinations = {
+      straightRuns: [],
+      tanalas: [],
+      runs: [],
+      sets: []
+    };
+  
+    const suitBuckets = {};
+    const rankBuckets = {};
+  
+    // Step 1: Bucket cards by suit and rank
+    for (const card of cards) {
+      if (!suitBuckets[card.suit]) suitBuckets[card.suit] = [];
+      suitBuckets[card.suit].push(card);
+  
+      if (!rankBuckets[card.rank]) rankBuckets[card.rank] = [];
+      rankBuckets[card.rank].push(card);
+    }
+  
+    // Step 2: Sort each suit bucket by card rank value
+    for (const suit in suitBuckets) {
+      suitBuckets[suit].sort((a, b) => getCardValue(a.rank) - getCardValue(b.rank));
+    }
+  
+        // Step 3: Detect straight runs (3 or 4 consecutive cards in same suit)
+    for (const suit in suitBuckets) {
+      const cardsInSuit = suitBuckets[suit];
+      const values = cardsInSuit.map(c => ({ value: getCardValue(c.rank), card: c }));
+
+      for (let i = 0; i < values.length - 2; i++) {
+        const group = [values[i].card];
+        let lastVal = values[i].value;
+
+        for (let j = i + 1; j < values.length && group.length < 4; j++) {
+          const diff = values[j].value - lastVal;
+          if (diff === 1) {
+            group.push(values[j].card);
+            lastVal = values[j].value;
+            if (group.length >= 3) {
+              if (isValidStraightRun(group, jokers)) combinations.straightRuns.push([...group]);
+              if (isValidRun(group, jokers)) combinations.runs.push([...group]);
+            }
+          } else if (diff > 1) break; // Not consecutive anymore
+        }
+      }
+    }
+
+    // Step 3.5: Also check for runs with jokers filling gaps
+    for (const suit in suitBuckets) {
+      const cardsInSuit = suitBuckets[suit];
+      const values = cardsInSuit.map(c => ({ value: getCardValue(c.rank), card: c }));
+
+      // Try different combinations of 3-4 cards from this suit
+      for (let size = 3; size <= 4; size++) {
+        const combos = getCombinations(cardsInSuit, size);
+        for (const combo of combos) {
+          if (isValidRun(combo, jokers)) combinations.runs.push(combo);
+          if (isValidStraightRun(combo, jokers)) combinations.straightRuns.push(combo);
+        }
+      }
+    }
+  
+    // Step 4: Detect tanalas or sets (same rank)
+    for (const rank in rankBuckets) {
+      const sameRankCards = rankBuckets[rank];
+  
+      if (sameRankCards.length >= 3) {
+        const combos = getCombinations(sameRankCards, 3);
+        for (const combo of combos) {
+          if (isValidTanala(combo, jokers)) combinations.tanalas.push(combo);
+          if (isValidSet(combo, jokers)) combinations.sets.push(combo);
+        }
+      }
+  
+      if (sameRankCards.length >= 4) {
+        const combos = getCombinations(sameRankCards, 4);
+        for (const combo of combos) {
+          if (isValidSet(combo, jokers)) combinations.sets.push(combo);
+        }
+      }
+    }
+  
+    // Step 5: Fallback - try all possible combinations if we didn't find enough
+    if (combinations.straightRuns.length + combinations.runs.length + combinations.sets.length + combinations.tanalas.length < 4) {
+      // Try all possible 3-4 card combinations
+      for (let size = 3; size <= 4; size++) {
+        const allCombos = getCombinations(cards, size);
+        for (const combo of allCombos) {
+          if (isValidStraightRun(combo, jokers)) combinations.straightRuns.push(combo);
+          if (isValidTanala(combo, jokers)) combinations.tanalas.push(combo);
+          if (isValidRun(combo, jokers)) combinations.runs.push(combo);
+          if (isValidSet(combo, jokers)) combinations.sets.push(combo);
+        }
+      }
+    }
+
+    // Step 6: Special handling for joker-heavy hands
+    const jokerCards = cards.filter(card => checkIsJoker(card, jokers));
+    if (jokerCards.length > 0) {
+      // When we have jokers, try more combinations
+      for (let size = 3; size <= 4; size++) {
+        const allCombos = getCombinations(cards, size);
+        for (const combo of allCombos) {
+          // Check if this combo has jokers and might be valid
+          const comboJokers = combo.filter(card => checkIsJoker(card, jokers));
+          if (comboJokers.length > 0) {
+            if (isValidRun(combo, jokers)) combinations.runs.push(combo);
+            if (isValidSet(combo, jokers)) combinations.sets.push(combo);
+          }
+        }
+      }
+    }
+
+    return combinations;
   };
   
+    // Utility: Get all combinations of length 'n' from array 'arr'
+  function getCombinations(arr, n) {
+    const results = [];
+    const combo = [];
+
+    function backtrack(start) {
+      if (combo.length === n) {
+        // Check for duplicates before adding
+        const comboKey = combo.map(c => c.id).sort().join(',');
+        const isDuplicate = results.some(existing => {
+          const existingKey = existing.map(c => c.id).sort().join(',');
+          return existingKey === comboKey;
+        });
+        
+        if (!isDuplicate) {
+          results.push([...combo]);
+        }
+        return;
+      }
+
+      for (let i = start; i < arr.length; i++) {
+        combo.push(arr[i]);
+        backtrack(i + 1);
+        combo.pop();
+      }
+    }
+
+    backtrack(0);
+    return results;
+  }
+  
+  
+  const validCombinations = findValidCombinations(cardsToCheck, jokers);
+  
+  // Try to find a valid arrangement using the found combinations
+  const tryArrangement = () => {
+    // Try different combinations for each group
+    const groupACombos = [...validCombinations.straightRuns, ...validCombinations.tanalas];
+    const groupBCombos = [...validCombinations.runs, ...validCombinations.straightRuns, ...validCombinations.tanalas];
+    const groupCCombos = [...validCombinations.runs, ...validCombinations.sets, ...validCombinations.straightRuns, ...validCombinations.tanalas];
+    const groupDCombos = [...validCombinations.runs, ...validCombinations.sets, ...validCombinations.straightRuns, ...validCombinations.tanalas];
+    
+    // Try combinations for each group
+    for (const comboA of groupACombos) {
+      for (const comboB of groupBCombos) {
+        for (const comboC of groupCCombos) {
+          for (const comboD of groupDCombos) {
+            // Check if all cards are used exactly once
+            const allCards = [...comboA, ...comboB, ...comboC, ...comboD];
+            const cardIds = allCards.map(c => c.id);
+            const uniqueIds = new Set(cardIds);
+            
+            if (uniqueIds.size === 13 && cardIds.length === 13) {
+              // Valid arrangement found
+              return {
+                valid: true,
+                message: 'Valid winning hand found through smart combination analysis',
+                groupings: {
+                  A: comboA,
+                  B: comboB,
+                  C: comboC,
+                  D: comboD
+                },
+                arrangedHand: allCards
+              };
+            }
+          }
+        }
+      }
+    }
+    
+    return { valid: false, error: 'No valid winning combination found' };
+  };
+  
+  return tryArrangement();
+};
+
+// Efficient function to analyze hand and show counted/uncounted combinations
+const analyzeHandForDisplay = (hand, jokers) => {
+  const result = findWinningCombination(hand, jokers);
+  
+  if (result.valid) {
+    // Find the best arrangement and show counted combinations
+    const countedCombinations = [];
+    const uncountedCards = [];
+    
+    // Add counted combinations
+    Object.entries(result.groupings).forEach(([groupName, cards]) => {
+      let combinationType = '';
+      if (isValidStraightRun(cards, jokers)) combinationType = 'Straight Run';
+      else if (isValidTanala(cards, jokers)) combinationType = 'Tanala';
+      else if (isValidRun(cards, jokers)) combinationType = 'Run';
+      else if (isValidSet(cards, jokers)) combinationType = 'Set';
+      
+      countedCombinations.push({
+        type: combinationType,
+        group: groupName,
+        cards: cards
+      });
+    });
+    
+    // Find uncounted cards (cards not in any valid combination)
+    const countedCardIds = new Set();
+    Object.values(result.groupings).forEach(cards => {
+      cards.forEach(card => countedCardIds.add(card.id));
+    });
+    
+    hand.forEach(card => {
+      if (!countedCardIds.has(card.id)) {
+        uncountedCards.push(card);
+      }
+    });
+    
+    return {
+      valid: true,
+      countedCombinations,
+      uncountedCards,
+      arrangedHand: result.arrangedHand,
+      groupings: result.groupings
+    };
+  }
+  
+  return {
+    valid: false,
+    countedCombinations: [],
+    uncountedCards: hand,
+    arrangedHand: hand
+  };
+};
+
 // Calculate points for a hand
 const calculateHandPoints = (hand, jokers) => {
   let totalPoints = 0;
@@ -366,10 +588,15 @@ const checkElimination = (player) => {
 };
 
 // Calculate game continuation cost
-const calculateContinuationCost = (playerScore, secondHighestScore) => {
-  const pointsToDeduct = playerScore - secondHighestScore;
-  return pointsToDeduct * 21; // 21 points per point deducted
-};
+  const calculateContinuationCost = (playerScore, secondHighestScore, gamePoints) => {
+    const pointsToDeduct = playerScore - secondHighestScore;
+    return pointsToDeduct * gamePoints; // Use gamePoints instead of 21
+  };
+
+  const calculateContinueGameCost = (playerScore, nextHighestScore, gamePoints) => {
+    const pointsToDeduct = playerScore - nextHighestScore;
+    return pointsToDeduct * gamePoints;
+  };
 
 // Bot AI logic
 const createBot = (botData) => ({
@@ -380,25 +607,149 @@ const createBot = (botData) => ({
 });
 
 const botMakeMove = (bot, gameState) => {
-  const { drawPile, discardPile, jokers, gameType } = gameState;
+  const { drawPile, discardPile, jokers, gameType, botWinChecks } = gameState;
   
-  const shouldTakeDiscard = discardPile.length > 0 && Math.random() > 0.6;
+  // Check if this bot has already been checked for winning this turn
+  const botKey = `${bot.id}-${bot.hand.length}`;
+  if (botWinChecks[botKey]) {
+    // Use cached result
+    return botWinChecks[botKey];
+  }
   
-  // Simple bot logic for discarding lowest value non-joker card
-  const nonJokerCards = bot.hand.filter(card => 
-    !jokers.alternateColorJokers.some(j => j.rank === card.rank && j.suit === card.suit) &&
-    !jokers.oneUpJokers.some(j => j.rank === card.rank && j.suit === card.suit)
-  );
-  
-  const cardToDiscard = nonJokerCards.length > 0 ? 
-    nonJokerCards.reduce((lowest, card) => 
-      getCardValue(card.rank) < getCardValue(lowest.rank) ? card : lowest
-    ) : bot.hand[0];
-  
-  return {
-    action: shouldTakeDiscard ? 'takeDiscard' : 'drawFromPile',
-    discardCard: cardToDiscard
+  // Smart bot logic - check if bot can win using efficient analysis
+  const canBotWin = () => {
+    if (bot.hand.length !== 13) return { canWin: false, takeDiscard: false };
+    
+    // Try with each card from discard pile or draw pile
+    const testHand = [...bot.hand];
+    if (discardPile.length > 0) {
+      testHand.push(discardPile[discardPile.length - 1]);
+      const result = findWinningCombination(testHand, jokers);
+      if (result.valid) return { canWin: true, takeDiscard: true, arrangedHand: result.arrangedHand };
+    }
+    
+    // For draw pile, use a simpler check to avoid performance issues
+    // Only do deep analysis if we have a good chance of winning
+    const quickCheck = checkWinningHand([...testHand, testHand[0]], jokers);
+    if (quickCheck.valid) {
+      // Only do deep analysis if quick check passes
+      const result = findWinningCombination([...testHand, testHand[0]], jokers);
+      if (result.valid) return { canWin: true, takeDiscard: false, arrangedHand: result.arrangedHand };
+    }
+    
+    return { canWin: false, takeDiscard: false };
   };
+
+  // Check if bot can win
+  const winCheck = canBotWin();
+  if (winCheck.canWin) {
+    const result = {
+      action: winCheck.takeDiscard ? 'takeDiscard' : 'drawFromPile',
+      discardCard: findWorstCard(bot.hand, jokers),
+      canDeclare: true,
+      arrangedHand: winCheck.arrangedHand
+    };
+    // Cache the result for this bot's turn
+    gameState.botWinChecks[botKey] = result;
+    return result;
+  }
+
+  // If can't win, make strategic move
+  const discardUseful = analyzeDiscardPile(bot.hand, discardPile, jokers);
+  
+  let result;
+  if (discardUseful && discardPile.length > 0) {
+    // Take from discard pile
+    const cardToDiscard = findWorstCard(bot.hand, jokers);
+    result = {
+      action: 'takeDiscard',
+      discardCard: cardToDiscard
+    };
+  } else {
+    // Draw from pile and discard worst card
+    const cardToDiscard = findWorstCard(bot.hand, jokers);
+    result = {
+      action: 'drawFromPile',
+      discardCard: cardToDiscard
+    };
+  }
+  
+  // Cache the result for this bot's turn
+  gameState.botWinChecks[botKey] = result;
+  return result;
+};
+
+// Helper function to analyze if discard pile card is useful
+const analyzeDiscardPile = (hand, discardPile, jokers) => {
+  if (discardPile.length === 0) return false;
+  
+  const topCard = discardPile[discardPile.length - 1];
+  
+  // Check if card helps form runs or sets
+  return hand.some(card => {
+    // Check for potential runs (consecutive ranks, same suit)
+    if (card.suit === topCard.suit) {
+      const cardValue = getCardValue(card.rank);
+      const topValue = getCardValue(topCard.rank);
+      return Math.abs(cardValue - topValue) <= 2;
+    }
+    
+    // Check for potential sets (same rank)
+    return card.rank === topCard.rank;
+  });
+};
+
+// Helper function to find worst card to discard
+const findWorstCard = (hand, jokers) => {
+  // Never discard jokers
+  const nonJokerCards = hand.filter(card => !isJoker(card, jokers));
+  
+  if (nonJokerCards.length === 0) return hand[0];
+  
+  // Score each card based on potential usefulness
+  let worstCard = nonJokerCards[0];
+  let worstScore = scoreCardUsefulness(worstCard, hand, jokers);
+  
+  for (const card of nonJokerCards) {
+    const score = scoreCardUsefulness(card, hand, jokers);
+    if (score < worstScore) {
+      worstScore = score;
+      worstCard = card;
+    }
+  }
+  
+  return worstCard;
+};
+
+// Score how useful a card is (higher = more useful)
+const scoreCardUsefulness = (card, hand, jokers) => {
+  let score = 0;
+  
+  // Check potential runs with other cards
+  const suitCards = hand.filter(c => c.suit === card.suit && c.id !== card.id);
+  const cardValue = getCardValue(card.rank);
+  
+  for (const suitCard of suitCards) {
+    const otherValue = getCardValue(suitCard.rank);
+    const diff = Math.abs(cardValue - otherValue);
+    if (diff <= 2) score += (3 - diff); // Closer = better
+  }
+  
+  // Check potential sets
+  const sameRankCards = hand.filter(c => c.rank === card.rank && c.id !== card.id);
+  score += sameRankCards.length * 2;
+  
+  // High value cards are less useful if not in combinations
+  if (getCardValue(card.rank) >= 10) score -= 1;
+  
+  return score;
+};
+
+// Helper function to check if card is a joker
+const isJoker = (card, jokers) => {
+  if (!jokers || !card) return false;
+  return jokers.alternateColorJokers.some(j => j.rank === card.rank && j.suit === card.suit) ||
+         jokers.oneUpJokers.some(j => j.rank === card.rank && j.suit === card.suit);
 };
 
 // ========================================
@@ -475,11 +826,11 @@ const Card = ({
   const [isDragging, setIsDragging] = useState(false);
   
   const sizeClasses = {
-    small: 'w-8 h-11 md:w-12 md:h-16',
-    normal: 'w-10 h-14 md:w-16 md:h-22',
-    medium: 'w-12 h-16 md:w-18 md:h-24',
-    large: 'w-14 h-19 md:w-20 md:h-28',
-    hand: 'w-12 h-17 md:w-24 md:h-36' // Much smaller mobile hand cards
+    small: 'w-8 h-11 sm:w-9 sm:h-12 lg:w-12 lg:h-16 xl:w-14 xl:h-18',
+    normal: 'w-10 h-14 sm:w-11 sm:h-15 lg:w-16 lg:h-22 xl:w-18 xl:h-24',
+    medium: 'w-12 h-16 sm:w-13 sm:h-17 lg:w-18 lg:h-24 xl:w-20 xl:h-26',
+    large: 'w-14 h-19 sm:w-15 sm:h-20 lg:w-20 lg:h-28 xl:w-22 xl:h-30',
+    hand: 'w-6 h-8 sm:w-7 sm:h-10 lg:w-24 lg:h-36 xl:w-26 xl:h-38' // Mobile cards under 1024px, desktop 1024px+
   };
 
   const handleDragStart = (e) => {
@@ -499,7 +850,26 @@ const Card = ({
     return (
       <div 
         className={`${sizeClasses[size]} bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg border-2 border-blue-400 flex items-center justify-center cursor-pointer transform transition-all hover:scale-105 shadow-lg ${className}`}
-        style={style}
+        style={{
+          // FORCE mobile card sizing for face-down cards
+          ...(isMobileDevice() ? {
+            // Hand cards: Use responsive sizing
+            ...(size === 'hand' ? {
+              width: `${getResponsiveSizing().cardWidth}px`,
+              height: `${getResponsiveSizing().cardHeight}px`,
+              minWidth: `${getResponsiveSizing().cardWidth}px`,
+              minHeight: `${getResponsiveSizing().cardHeight}px`
+            } : 
+            // Deck/Pile cards: Use responsive deck sizing
+            (size === 'normal' ? {
+              width: `${getResponsiveSizing().deckWidth}px`,
+              height: `${getResponsiveSizing().deckHeight}px`,
+              minWidth: `${getResponsiveSizing().deckWidth}px`,
+              minHeight: `${getResponsiveSizing().deckHeight}px`
+            } : {}))
+          } : {}),
+          ...style
+        }}
       >
         <div className="text-white font-bold text-xs opacity-50">🎴</div>
       </div>
@@ -512,6 +882,9 @@ const Card = ({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onTouchStart={(e) => {
+        if (e.touches.length > 1) return; // Ignore multi-touch
+        e.preventDefault(); // Prevent double-tap zoom and other default behaviors
+        
         // For mobile: handle both drag start and click
         if (isDraggable) {
           setIsDragging(true);
@@ -524,6 +897,7 @@ const Card = ({
         }
       }}
       onTouchEnd={(e) => {
+        e.preventDefault(); // Prevent click events from firing
         if (isDraggable) {
           setIsDragging(false);
           onDragEnd?.(card);
@@ -536,7 +910,7 @@ const Card = ({
         }
       }}
       onClick={() => onClick?.(card)}
-      className={`${sizeClasses[size]} relative cursor-pointer transition-all duration-300 group touch-manipulation ${
+      className={`${sizeClasses[size]} relative cursor-pointer transition-all duration-300 group touch-manipulation select-none ${
         isDraggable ? 'hover:scale-105 hover:-translate-y-2' : ''
       } ${isSelected ? 'transform -translate-y-3 scale-105' : ''} ${
         isDragging ? 'opacity-70 scale-110 rotate-3' : ''
@@ -544,6 +918,27 @@ const Card = ({
       style={{
         zIndex: isSelected || isDragging ? 100 : 'auto',
         touchAction: isDraggable ? 'none' : 'auto',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        WebkitTouchCallout: 'none',
+        WebkitTapHighlightColor: 'transparent',
+        // FORCE sizing based on three device categories
+        ...(isMobileDevice() ? {
+          // Hand cards: Use responsive sizing function
+          ...(size === 'hand' ? {
+            width: `${getResponsiveSizing().cardWidth}px`,
+            height: `${getResponsiveSizing().cardHeight}px`,
+            minWidth: `${getResponsiveSizing().cardWidth}px`,
+            minHeight: `${getResponsiveSizing().cardHeight}px`
+          } : 
+          // Deck/Pile/Wildcard cards: Use responsive deck sizing
+          (size === 'normal' ? {
+            width: `${getResponsiveSizing().deckWidth}px`,
+            height: `${getResponsiveSizing().deckHeight}px`,
+            minWidth: `${getResponsiveSizing().deckWidth}px`,
+            minHeight: `${getResponsiveSizing().deckHeight}px`
+          } : {}))
+        } : {}),
         ...style
       }}
     >
@@ -556,7 +951,7 @@ const Card = ({
         <img 
           src={card.fileName} 
           alt={`${card.displayRank} of ${card.suit}`}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover border border-black"
           style={{
             objectPosition: ['jack', 'queen', 'king'].includes(card.rank) ? '00% 50%' : 'center'
           }}
@@ -606,12 +1001,93 @@ const Card = ({
 
 
 
+// Responsive sizing utility
+const getResponsiveSizing = () => {
+  const width = window.innerWidth;
+  
+  // DEBUG: Log device detection
+  
+  if (isSmallPhone()) {
+    // iPhone SE: INCREASE size of table, card, deck as requested
+    return { 
+      cardWidth: Math.round(64 * 0.85), // Increase card size for SE
+      cardHeight: Math.round(88 * 0.85), 
+      overlap: 16, 
+      padding: 12,
+      deckWidth: Math.round(40 * 1.3), // Increase deck size for SE
+      deckHeight: Math.round(56 * 1.3)
+    };
+  }
+  
+  if (isMediumPhone()) {
+    // iPhone XR/12 Pro: Good card size, REDUCE deck/wildcard/discard pile/profile/image/coins
+    return { 
+      cardWidth: 62,
+      cardHeight: 86,
+      overlap: 20,
+      padding: 5,
+      deckWidth: Math.round(40 * 1.3), // Reduce deck/pile more for XR
+      deckHeight: Math.round(56 * 1.3)
+    };
+  }
+  
+  if (isTablet()) {
+    // iPad: Use bigger card sizes but keep mobile functionality
+    return {
+      cardWidth: 80, // Bigger than mobile (62-64) but not too big
+      cardHeight: 112, // Bigger than mobile (86-88) but not too big
+      overlap: 20, // Slightly more overlap for bigger cards
+      padding: 6, // More padding for tablet
+      deckWidth: 100, // Bigger deck size for tablet
+      deckHeight: 140
+    };
+  }
+  
+  // Desktop: No changes
+  return {
+    cardWidth: 64,
+    cardHeight: 88,
+    overlap: 22,
+    padding: 6,
+    deckWidth: 96,
+    deckHeight: 144
+  };
+};
+
+// Four distinct screen size detection functions
+const isSmallPhone = () => {
+  const width = window.innerWidth;
+  return width < 780; // iPhone SE, small phones
+};
+
+const isMediumPhone = () => {
+  const width = window.innerWidth;
+  return width >= 780 && width < 1024; // iPhone XR, iPhone 12 Pro, etc.
+};
+
+const isTablet = () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  // iPad detection: typically 768px+ width or specific iPad dimensions
+  return (width >= 768 && width < 1026) || (width >= 1024 && height >= 768 && width < 1200);
+};
+
+const isDesktop = () => {
+  const width = window.innerWidth;
+  return width >= 1200; // Desktop, laptop
+};
+
+// Helper function for all mobile devices (not desktop/tablet)
+const isMobileDevice = () => {
+  return isSmallPhone() || isMediumPhone() || isTablet();
+};
+
 // Enhanced Player Avatar Component (Outside Green Table)
 const PlayerAvatar = ({ player, isActive, position, timeRemaining }) => {
   const positionClasses = {
-    left: 'absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-50',
-    top: 'absolute top-2 md:top-4 left-1/2 transform -translate-x-1/2 z-50',
-    right: 'absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 z-50'
+    left: 'absolute left-2 sm:left-3 md:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 z-50',
+    top: 'absolute top-2 sm:top-3 md:top-4 lg:top-6 left-1/2 transform -translate-x-1/2 z-50',
+    right: 'absolute right-2 sm:right-3 md:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 z-50'
   };
 
   const formatChips = (amount) => {
@@ -626,7 +1102,11 @@ const PlayerAvatar = ({ player, isActive, position, timeRemaining }) => {
     <div className={positionClasses[player.position]}>
       <div className={`flex flex-col items-center space-y-0.5 md:space-y-2 ${isActive ? 'scale-105' : ''}`}>
         {/* Profile - Mobile Responsive */}
-        <div className={`w-8 h-8 md:w-16 md:h-16 rounded-full border-2 md:border-4 overflow-hidden shadow-lg transition-all duration-300 ${
+        <div className={`${
+          isSmallPhone() ? 'w-10 h-10' : 
+          isMediumPhone() ? 'w-8 h-8' : 
+          'w-16 h-16'
+        } rounded-full border-2 overflow-hidden shadow-lg transition-all duration-300 ${
           isActive ? 'border-yellow-400 shadow-yellow-400/50' : 'border-white/30'
         }`}>
           <img 
@@ -663,13 +1143,21 @@ const PlayerAvatar = ({ player, isActive, position, timeRemaining }) => {
               />
             </svg>
           )}
-          <div className="bg-black/70 backdrop-blur-sm text-white font-semibold text-xs px-1 md:px-3 py-0.5 md:py-1 rounded border border-white/20 relative z-10">
+          <div className={`bg-black/70 backdrop-blur-sm text-white font-semibold px-1 py-0.5 rounded border border-white/20 relative z-10 ${
+            isSmallPhone() ? 'text-sm px-2 py-1' : 
+            isMediumPhone() ? 'text-xs px-1 py-0.5' : 
+            'text-sm px-3 py-1'
+          }`}>
             {player.name}
           </div>
         </div>
         
         {/* Chips - Mobile Responsive */}
-        <div className="bg-green-600 text-white px-1 md:px-3 py-0.5 md:py-1 rounded-full text-xs font-medium">
+        <div className={`bg-green-600 text-white rounded-full font-medium ${
+          isSmallPhone() ? 'text-sm px-2 py-1' : 
+          isMediumPhone() ? 'text-xs px-1 py-0.5' : 
+          'text-sm px-3 py-1'
+        }`}>
           💰 {formatChips(player.chips || 0)}
         </div>
         
@@ -689,7 +1177,7 @@ const PlayerAvatar = ({ player, isActive, position, timeRemaining }) => {
 // Game Table Component
 const GameTable = ({ children, className = "" }) => {
   return (
-    <div className={`relative w-[75%] h-[45%] md:w-[85%] md:h-[65%] ${className}`}>
+    <div className={`relative ${isSmallPhone() ? 'w-[75%] h-[45%]' : isMediumPhone() ? 'w-[80%] h-[40%]' : isTablet() ? 'w-[85%] h-[65%]' : 'w-[85%] h-[65%]'} ${className}`}>
       <div className="absolute inset-0 rounded-[40%] bg-gradient-to-br from-emerald-800 via-green-800 to-emerald-900 shadow-2xl">
         <div className="absolute inset-0 rounded-[40%] bg-gradient-to-br from-emerald-600/20 to-transparent"></div>
         <div className="absolute inset-0 rounded-[40%]" style={{
@@ -702,121 +1190,136 @@ const GameTable = ({ children, className = "" }) => {
   );
 };
 
-// Card Hand Component with Curved Layout and Drag-Drop
-const CardHand = ({ 
+// Desktop Card Visual Component
+const DesktopCard = ({ card, isSelected, isJoker, jokers, onDragStart, onDragEnd, onClick, style, isDraggable }) => {
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragStart = (e) => {
+    if (!isDraggable) return;
+    setIsDragging(true);
+    e.dataTransfer.setData('text/plain', JSON.stringify(card));
+    e.dataTransfer.effectAllowed = 'move';
+    onDragStart?.(card);
+  };
+
+  const handleDragEnd = (e) => {
+    setIsDragging(false);
+    onDragEnd?.(card);
+  };
+
+  return (
+    <div
+      draggable={isDraggable}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onClick={() => onClick?.(card)}
+      className={`w-24 h-36 relative cursor-pointer transition-all duration-300 group touch-manipulation select-none ${
+        isDraggable ? 'hover:scale-105 hover:-translate-y-2' : ''
+      } ${isSelected ? 'transform -translate-y-3 scale-105' : ''} ${
+        isDragging ? 'opacity-70 scale-110 rotate-3' : ''
+      }`}
+      style={{
+        zIndex: isSelected || isDragging ? 100 : 'auto',
+        touchAction: isDraggable ? 'none' : 'auto',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        WebkitTouchCallout: 'none',
+        WebkitTapHighlightColor: 'transparent',
+        ...style
+      }}
+    >
+      {/* Card Image */}
+      <div className={`w-full h-full rounded-lg overflow-hidden shadow-lg border-2 transition-all duration-300 ${
+        isSelected 
+          ? 'border-yellow-400 shadow-yellow-500/50 shadow-xl' 
+          : 'border-white/30 group-hover:border-white/60'
+      } ${isDragging ? 'border-green-400 shadow-green-500/50' : ''}`}>
+        <img 
+          src={card.fileName} 
+          alt={`${card.displayRank} of ${card.suit}`}
+          className="w-full h-full object-cover shadow-lg shadow-black/50"
+          style={{
+            objectPosition: ['jack', 'queen', 'king'].includes(card.rank) ? '00% 50%' : 'center'
+          }}
+          onError={(e) => {
+            // Fallback to text representation
+            e.target.style.display = 'none';
+            const fallback = e.target.nextSibling;
+            if (fallback) fallback.style.display = 'flex';
+          }}
+        />
+        
+        {/* Fallback card design */}
+        <div className="w-full h-full bg-white rounded-lg hidden flex-col justify-between p-2 relative">
+          <div className={`text-xs font-bold ${['hearts', 'diamonds'].includes(card.suit) ? 'text-red-600' : 'text-black'}`}>
+            <div>{card.displayRank}</div>
+            <div>{card.displaySuit}</div>
+          </div>
+          <div className={`text-2xl text-center ${['hearts', 'diamonds'].includes(card.suit) ? 'text-red-500' : 'text-black'}`}>
+            {card.displaySuit}
+          </div>
+          <div className={`text-xs font-bold transform rotate-180 self-end ${['hearts', 'diamonds'].includes(card.suit) ? 'text-red-600' : 'text-black'}`}>
+            <div>{card.displayRank}</div>
+            <div>{card.displaySuit}</div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Joker indicator on TOP side */}
+      {(isJoker || (jokers && checkIsJoker(card, jokers))) && (
+        <div className="absolute top-0 left-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-t-lg" style={{
+          width: 'calc(100% - 30px)' // Account for card overlap (30px)
+        }}></div>
+      )}
+      
+      {/* Selection glow */}
+      {isSelected && (
+        <div className="absolute inset-0 rounded-lg border-2 border-yellow-400 shadow-lg shadow-yellow-400/50 pointer-events-none"></div>
+      )}
+      
+      {/* Drag indicator */}
+      {isDraggable && !isDragging && (
+        <div className="absolute top-1 right-1 w-2 h-2 bg-green-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+      )}
+    </div>
+  );
+};
+
+// Desktop Card Hand Component
+const DesktopCardHand = ({ 
   cards, 
   selectedCards = [], 
   onCardSelect, 
-  isPlayable, 
   className = "",
   onCardReorder,
   jokers = null,
   addToLog = () => {},
-  canDeclare = false,
-  mobileDraggedCard = null,
-  setMobileDraggedCard = null
+  canDeclare = false
 }) => {
   const [draggedCard, setDraggedCard] = useState(null);
   const [dropIndex, setDropIndex] = useState(null);
   const [previewCards, setPreviewCards] = useState([...cards]);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [containerRef, setContainerRef] = useState(null);
-  const [touchStartPos, setTouchStartPos] = useState(null);
-  const [isDraggingTouch, setIsDraggingTouch] = useState(false);
-  const [touchDraggedCard, setTouchDraggedCard] = useState(null);
-  const [mobileDragData, setMobileDragData] = useState(null);
 
-  // Calculate curve rotation for natural card fan - less curvy
-  const calculateRotation = (index, totalCards) => {
-    if (totalCards === 1) return 0;
-    const middle = (totalCards - 1) / 2;
-    const position = index - middle;
-    return position * 2; // 2 degrees per position from center (less curvy)
-  };
-
-  const handleDragStart = (card) => {
-    console.log('Drag start', card.id);
+  const handleDesktopDragStart = (card) => {
+    console.log('Desktop drag start', card.id);
     setDraggedCard(card);
     setPreviewCards([...cards]);
   };
 
-  const handleDragEnd = () => {
+  const handleDesktopDragEnd = () => {
     setDraggedCard(null);
     setDropIndex(null);
     setPreviewCards([...cards]);
   };
 
-  const handleDragOver = (e, index) => {
+  const handleDesktopDragOver = (e) => {
     e.preventDefault();
-    if (draggedCard && dropIndex !== index) {
-      setDropIndex(index);
-      // Create preview of where card would be placed
-      const oldIndex = cards.findIndex(c => c.id === draggedCard.id);
-      if (oldIndex !== -1 && oldIndex !== index) {
-        const newPreview = [...cards];
-        newPreview.splice(oldIndex, 1);
-        newPreview.splice(index, 0, draggedCard);
-        setPreviewCards(newPreview);
-      }
-    }
-  };
-
-  const handleDrop = (e, index) => {
-    e.preventDefault();
-    if (draggedCard) {
-      const oldIndex = cards.findIndex(c => c.id === draggedCard.id);
-      if (oldIndex !== -1 && oldIndex !== index) {
-        const newCards = [...cards];
-        newCards.splice(oldIndex, 1);
-        newCards.splice(index, 0, draggedCard);
-        onCardReorder?.(newCards);
-        addToLog(`Card moved from position ${oldIndex + 1} to position ${index + 1}`);
-      }
-    }
-    setDraggedCard(null);
-    setDropIndex(null);
-    setPreviewCards([...cards]);
-  };
-
-  // Calculate drop zone positions based on separator lines
-  const getDropZonePosition = (index) => {
-    const baseXOffset = index * -30; // Same as card overlap
-    return baseXOffset + 66; // Match separator line position
-  };
-
-  // Calculate insertion position based on mouse position
-  const calculateInsertPosition = (mouseX, containerElement) => {
-    const containerRect = containerElement?.getBoundingClientRect();
-    if (!containerRect) return 0;
-    
-    const relativeX = mouseX - containerRect.left;
-    const cardWidth = 96; // Card width
-    const overlap = 30; // Overlap amount
-    const visibleCardWidth = cardWidth - overlap;
-    
-    // Calculate which position the mouse is closest to
-    let position = 0;
-    for (let i = 0; i <= cards.length; i++) {
-      const cardCenter = i * visibleCardWidth;
-      if (relativeX < cardCenter + visibleCardWidth / 2) {
-        position = i;
-        break;
-      }
-    }
-    
-    return Math.min(position, cards.length);
-  };
-
-  // Enhanced drag over with cursor-based positioning
-  const handleDragOverEnhanced = (e) => {
-    e.preventDefault();
-    setMousePosition({ x: e.clientX, y: e.clientY });
     
     if (draggedCard && e.currentTarget) {
       const rect = e.currentTarget.getBoundingClientRect();
       const relativeX = e.clientX - rect.left;
       
-      // Account for the padding offset
+      // Desktop-specific calculations
       const paddingOffset = Math.max(0, (cards.length - 1) * 15);
       const adjustedX = relativeX - paddingOffset;
       
@@ -836,8 +1339,6 @@ const CardHand = ({
       
       insertPosition = Math.min(insertPosition, cards.length);
       
-      console.log('Drag over', { insertPosition, dropIndex, draggedCard: draggedCard.id, adjustedX });
-      
       if (dropIndex !== insertPosition) {
         setDropIndex(insertPosition);
         const oldIndex = cards.findIndex(c => c.id === draggedCard.id);
@@ -851,194 +1352,69 @@ const CardHand = ({
     }
   };
 
-  // Enhanced touch-based drag and drop handlers
-  const handleTouchDragOver = (touchX, touchY) => {
-    if (touchDraggedCard && containerRef) {
-      const rect = containerRef.getBoundingClientRect();
-      const relativeX = touchX - rect.left;
-      
-      // Account for the padding offset
-      const paddingOffset = Math.max(0, (cards.length - 1) * (window.innerWidth < 768 ? 8 : 15));
-      const adjustedX = relativeX - paddingOffset;
-      
-      const cardWidth = window.innerWidth < 768 ? 48 : 96; // Mobile vs desktop card width
-      const overlap = window.innerWidth < 768 ? 18 : 30;
-      const visibleWidth = cardWidth - overlap;
-      
-      // Calculate position based on touch - allow any position like desktop
-      let insertPosition = 0;
-      for (let i = 0; i <= cards.length; i++) {
-        const cardCenter = i * visibleWidth;
-        if (adjustedX < cardCenter + visibleWidth / 2) {
-          insertPosition = i;
-          break;
-        }
-      }
-      
-      insertPosition = Math.min(insertPosition, cards.length);
-      
-      if (dropIndex !== insertPosition) {
-        setDropIndex(insertPosition);
-        const oldIndex = cards.findIndex(c => c.id === touchDraggedCard.id);
-        if (oldIndex !== -1 && oldIndex !== insertPosition) {
-          const newPreview = [...cards];
-          newPreview.splice(oldIndex, 1);
-          newPreview.splice(insertPosition, 0, touchDraggedCard);
-          setPreviewCards(newPreview);
-          
-          // Don't immediately update cards on mobile - let it preview like desktop
-          // The actual reorder will happen on touchEnd
-        }
-      }
-    }
-  };
-
-  const handleTouchStart = (card, e) => {
-    if (onCardReorder) {
-      const touch = e.touches[0];
-      setTouchStartPos({ x: touch.clientX, y: touch.clientY });
-      setTouchDraggedCard(card);
-      setIsDraggingTouch(false);
-      setMobileDragData(card);
-      
-      // Set initial dropIndex to current card position (like desktop)
-      const currentIndex = cards.findIndex(c => c.id === card.id);
-      setDropIndex(currentIndex);
-      
-      // Set global mobile drag state
-      if (setMobileDraggedCard) {
-        setMobileDraggedCard(card);
-      }
-      // Prevent context menu on long press
-      e.preventDefault();
-    }
-  };
-
-  const handleTouchMove = (e) => {
-    if (touchDraggedCard && touchStartPos) {
-      const touch = e.touches[0];
-      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
-      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
-      
-      // Always call handleTouchDragOver to set dropIndex, even for tiny movements
-      handleTouchDragOver(touch.clientX, touch.clientY);
-      
-      // Start visual dragging if moved more than 2px
-      if (deltaX > 2 || deltaY > 2) {
-        e.preventDefault();
-        setIsDraggingTouch(true);
-      }
-    }
-  };
-
-  const handleTouchEnd = (e) => {
-    // Mobile touch end should work like desktop drop - check touchDraggedCard and dropIndex
-    if (touchDraggedCard && dropIndex !== null) {
-      const oldIndex = cards.findIndex(c => c.id === touchDraggedCard.id);
+  const handleDesktopDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (draggedCard && dropIndex !== null) {
+      const oldIndex = cards.findIndex(c => c.id === draggedCard.id);
       
       if (oldIndex !== -1 && oldIndex !== dropIndex) {
         const newCards = [...cards];
         newCards.splice(oldIndex, 1);
-        newCards.splice(dropIndex, 0, touchDraggedCard);
+        newCards.splice(dropIndex, 0, draggedCard);
         onCardReorder?.(newCards);
         addToLog(`Card moved from position ${oldIndex + 1} to position ${dropIndex + 1}`);
       }
     }
-    
-    // Reset touch drag state
-    setTouchDraggedCard(null);
-    setTouchStartPos(null);
-    setIsDraggingTouch(false);
+    setDraggedCard(null);
     setDropIndex(null);
     setPreviewCards([...cards]);
-    setMobileDragData(null);
-    // Clear global mobile drag state
-    if (setMobileDraggedCard) {
-      setMobileDraggedCard(null);
-    }
   };
 
+  const cardsToRender = draggedCard ? previewCards : cards;
+
   return (
-    <div className={`relative flex justify-center items-end ${className}`}>
+    <div className={`relative flex justify-center items-end px-4 ${className}`}>
       <div 
-        ref={setContainerRef}
         className="relative flex justify-center" 
         style={{ 
-          paddingLeft: `${Math.max(0, (cards.length - 1) * (window.innerWidth < 768 ? 8 : 15))}px`,
-          touchAction: 'none' // Prevent default touch behaviors
+          paddingLeft: `${Math.max(0, (cards.length - 1) * 15)}px`,
         }}
-        onDragOver={(e) => handleDragOverEnhanced(e)}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onDrop={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log('Drop event triggered', { draggedCard: draggedCard?.id, dropIndex });
-          
-          if (draggedCard && dropIndex !== null) {
-            const oldIndex = cards.findIndex(c => c.id === draggedCard.id);
-            console.log('Card indices', { oldIndex, dropIndex });
-            
-            if (oldIndex !== -1 && oldIndex !== dropIndex) {
-              const newCards = [...cards];
-              newCards.splice(oldIndex, 1);
-              newCards.splice(dropIndex, 0, draggedCard);
-              console.log('Reordering cards', newCards.length);
-              onCardReorder?.(newCards);
-              addToLog(`Card moved from position ${oldIndex + 1} to position ${dropIndex + 1}`);
-            }
-          }
-          setDraggedCard(null);
-          setDropIndex(null);
-          setPreviewCards([...cards]);
-        }}
+        onDragOver={handleDesktopDragOver}
+        onDrop={handleDesktopDrop}
       >
-        {(draggedCard || touchDraggedCard ? previewCards : cards).map((card, index) => {
-          const rotation = calculateRotation(index, (draggedCard || touchDraggedCard ? previewCards : cards).length);
-          const xOffset = index * (window.innerWidth < 768 ? -18 : -30); // Responsive overlap amount
-          const yOffset = Math.abs(rotation) * 2; // Slight curve effect
-          const isLastCard = index === (draggedCard || touchDraggedCard ? previewCards : cards).length - 1;
+        {cardsToRender.map((card, index) => {
+          const xOffset = index * (-30); // Desktop overlap amount
+          const isLastCard = index === cardsToRender.length - 1;
           const isDiscardCandidate = isLastCard && cards.length === 14 && canDeclare;
-          const isDraggedCard = draggedCard?.id === card.id || touchDraggedCard?.id === card.id;
+          const isDraggedCard = draggedCard?.id === card.id;
           
           return (
             <div 
               key={`${card.id}-${index}`} 
               className="relative"
-              onTouchStart={(e) => handleTouchStart(card, e)}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
             >
-              <Card
+              <DesktopCard
                 card={card}
                 isSelected={selectedCards.includes(card.id)}
                 isJoker={false}
                 jokers={jokers}
-                size="hand"
-                isDraggable={onCardReorder !== null} // Only draggable if rearrangement is allowed
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
+                isDraggable={onCardReorder !== null}
+                onDragStart={handleDesktopDragStart}
+                onDragEnd={handleDesktopDragEnd}
                 onClick={(card) => {
-                  // Disable card selection via clicking - only allow drag and drop
-                  // Only select if not dragging and not in mobile mode
-                  if (!isDraggingTouch && !draggedCard && window.innerWidth >= 768) {
+                  if (!draggedCard) {
                     onCardSelect?.(card);
                   }
                 }}
                 style={{
-                  transform: `
-                    translateX(${xOffset}px) 
-                    ${selectedCards.includes(card.id) ? 'translateY(-15px) scale(1.05)' : ''}
-                    ${isDiscardCandidate ? 'translateY(-5px)' : ''}
-                    ${isDraggedCard && isDraggingTouch ? 'scale(1.1) rotate(3deg)' : ''}
-                    ${window.innerWidth < 768 && isDraggedCard ? 'translateY(-10px)' : ''}
-                  `,
+                  transform: `translateX(${xOffset}px) ${selectedCards.includes(card.id) ? 'translateY(-15px) scale(1.05)' : ''} ${isDiscardCandidate ? 'translateY(-5px)' : ''}`,
                   zIndex: selectedCards.includes(card.id) ? 100 + index : 
                           isDraggedCard ? 200 + index : 50 + index,
-                  transition: isDraggedCard ? 'none' : (window.innerWidth < 768 ? 'all 0.15s ease-out' : 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'),
-                  opacity: isDraggedCard ? (window.innerWidth < 768 ? 1 : 0.5) : 1,
-                  filter: isDraggedCard ? (window.innerWidth < 768 ? 'none' : 'blur(0.5px)') : 'none',
-                  touchAction: 'none' // Prevent scrolling when touching cards
+                  transition: isDraggedCard ? 'none' : 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  opacity: isDraggedCard ? 0.5 : 1,
+                  filter: isDraggedCard ? 'blur(0.5px)' : 'none'
                 }}
               />
               
@@ -1048,31 +1424,17 @@ const CardHand = ({
                   !
                 </div>
               )}
-              
-
-              
-              {/* Dark separator line after each card - Hidden on mobile */}
-              {index < cards.length - 1 && window.innerWidth >= 768 && (
-                <div 
-                  className="absolute top-0 bottom-0 w-px bg-black shadow-sm"
-                  style={{
-                    left: `${xOffset + 66}px`, // Position more to the left in the overlap area
-                    zIndex: 60 + index, // Higher z-index to appear above cards
-                    height: '144px' // Match card height (36 * 4 = 4 = 144px)
-                  }}
-                />
-              )}
             </div>
           );
         })}
         
         {/* Visual indicator for drop position */}
-        {(draggedCard || touchDraggedCard) && dropIndex !== null && (
+        {draggedCard && dropIndex !== null && (
           <div 
             className="absolute top-0 bottom-0 w-2 bg-yellow-400 z-50 rounded"
             style={{
-              left: `${dropIndex * (window.innerWidth < 768 ? 30 : 66) - (window.innerWidth < 768 ? 15 : 33) + Math.max(0, (cards.length - 1) * (window.innerWidth < 768 ? 8 : 15))}px`, // Responsive positioning
-              height: window.innerWidth < 768 ? '68px' : '144px', // Responsive height
+              left: `${dropIndex * 66 - 15 + Math.max(0, (cards.length - 1) * 15)}px`,
+              height: `88px`,
               boxShadow: '0 0 8px rgba(250, 204, 21, 0.8)'
             }}
           />
@@ -1081,6 +1443,608 @@ const CardHand = ({
     </div>
   );
 };
+
+// Mobile Card Visual Component
+const MobileCard = ({ card, isSelected, isJoker, jokers, onClick, style }) => {
+  const sizing = getResponsiveSizing();
+  
+  return (
+    <div
+      onClick={() => onClick?.(card)}
+      className="relative cursor-pointer transition-all duration-300 group touch-manipulation select-none"
+      style={{
+        zIndex: isSelected ? 100 : 'auto',
+        touchAction: 'none',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        WebkitTouchCallout: 'none',
+        WebkitTapHighlightColor: 'transparent',
+        width: `${sizing.cardWidth}px`,
+        height: `${sizing.cardHeight}px`,
+        minWidth: `${sizing.cardWidth}px`,
+        minHeight: `${sizing.cardHeight}px`,
+        ...style
+      }}
+    >
+      {/* Card Image */}
+      <div className={`w-full h-full rounded-lg overflow-hidden shadow-lg border-2 transition-all duration-300 ${
+        isSelected 
+          ? 'border-orange-400 shadow-orange-500/50 shadow-xl' 
+          : 'border-white/30 group-hover:border-white/60'
+      }`}>
+        <img 
+          src={card.fileName} 
+          alt={`${card.displayRank} of ${card.suit}`}
+          className="w-full h-full object-cover shadow-lg shadow-black/50"
+          style={{
+            objectPosition: ['jack', 'queen', 'king'].includes(card.rank) ? '00% 50%' : 'center'
+          }}
+          onError={(e) => {
+            // Fallback to text representation
+            e.target.style.display = 'none';
+            const fallback = e.target.nextSibling;
+            if (fallback) fallback.style.display = 'flex';
+          }}
+        />
+        
+        {/* Fallback card design */}
+        <div className="w-full h-full bg-white rounded-lg hidden flex-col justify-between p-1 relative">
+          <div className={`text-xs font-bold ${['hearts', 'diamonds'].includes(card.suit) ? 'text-red-600' : 'text-black'}`}>
+            <div>{card.displayRank}</div>
+            <div>{card.displaySuit}</div>
+          </div>
+          <div className={`text-lg text-center ${['hearts', 'diamonds'].includes(card.suit) ? 'text-red-500' : 'text-black'}`}>
+            {card.displaySuit}
+          </div>
+          <div className={`text-xs font-bold transform rotate-180 self-end ${['hearts', 'diamonds'].includes(card.suit) ? 'text-red-600' : 'text-black'}`}>
+            <div>{card.displayRank}</div>
+            <div>{card.displaySuit}</div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Joker indicator on TOP side - mobile version */}
+      {(isJoker || (jokers && checkIsJoker(card, jokers))) && (
+        <div className="absolute top-0 left-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-t-lg" style={{
+          width: `calc(100% - ${sizing.overlap}px)` // Account for mobile card overlap
+        }}></div>
+      )}
+      
+      {/* Selection glow - mobile version */}
+      {isSelected && (
+        <div className="absolute inset-0 rounded-lg border-2 border-orange-400 shadow-lg shadow-orange-400/50 pointer-events-none"></div>
+      )}
+      
+      {/* Mobile-specific touch feedback */}
+      <div className="absolute inset-0 bg-blue-100 opacity-0 rounded-lg pointer-events-none transition-opacity duration-150 active:opacity-30"></div>
+    </div>
+  );
+};
+
+// Mobile Card Hand Component
+const MobileCardHand = ({ 
+  cards, 
+  selectedCards = [], 
+  onCardSelect, 
+  className = "",
+  onCardReorder,
+  jokers = null,
+  addToLog = () => {},
+  canDeclare = false,
+  mobileDraggedCard = null,
+  setMobileDraggedCard = null,
+  onDiscardCard = null
+}) => {
+  const [draggedCard, setDraggedCard] = useState(null);
+  const [dropIndex, setDropIndex] = useState(null);
+  const [previewCards, setPreviewCards] = useState([...cards]);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [containerRef, setContainerRef] = useState(null);
+  const [touchStartPos, setTouchStartPos] = useState(null);
+  const [isDraggingTouch, setIsDraggingTouch] = useState(false);
+  const [touchDraggedCard, setTouchDraggedCard] = useState(null);
+  const [mobileDragData, setMobileDragData] = useState(null);
+  const [lastTapTime, setLastTapTime] = useState(0);
+  const [tappedCard, setTappedCard] = useState(null);
+
+  // Attach touchmove manually to prevent passive listener warning
+  useEffect(() => {
+    if (!containerRef) return;
+
+    const el = containerRef;
+    const handleMove = (e) => handleTouchMove(e);
+
+    el.addEventListener("touchmove", handleMove, { passive: false });
+
+    return () => {
+      el.removeEventListener("touchmove", handleMove);
+    };
+  }, [containerRef, touchDraggedCard, touchStartPos]);
+
+  // Create floating card for free screen dragging
+  const createFloatingCard = (card, startX, startY) => {
+    // Remove any existing floating card
+    const existingFloatingCard = document.querySelector('[data-floating-card="true"]');
+    if (existingFloatingCard) {
+      existingFloatingCard.remove();
+    }
+
+    // Create floating card element with proper card proportions
+    const floatingCard = document.createElement('div');
+    floatingCard.setAttribute('data-floating-card', 'true');
+    floatingCard.style.position = 'fixed';
+    floatingCard.style.left = `${startX - 36}px`; // Center better on finger
+    floatingCard.style.top = `${startY - 54}px`; // Adjust for taller card
+    floatingCard.style.width = '72px'; // Proper card width
+    floatingCard.style.height = '108px'; // Proper card height (3:2 ratio)
+    floatingCard.style.zIndex = '9999';
+    floatingCard.style.pointerEvents = 'none';
+    floatingCard.style.display = 'none'; // Initially hidden
+    floatingCard.style.transition = 'none';
+    floatingCard.style.transform = 'scale(1.0) rotate(5deg)'; // Reduce scale since card is bigger
+    floatingCard.style.filter = 'drop-shadow(0 8px 16px rgba(0,0,0,0.4))';
+    floatingCard.style.opacity = '0.9';
+
+    // Create card content with actual card image
+    floatingCard.innerHTML = `
+      <div class="w-full h-full relative">
+        <img 
+          src="${card.fileName}" 
+          alt="${card.displayRank} of ${card.suit}" 
+          class="w-full h-full object-cover rounded-lg shadow-lg"
+          style="image-rendering: crisp-edges;"
+        />
+      </div>
+    `;
+
+    document.body.appendChild(floatingCard);
+  };
+
+  const handleTouchStart = (card, e) => {
+    console.log('handleTouchStart called with card:', card?.displayRank + card?.displaySuit);
+    // Don't call preventDefault here to avoid passive listener warning
+    if (e.touches.length > 1) return;
+
+    const touch = e.touches[0];
+    setTouchStartPos({ x: touch.clientX, y: touch.clientY });
+    setTouchDraggedCard(card);
+    setIsDraggingTouch(false);
+    setMobileDragData(card);
+
+    const currentIndex = cards.findIndex((c) => c.id === card.id);
+    console.log('Card index in cards array:', currentIndex);
+    setDropIndex(currentIndex);
+
+    if (setMobileDraggedCard) {
+      setMobileDraggedCard(card);
+    }
+
+    // Create floating card element for free screen dragging
+    createFloatingCard(card, touch.clientX, touch.clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    if (touchDraggedCard && touchStartPos && e.touches.length === 1) {
+      const touch = e.touches[0];
+      const deltaX = Math.abs(touch.clientX - touchStartPos.x);
+      const deltaY = Math.abs(touch.clientY - touchStartPos.y);
+      
+      // Only prevent default if we're actually dragging
+      if (deltaX > 2 || deltaY > 2) {
+        e.preventDefault();
+      }
+
+      // Start dragging after minimal movement
+      if (deltaX > 2 || deltaY > 2) {
+        setIsDraggingTouch(true);
+        
+        // Check if touch is over drop zone
+        const dropZone = document.querySelector('[data-drop-zone="true"]');
+        if (dropZone) {
+          const rect = dropZone.getBoundingClientRect();
+          const isOverDropZone = 
+            touch.clientX >= rect.left &&
+            touch.clientX <= rect.right &&
+            touch.clientY >= rect.top &&
+            touch.clientY <= rect.bottom;
+          
+          // Add visual feedback for drop zone
+          if (isOverDropZone) {
+            dropZone.style.backgroundColor = 'rgba(34, 197, 94, 0.3)';
+            dropZone.style.borderColor = 'rgb(34, 197, 94)';
+          } else {
+            dropZone.style.backgroundColor = '';
+            dropZone.style.borderColor = '';
+          }
+        }
+
+        // Update floating card position to follow finger
+        const floatingCard = document.querySelector('[data-floating-card="true"]');
+        if (floatingCard) {
+          floatingCard.style.left = `${touch.clientX - 36}px`; // Center card on finger
+          floatingCard.style.top = `${touch.clientY - 54}px`; // Adjust for taller card
+          floatingCard.style.display = 'block';
+        }
+      }
+
+      // Only enable hand reordering if NOT over drop zone
+      const dropZone = document.querySelector('[data-drop-zone="true"]');
+      if (dropZone) {
+        const rect = dropZone.getBoundingClientRect();
+        const isOverDropZone = 
+          touch.clientX >= rect.left &&
+          touch.clientX <= rect.right &&
+          touch.clientY >= rect.top &&
+          touch.clientY <= rect.bottom;
+        
+        // Only do hand reordering if NOT over drop zone
+        if (!isOverDropZone) {
+          handleTouchDragOver(touch.clientX, touch.clientY);
+        }
+      } else {
+        // No drop zone exists, so allow hand reordering
+        handleTouchDragOver(touch.clientX, touch.clientY);
+      }
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    // Don't call preventDefault to avoid passive listener warning
+    const now = Date.now();
+    const DEBOUNCE_TIME = 300; // 300ms debounce
+    
+    // Cleanup floating card
+    const floatingCard = document.querySelector('[data-floating-card="true"]');
+    if (floatingCard) {
+      floatingCard.remove();
+    }
+    
+    // Check if touch ended over drop zone
+    if (touchDraggedCard && isDraggingTouch && e.changedTouches.length > 0) {
+      const touch = e.changedTouches[0];
+      const dropZone = document.querySelector('[data-drop-zone="true"]');
+      
+      if (dropZone) {
+        const rect = dropZone.getBoundingClientRect();
+        const isOverDropZone = 
+          touch.clientX >= rect.left &&
+          touch.clientX <= rect.right &&
+          touch.clientY >= rect.top &&
+          touch.clientY <= rect.bottom;
+        
+        if (isOverDropZone) {
+          // Card dropped on drop zone - trigger discard immediately
+          const cardToDiscard = touchDraggedCard;
+          
+          // Clear drop zone visual feedback
+          dropZone.style.backgroundColor = '';
+          dropZone.style.borderColor = '';
+          
+          console.log(`Card ${touchDraggedCard.displayRank}${touchDraggedCard.displaySuit} dropped in drop zone`);
+          
+          // Cleanup and exit early
+          setTouchDraggedCard(null);
+          setTouchStartPos(null);
+          setIsDraggingTouch(false);
+          setDropIndex(null);
+          setMobileDragData(null);
+          if (setMobileDraggedCard) setMobileDraggedCard(null);
+          
+          // Call discardCard directly if we have the function
+          if (onDiscardCard && cardToDiscard) {
+            onDiscardCard(cardToDiscard);
+          }
+          return;
+        }
+        
+        // Clear drop zone visual feedback if not dropped there
+        dropZone.style.backgroundColor = '';
+        dropZone.style.borderColor = '';
+      }
+    }
+    
+    // Handle taps (no dragging movement) - for card selection
+    if (touchDraggedCard && !isDraggingTouch) {
+      // Prevent multiple taps - debounce card selection
+      if (now - lastTapTime > DEBOUNCE_TIME || tappedCard !== touchDraggedCard.id) {
+        onCardSelect?.(touchDraggedCard);
+        console.log(`Card tapped (no drag): ${touchDraggedCard.displayRank}${touchDraggedCard.displaySuit}`);
+        setLastTapTime(now);
+        setTappedCard(touchDraggedCard.id);
+      } else {
+        console.log(`Card tap ignored (debounced): ${touchDraggedCard.displayRank}${touchDraggedCard.displaySuit}`);
+      }
+    }
+
+    // Handle hand reordering logic for mobile (only if not dropped in drop zone)
+    if (touchDraggedCard && isDraggingTouch && dropIndex !== null && onCardReorder) {
+      // Check if we dropped in drop zone - if so, don't reorder
+      const dropZone = document.querySelector('[data-drop-zone="true"]');
+      let droppedInDropZone = false;
+      
+      if (dropZone && e.changedTouches.length > 0) {
+        const touch = e.changedTouches[0];
+        const rect = dropZone.getBoundingClientRect();
+        droppedInDropZone = 
+          touch.clientX >= rect.left &&
+          touch.clientX <= rect.right &&
+          touch.clientY >= rect.top &&
+          touch.clientY <= rect.bottom;
+      }
+      
+      // Only reorder if NOT dropped in drop zone
+      if (!droppedInDropZone) {
+        const oldIndex = cards.findIndex(c => c.id === touchDraggedCard.id);
+        
+        if (oldIndex !== -1 && oldIndex !== dropIndex) {
+          const newCards = [...cards];
+          newCards.splice(oldIndex, 1);
+          newCards.splice(dropIndex, 0, touchDraggedCard);
+          onCardReorder(newCards);
+          addToLog(`Card moved from position ${oldIndex + 1} to position ${dropIndex + 1}`);
+        }
+      }
+    }
+
+    setTouchDraggedCard(null);
+    setTouchStartPos(null);
+    setIsDraggingTouch(false);
+    setDropIndex(null);
+    setPreviewCards([...cards]);
+    setMobileDragData(null);
+    if (setMobileDraggedCard) setMobileDraggedCard(null);
+  };
+
+  const handleTouchDragOver = (touchX, touchY) => {
+    if (touchDraggedCard && containerRef) {
+      const rect = containerRef.getBoundingClientRect();
+      const relativeX = touchX - rect.left;
+
+      const sizing = getResponsiveSizing();
+      const paddingOffset = Math.max(0, (cards.length - 1) * sizing.padding);
+      const adjustedX = relativeX - paddingOffset;
+
+      const cardWidth = sizing.cardWidth;
+      const overlap = sizing.overlap;
+      const visibleWidth = cardWidth - overlap;
+
+      let insertPosition = 0;
+      for (let i = 0; i <= cards.length; i++) {
+        const cardCenter = i * visibleWidth;
+        if (adjustedX < cardCenter + visibleWidth / 2) {
+          insertPosition = i;
+          break;
+        }
+      }
+
+      insertPosition = Math.min(insertPosition, cards.length);
+
+      if (dropIndex !== insertPosition) {
+        setDropIndex(insertPosition);
+        const oldIndex = cards.findIndex((c) => c.id === touchDraggedCard.id);
+        if (oldIndex !== -1 && oldIndex !== insertPosition) {
+          const newPreview = [...cards];
+          newPreview.splice(oldIndex, 1);
+          newPreview.splice(insertPosition, 0, touchDraggedCard);
+          setPreviewCards(newPreview);
+        }
+      }
+    }
+  };
+
+  // Handle drag events for desktop (fallback)...
+  const handleDragStart = (card) => {
+    setDraggedCard(card);
+    setPreviewCards([...cards]);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedCard(null);
+    setDropIndex(null);
+    setPreviewCards([...cards]);
+  };
+
+  const handleDragOverEnhanced = (e) => {
+    e.preventDefault();
+    setMousePosition({ x: e.clientX, y: e.clientY });
+    if (draggedCard && e.currentTarget) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const relativeX = e.clientX - rect.left;
+      const sizing = getResponsiveSizing();
+      const cardWidth = sizing.cardWidth;
+      const overlap = sizing.overlap;
+      const visibleWidth = cardWidth - overlap;
+
+      let insertPosition = 0;
+      for (let i = 0; i <= cards.length; i++) {
+        const cardCenter = i * visibleWidth;
+        if (relativeX < cardCenter + visibleWidth / 2) {
+          insertPosition = i;
+          break;
+        }
+      }
+
+      insertPosition = Math.min(insertPosition, cards.length);
+
+      if (dropIndex !== insertPosition) {
+        setDropIndex(insertPosition);
+        const oldIndex = cards.findIndex((c) => c.id === draggedCard.id);
+        if (oldIndex !== -1 && oldIndex !== insertPosition) {
+          const newPreview = [...cards];
+          newPreview.splice(oldIndex, 1);
+          newPreview.splice(insertPosition, 0, draggedCard);
+          setPreviewCards(newPreview);
+        }
+      }
+    }
+  };
+
+  const cardsToRender = draggedCard || touchDraggedCard ? previewCards : cards;
+  
+  const screenWidth = window.innerWidth;
+  const isSmall = screenWidth < 780;
+  const basePadding = Math.max(0, (cards.length - 1) * getResponsiveSizing().padding);
+  const extraPadding = isSmall ? 5 : 20;
+  const totalPadding = basePadding + extraPadding;
+
+  return (
+    <div 
+      className={`relative flex justify-start items-end ${className}`}
+      style={{
+        marginLeft: isSmall ? '-80px' : '0', // Force left positioning with negative margin
+        width: isSmall ? 'calc(100% + 50px)' : '100%', // Compensate width
+      }}
+    >
+      <div
+        ref={setContainerRef}
+        className="relative flex justify-start"
+        style={{
+          paddingLeft: `${totalPadding}px`,
+          touchAction: "none",
+        }}
+        onDragOver={handleDragOverEnhanced}
+        onDrop={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (draggedCard && dropIndex !== null) {
+            const oldIndex = cards.findIndex((c) => c.id === draggedCard.id);
+            if (oldIndex !== -1 && oldIndex !== dropIndex) {
+              const newCards = [...cards];
+              newCards.splice(oldIndex, 1);
+              newCards.splice(dropIndex, 0, draggedCard);
+              onCardReorder?.(newCards);
+              addToLog(`Card moved from ${oldIndex + 1} to ${dropIndex + 1}`);
+            }
+          }
+          setDraggedCard(null);
+          setDropIndex(null);
+          setPreviewCards([...cards]);
+        }}
+      >
+        {cardsToRender.map((card, index) => {
+          const isDraggedCard = draggedCard?.id === card.id || touchDraggedCard?.id === card.id;
+          const sizing = getResponsiveSizing();
+          
+          // Calculate the touch zone width - adjust for small screens
+          const isLastCard = index === cardsToRender.length - 1;
+          const extraSpace = isSmallPhone() ? 10 : 20;
+          const touchZoneWidth = isLastCard ? sizing.cardWidth + extraSpace : sizing.cardWidth;
+
+          return (
+            <div 
+              key={card.id} 
+              className="relative"
+              style={{
+                width: `${touchZoneWidth}px`,
+                height: `${sizing.cardHeight}px`,
+                marginLeft: index === 0 ? '0' : `-${sizing.overlap}px`,
+                zIndex: isDraggedCard ? 200 + index : 50 + index,
+              }}
+              onTouchStart={(e) => {
+                console.log(`Mobile touch start - card ${index}: ${card.displayRank}${card.displaySuit}`);
+                handleTouchStart(card, e);
+              }}
+              onTouchEnd={handleTouchEnd}
+            >
+              <MobileCard
+                card={card}
+                isSelected={selectedCards.includes(card.id)}
+                isJoker={false}
+                jokers={jokers}
+                onClick={() => {
+                  if (!isDraggingTouch && !draggedCard) {
+                    onCardSelect?.(card);
+                  }
+                }}
+                style={{
+                  width: `${sizing.cardWidth}px`,
+                  height: `${sizing.cardHeight}px`,
+                  transform: `${
+                    selectedCards.includes(card.id)
+                      ? "translateY(-8px) scale(1.03)"
+                      : isDraggedCard && !isDraggingTouch
+                      ? "translateY(-6px) scale(1.05)"
+                      : ""
+                  }`,
+                  transition: isDraggedCard ? "none" : "all 0.2s ease",
+                  opacity: isDraggedCard && isDraggingTouch ? 0.1 : 1, // Make original card nearly invisible during drag
+                  filter: isDraggedCard && isDraggingTouch ? "blur(2px)" : "none",
+                  touchAction: "none",
+                  pointerEvents: "none", // Prevent card from capturing touch events
+                }}
+              />
+            </div>
+          );
+        })}
+
+        {(draggedCard || touchDraggedCard) && dropIndex !== null && (
+          <div
+            className="absolute top-0 bottom-0 w-2 bg-yellow-400 z-50 rounded"
+            style={{
+              left: `${
+                dropIndex * (getResponsiveSizing().cardWidth - getResponsiveSizing().overlap) -
+                getResponsiveSizing().overlap / 2 +
+                Math.max(0, (cards.length - 1) * getResponsiveSizing().padding)
+              }px`,
+              height: `${getResponsiveSizing().cardHeight}px`,
+              boxShadow: "0 0 8px rgba(250, 204, 21, 0.8)",
+            }}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Main CardHand Component that chooses between desktop and mobile
+const CardHand = ({ 
+  cards, 
+  selectedCards = [], 
+  onCardSelect, 
+  isPlayable, 
+  className = "",
+  onCardReorder,
+  jokers = null,
+  addToLog = () => {},
+  canDeclare = false,
+  mobileDraggedCard = null,
+  setMobileDraggedCard = null,
+  onDiscardCard = null
+}) => {
+  // Choose the appropriate component based on device
+  if (isMobileDevice()) {
+    return (
+      <MobileCardHand
+        cards={cards}
+        selectedCards={selectedCards}
+        onCardSelect={onCardSelect}
+        className={className}
+        onCardReorder={onCardReorder}
+        jokers={jokers}
+        addToLog={addToLog}
+        canDeclare={canDeclare}
+        mobileDraggedCard={mobileDraggedCard}
+        setMobileDraggedCard={setMobileDraggedCard}
+        onDiscardCard={onDiscardCard}
+      />
+    );
+  } else {
+    return (
+      <DesktopCardHand
+        cards={cards}
+        selectedCards={selectedCards}
+        onCardSelect={onCardSelect}
+        className={className}
+        onCardReorder={onCardReorder}
+        jokers={jokers}
+        addToLog={addToLog}
+        canDeclare={canDeclare}
+      />
+    );
+  }
+};
+
+        
 
 // Shrinkable Game Log Component
 const GameLog = ({ logs, className = "" }) => {
@@ -1120,6 +2084,53 @@ const GameLog = ({ logs, className = "" }) => {
 };
 
 
+
+// Winning Hand Display Component
+const WinningHandDisplay = ({ winningHand, arrangedHand, jokers }) => {
+  if (!winningHand || !arrangedHand) return null;
+
+  const renderCard = (card, index) => (
+    <div key={`${card.id}-${index}`} className="relative">
+      <Card
+        card={card}
+        isJoker={checkIsJoker(card, jokers)}
+        jokers={jokers}
+        size="normal"
+        style={{
+          marginRight: '8px'
+        }}
+      />
+    </div>
+  );
+
+  const renderGroup = (groupName, cards, groupType) => (
+    <div key={groupName} className="mb-4">
+      <h4 className="text-sm font-bold text-white mb-2 capitalize">
+        {groupName}: {groupType}
+      </h4>
+      <div className="flex flex-wrap">
+        {cards.map((card, index) => renderCard(card, index))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-white">
+      <h3 className="text-xl font-bold mb-4 text-center">🏆 Winning Hand</h3>
+      <div className="space-y-4">
+        {Object.entries(winningHand).map(([groupName, cards]) => {
+          let groupType = 'Unknown';
+          if (isValidStraightRun(cards, jokers)) groupType = 'Straight Run';
+          else if (isValidTanala(cards, jokers)) groupType = 'Tanala';
+          else if (isValidRun(cards, jokers)) groupType = 'Run';
+          else if (isValidSet(cards, jokers)) groupType = 'Set';
+          
+          return renderGroup(groupName, cards, groupType);
+        })}
+      </div>
+    </div>
+  );
+};
 
 // Game Rules Popup Component
 const GameRulesPopup = ({ isOpen, onClose }) => {
@@ -1235,6 +2246,9 @@ const ModularCardGame = () => {
   const [showGameLog, setShowGameLog] = useState(false);
   const [declarationError, setDeclarationError] = useState('');
   const [mobileDraggedCard, setMobileDraggedCard] = useState(null);
+  const [winningHandData, setWinningHandData] = useState(null);
+  const [showContinueGame, setShowContinueGame] = useState(false);
+  const [gamePoints] = useState(100); // Points per game
 
   const [gameState, setGameState] = useState({
     players: [
@@ -1299,7 +2313,8 @@ const ModularCardGame = () => {
     winner: null,
     eliminationPhase: false,
     continuationOffers: [],
-    lastDrawnFromDiscard: false
+    lastDrawnFromDiscard: false,
+    botWinChecks: {} // Track which bots have been checked for winning combinations this turn
   });
 
   // Turn timer effect with auto-throw
@@ -1346,19 +2361,73 @@ const ModularCardGame = () => {
             currentPlayer.hand.push(drawnCard);
           }
           
-          // Discard card
+          // Check if bot can declare after drawing
+          if (move.canDeclare && currentPlayer.hand.length === 14) {
+            const validation = findWinningCombination(currentPlayer.hand, newState.jokers);
+            if (validation.valid) {
+              // Bot declares and wins!
+              addToLog(`${bot.name} declares Rummy and wins!`);
+              
+              // Auto-discard the last card when declaring
+              const lastCard = currentPlayer.hand[currentPlayer.hand.length - 1];
+              currentPlayer.hand = currentPlayer.hand.slice(0, -1);
+              newState.discardPile.push(lastCard);
+              addToLog(`Discarded ${lastCard.displayRank}${lastCard.displaySuit} during declaration`);
+              
+              // Calculate scores and end game
+              const updatedPlayers = newState.players.map(player => {
+                if (player.id === currentPlayerIndex) {
+                  return { ...player, score: 0 }; // Winner gets 0 points
+                } else {
+                  const handPoints = calculateHandPoints(player.hand, newState.jokers);
+                  return { ...player, score: player.score + handPoints };
+                }
+              });
+              
+              // Store enhanced game results with hand analysis
+              const gameResults = {
+                winner: bot.name,
+                scores: updatedPlayers.map(p => ({ 
+                  name: p.name, 
+                  score: p.score,
+                  handAnalysis: analyzeHandForDisplay(p.hand, newState.jokers)
+                })),
+                winningHand: validation.groupings,
+                arrangedWinningHand: validation.arrangedHand,
+                timestamp: Date.now()
+              };
+              
+              localStorage.setItem('rummyGameResults', JSON.stringify(gameResults));
+              
+              // Store winning hand data for display
+              setWinningHandData({
+                winningHand: validation.groupings,
+                arrangedHand: validation.arrangedHand,
+                jokers: newState.jokers
+              });
+              
+              // End game (winner gets 0 points and cannot be eliminated)
+              setGamePhase('gameOver');
+              setGameState(prev => ({ ...prev, players: updatedPlayers }));
+              return newState;
+            }
+          }
+          
+          // Regular discard
           currentPlayer.hand = currentPlayer.hand.filter(card => card.id !== cardToDiscard.id);
           newState.discardPile.push(cardToDiscard);
           
           return newState;
         });
         
-        addToLog(`${bot.name} drew a card and discarded ${cardToDiscard.displayRank}${cardToDiscard.displaySuit}`);
-        
-        // Move to next turn immediately
-        setTimeout(() => {
-          nextTurn();
-        }, 500);
+        if (!move.canDeclare) {
+          addToLog(`${bot.name} drew a card and discarded ${cardToDiscard.displayRank}${cardToDiscard.displaySuit}`);
+          
+          // Move to next turn immediately
+          setTimeout(() => {
+            nextTurn();
+          }, 500);
+        }
       }, Math.random() * 2000 + 1000);
       
       return () => clearTimeout(timer);
@@ -1372,11 +2441,37 @@ const ModularCardGame = () => {
   const initializeGame = useCallback(() => {
     // Create 3 decks as per rules
     const shuffledDeck = createDecks(3);
-    const players = gameState.players.map(player => ({
-      ...player,
-      hand: [],
-      score: 0
-    }));
+    
+    // Check if there's saved game data
+    const savedGameData = localStorage.getItem('rummyGameData');
+    let players;
+    
+    if (savedGameData) {
+      try {
+        const gameData = JSON.parse(savedGameData);
+        players = gameData.players.map(player => ({
+          ...player,
+          hand: [],
+          isEliminated: false // Reset elimination status
+        }));
+        console.log('Loaded saved game data with scores:', players.map(p => `${p.name}: ${p.score}`));
+      } catch (error) {
+        console.error('Error loading saved game data:', error);
+        players = gameState.players.map(player => ({
+          ...player,
+          hand: [],
+          score: 0, // Reset to 0 if loading fails
+          isEliminated: false
+        }));
+      }
+    } else {
+      players = gameState.players.map(player => ({
+        ...player,
+        hand: [],
+        score: 0, // Explicitly reset score to 0 for new game
+        isEliminated: false // Reset elimination status
+      }));
+    }
 
     const cardsPerPlayer = 13; // Always 13 cards for Rummy
     
@@ -1407,12 +2502,13 @@ const ModularCardGame = () => {
 
     setGameState(prev => ({
       ...prev,
-      players,
+      players: players.map(p => ({ ...p, score: 0, isEliminated: false })), // Force reset scores
       drawPile,
       discardPile,
       wildcard,
       jokers,
-      pot: prev.players.length * prev.selectedBet * 10
+      pot: prev.players.length * prev.selectedBet * 10,
+      botWinChecks: {} // Clear bot win checks for new game
     }));
 
     setGamePhase('playing');
@@ -1421,10 +2517,19 @@ const ModularCardGame = () => {
     setSelectedCards([]);
     setHasDrawnCard(false);
     setGameMessage('');
+    setWinningHandData(null);
+    
+    // Debug: Log initial scores
+    console.log('Game initialized with scores:', players.map(p => `${p.name}: ${p.score}`));
     
     addToLog(`Rummy game started! Wildcard: ${wildcard.displayRank}${wildcard.displaySuit}`);
     addToLog(`Jokers: Alternate color ${wildcard.rank}s and ${jokers.oneUpJokers[0].rank} of ${wildcard.suit}`);
     addToLog(`Remember: You must throw one card before your turn ends!`);
+    
+    // Clear saved game data if this is a fresh start
+    if (!savedGameData) {
+      localStorage.removeItem('rummyGameData');
+    }
     
   }, [gameType, gameState.selectedBet]);
 
@@ -1504,7 +2609,7 @@ const ModularCardGame = () => {
       });
       
       setSelectedCards([]);
-      setHasDrawnCard(false);
+      // Don't reset hasDrawnCard here - it should stay true until turn ends
       setGameMessage('');
       addToLog(`${gameState.players[currentPlayerIndex].name} discarded ${cardToDiscard.displayRank}${cardToDiscard.displaySuit}`);
       
@@ -1546,6 +2651,12 @@ const ModularCardGame = () => {
       setCurrentPlayerIndex(prev => (prev + 1) % gameState.players.length);
       setTurnTimeRemaining(TURN_DURATION);
       setHasDrawnCard(false);
+      
+      // Clear bot win checks for the new turn
+      setGameState(prev => ({
+        ...prev,
+        botWinChecks: {}
+      }));
       
       // Set initial message for player turn
       if ((currentPlayerIndex + 1) % gameState.players.length === 0) {
@@ -1746,7 +2857,6 @@ const ModularCardGame = () => {
   const canDeclare = () => {
     // Check if player has exactly 14 cards
     if (gameState.players[0].hand.length !== 14) {
-      console.log('Cannot declare: Player has', gameState.players[0].hand.length, 'cards, need 14');
       return false;
     }
     
@@ -1756,9 +2866,8 @@ const ModularCardGame = () => {
       return false;
     }
     
-    // Validate the hand using checkWinningHand
+    // Validate the hand using findWinningCombination
     const result = checkWinningHand(gameState.players[0].hand, gameState.jokers);
-    console.log('Declaration validation result:', result);
     
     return result.valid;
   };
@@ -1770,11 +2879,99 @@ const ModularCardGame = () => {
     console.log('Is player turn:', isPlayerTurn);
     console.log('Jokers:', gameState.jokers);
     
-    const validation = checkWinningHand(gameState.players[0].hand, gameState.jokers);
+    const validation = findWinningCombination(gameState.players[0].hand, gameState.jokers);
     console.log('Full validation result:', validation);
     
     const canDeclareResult = canDeclare();
     console.log('Can declare result:', canDeclareResult);
+    
+    // Debug the combinations found
+    const cardsToCheck = gameState.players[0].hand.slice(0, 13);
+    const findValidCombinations = (cards, jokers) => {
+      const combinations = {
+        straightRuns: [],
+        tanalas: [],
+        runs: [],
+        sets: []
+      };
+      
+      const suitBuckets = {};
+      const rankBuckets = {};
+      
+      // Step 1: Bucket cards by suit and rank
+      for (const card of cards) {
+        if (!suitBuckets[card.suit]) suitBuckets[card.suit] = [];
+        suitBuckets[card.suit].push(card);
+      
+        if (!rankBuckets[card.rank]) rankBuckets[card.rank] = [];
+        rankBuckets[card.rank].push(card);
+      }
+      
+      console.log('Suit buckets:', Object.keys(suitBuckets).map(suit => `${suit}: ${suitBuckets[suit].length} cards`));
+      console.log('Rank buckets:', Object.keys(rankBuckets).map(rank => `${rank}: ${rankBuckets[rank].length} cards`));
+      
+      // Try all combinations
+      for (let size = 3; size <= 4; size++) {
+        const allCombos = getCombinations(cards, size);
+        console.log(`Testing ${allCombos.length} ${size}-card combinations`);
+        
+        for (const combo of allCombos) {
+          if (isValidStraightRun(combo, jokers)) {
+            combinations.straightRuns.push(combo);
+            console.log('Found straight run:', combo.map(c => `${c.rank} of ${c.suit}`));
+          }
+          if (isValidTanala(combo, jokers)) {
+            combinations.tanalas.push(combo);
+            console.log('Found tanala:', combo.map(c => `${c.rank} of ${c.suit}`));
+          }
+          if (isValidRun(combo, jokers)) {
+            combinations.runs.push(combo);
+            console.log('Found run:', combo.map(c => `${c.rank} of ${c.suit}`));
+          }
+          if (isValidSet(combo, jokers)) {
+            combinations.sets.push(combo);
+            console.log('Found set:', combo.map(c => `${c.rank} of ${c.suit}`));
+          }
+        }
+      }
+      
+      return combinations;
+    };
+    
+    // Utility: Get all combinations of length 'n' from array 'arr'
+    function getCombinations(arr, n) {
+      const results = [];
+      const combo = [];
+
+      function backtrack(start) {
+        if (combo.length === n) {
+          // Check for duplicates before adding
+          const comboKey = combo.map(c => c.id).sort().join(',');
+          const isDuplicate = results.some(existing => {
+            const existingKey = existing.map(c => c.id).sort().join(',');
+            return existingKey === comboKey;
+          });
+          
+          if (!isDuplicate) {
+            results.push([...combo]);
+          }
+          return;
+        }
+
+        for (let i = start; i < arr.length; i++) {
+          combo.push(arr[i]);
+          backtrack(i + 1);
+          combo.pop();
+        }
+      }
+
+      backtrack(0);
+      return results;
+    }
+    
+    const combinations = findValidCombinations(cardsToCheck, gameState.jokers);
+    console.log('Found combinations:', combinations);
+    
     console.log('=== END DEBUG ===');
   };
 
@@ -1784,7 +2981,7 @@ const ModularCardGame = () => {
       return;
     }
     
-    const validation = checkWinningHand(gameState.players[0].hand, gameState.jokers);
+    const validation = findWinningCombination(gameState.players[0].hand, gameState.jokers);
     
     if (!validation.valid) {
       setDeclarationError(validation.error);
@@ -1815,11 +3012,11 @@ const ModularCardGame = () => {
     addToLog(`${gameState.players[0].name} declares Rummy and wins!`);
     addToLog(`Discarded ${lastCard.displayRank}${lastCard.displaySuit} during declaration`);
     
-    // Calculate scores for all players
+    // Calculate scores for all players with enhanced hand analysis
     const updatedPlayers = gameState.players.map(player => {
       if (player.id === 0) {
         // Winner gets 0 points
-        return { ...player, score: player.score };
+        return { ...player, score: 0 };
       } else {
         // Calculate points for losing players
         const handPoints = calculateHandPoints(player.hand, gameState.jokers);
@@ -1828,9 +3025,31 @@ const ModularCardGame = () => {
       }
     });
     
-    // Check for eliminations
-    const eliminatedPlayers = updatedPlayers.filter(player => checkElimination(player));
-    const activePlayers = updatedPlayers.filter(player => !checkElimination(player));
+    // Store enhanced game results with hand analysis
+    const gameResults = {
+      winner: gameState.players[0].name,
+      scores: updatedPlayers.map(p => ({ 
+        name: p.name, 
+        score: p.score,
+        handAnalysis: analyzeHandForDisplay(p.hand, gameState.jokers)
+      })),
+      winningHand: validation.groupings,
+      arrangedWinningHand: validation.arrangedHand,
+      timestamp: Date.now()
+    };
+    
+    localStorage.setItem('rummyGameResults', JSON.stringify(gameResults));
+    
+    // Store winning hand data for display
+    setWinningHandData({
+      winningHand: validation.groupings,
+      arrangedHand: validation.arrangedHand,
+      jokers: gameState.jokers
+    });
+    
+    // Check for eliminations (winner cannot be eliminated)
+    const eliminatedPlayers = updatedPlayers.filter(player => player.id !== 0 && checkElimination(player));
+    const activePlayers = updatedPlayers.filter(player => player.id === 0 || !checkElimination(player));
     
     if (eliminatedPlayers.length > 0) {
       // Game ends, show elimination screen
@@ -1871,7 +3090,7 @@ const ModularCardGame = () => {
     const secondHighestScore = activePlayers.length > 0 ? 
       Math.max(...activePlayers.map(p => p.score)) : 0;
     
-    const cost = calculateContinuationCost(player.score, secondHighestScore);
+    const cost = calculateContinuationCost(player.score, secondHighestScore, gamePoints);
     
     // Deduct chips and reset score
     setGameState(prev => ({
@@ -1888,6 +3107,47 @@ const ModularCardGame = () => {
     addToLog(`${player.name} paid $${cost.toLocaleString()} to continue from ${secondHighestScore} points`);
   };
 
+  const handleContinueGame = () => {
+    // Get current scores and find next highest score
+    const currentScores = gameState.players.map(p => ({ id: p.id, name: p.name, score: p.score }));
+    const sortedScores = currentScores.sort((a, b) => b.score - a.score);
+    
+    // Find next highest score (second highest)
+    const nextHighestScore = sortedScores.length > 1 ? sortedScores[1].score : 0;
+    
+    // Calculate costs for each player
+    const updatedPlayers = gameState.players.map(player => {
+      if (player.score > nextHighestScore) {
+        const cost = calculateContinueGameCost(player.score, nextHighestScore, gamePoints);
+        return {
+          ...player,
+          score: nextHighestScore,
+          chips: Math.max(0, player.chips - cost)
+        };
+      }
+      return player;
+    });
+    
+    // Store updated game state in localStorage
+    const gameData = {
+      players: updatedPlayers,
+      gamePoints: gamePoints,
+      lastUpdated: Date.now()
+    };
+    localStorage.setItem('rummyGameData', JSON.stringify(gameData));
+    
+    // Update game state and start new game
+    setGameState(prev => ({
+      ...prev,
+      players: updatedPlayers
+    }));
+    
+    // Start new game with updated scores
+    initializeGame();
+    
+    addToLog(`Game continued! All players reset to ${nextHighestScore} points`);
+  };
+
   const currentPlayer = gameState.players[currentPlayerIndex];
   const isPlayerTurn = currentPlayerIndex === 0;
 
@@ -1895,6 +3155,11 @@ const ModularCardGame = () => {
   useEffect(() => {
     console.log('Cards changed:', gameState.players[0].hand.length, 'cards');
   }, [gameState.players[0].hand]);
+
+  // Debug: Monitor score changes
+  useEffect(() => {
+    console.log('Scores changed:', gameState.players.map(p => `${p.name}: ${p.score}`));
+  }, [gameState.players]);
 
   // Menu Screen
   if (gamePhase === 'menu') {
@@ -2176,8 +3441,16 @@ const ModularCardGame = () => {
         {/* Desktop Game Log */}
         <GameLog 
           logs={gameLog}
-          className="hidden md:block absolute top-16 md:top-20 right-2 md:right-4 w-32 md:w-64"
+          className="hidden lg:block absolute top-16 lg:top-20 right-2 lg:right-4 w-32 lg:w-64"
         />
+
+        {/* Game Points Display */}
+        <div className="absolute top-16 lg:top-20 left-4 z-50">
+          <div className="bg-black/70 backdrop-blur-sm rounded-lg p-3 text-white">
+            <div className="text-sm font-bold">Game Points: {gamePoints}</div>
+            <div className="text-xs text-gray-300">Cost per point: ${gamePoints}</div>
+          </div>
+        </div>
         
         {/* Game Rules Popup */}
         <GameRulesPopup 
@@ -2191,25 +3464,25 @@ const ModularCardGame = () => {
         <div className="absolute inset-0 flex items-center justify-center z-10 pt-8 md:pt-0">
           <GameTable>
             {/* Draw Pile - Responsive positioning */}
-            <div className="absolute left-1/4 md:left-1/3 top-1/2 transform -translate-y-1/2">
+            <div className="absolute left-1/4 sm:left-[30%] md:left-1/3 lg:left-[28%] top-1/2 transform -translate-y-1/2">
               
               <div className="relative">
                 <div 
                   className="cursor-pointer"
                   onClick={() => isPlayerTurn && drawCard(false)}
                 >
-                  <Card card={null} faceDown={true} size="normal" className="md:!w-20 md:!h-28" />
+                  <Card card={null} faceDown={true} size="normal" className="sm:!w-12 sm:!h-16 md:!w-20 md:!h-28 lg:!w-18 lg:!h-26" />
                 </div>
               </div>
               
-              {/* Wildcard display - Responsive positioning */}
+              {/* Wildcard display - Responsive positioning with more space from deck */}
               {gameState.wildcard && (
-                <div className="absolute left-1/4 md:left-1/3 top-1/2 transform -translate-y-1/2 -translate-x-16 md:-translate-x-32">
+                <div className="absolute left-1/4 sm:left-[30%] md:left-1/3 lg:left-[28%] top-1/2 transform -translate-y-1/2 -translate-x-20 sm:-translate-x-24 md:-translate-x-40 lg:-translate-x-36">
                   <div className="relative">
                     <Card 
                       card={gameState.wildcard} 
                       size="normal" 
-                      className="md:!w-20 md:!h-28"
+                      className="sm:!w-12 sm:!h-16 md:!w-20 md:!h-28 lg:!w-18 lg:!h-26"
                     />
                     <div className="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-yellow-500 text-black text-xs font-bold rounded-full w-4 h-4 md:w-6 md:h-6 flex items-center justify-center">
                       W
@@ -2223,7 +3496,7 @@ const ModularCardGame = () => {
             </div>
 
             {/* Discard Pile - Responsive positioning */}
-            <div className="absolute right-1/4 md:right-1/3 top-1/2 transform -translate-y-1/2">
+            <div className="absolute right-1/4 sm:right-[30%] md:right-1/3 lg:right-[28%] top-1/2 transform -translate-y-1/2">
               {gameState.discardPile.length > 0 ? (
                 <div className="relative">
                   <div 
@@ -2233,28 +3506,32 @@ const ModularCardGame = () => {
                     <Card 
                       card={gameState.discardPile[gameState.discardPile.length - 1]} 
                       size="normal"
-                      className="md:!w-20 md:!h-28"
+                      className="sm:!w-12 sm:!h-16 md:!w-20 md:!h-28 lg:!w-18 lg:!h-26"
                     />
                   </div>
                 </div>
               ) : (
-                <div className="w-14 h-18 md:w-20 md:h-28 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-14 sm:w-12 sm:h-16 md:w-20 md:h-28 lg:w-18 lg:h-26 border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center">
                   <span className="text-gray-400 text-xs text-center">DISCARD<br/>PILE</span>
                 </div>
               )}
             </div>
 
             {/* Mobile Warning Messages - Above Deck and Pile */}
-            <div className="md:hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -translate-y-8 flex flex-col items-center space-y-1">
+            <div className={`lg:hidden absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center space-y-1 z-50 ${
+              isSmallPhone() ? 'top-[45%] text-sm' : 
+              isMediumPhone() ? 'top-[40%] text-xs' : 
+              'top-1/3 text-sm'
+            }`}>
               {isPlayerTurn && !hasDrawnCard && (
-                <span className="text-amber-200 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide">⚠️ Pick or draw a card!</span>
+                <span className={`text-amber-200 font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide ${
+                  isSmallPhone() ? 'text-sm' : 
+                  isMediumPhone() ? 'text-xs' : 
+                  'text-sm'
+                }`}>⚠️ Pick or draw a card!</span>
               )}
-              {isPlayerTurn && hasDrawnCard && gameState.players[0].hand.length === 14 && turnTimeRemaining >= 5000 && (
-                <span className="text-yellow-300 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide animate-pulse">⚠️ Must throw a card!</span>
-              )}
-              {isPlayerTurn && gameState.players[0].hand.length === 14 && turnTimeRemaining < 5000 && (
-                <span className="text-red-400 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide animate-pulse">🚨 THROW CARD NOW!</span>
-              )}
+              {/* Mobile "Must throw a card" message removed - only show on desktop */}
+              {/* Mobile "THROW CARD NOW" message removed - drop zone text is sufficient */}
               {declarationError && (
                 <span className="text-red-300 text-xs font-extrabold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] tracking-wide animate-pulse">❌ {declarationError}</span>
               )}
@@ -2270,17 +3547,22 @@ const ModularCardGame = () => {
             {/* Drop Zone in Middle of Table - Only for throwing, not rearrangement */}
             {isPlayerTurn && hasDrawnCard && gameState.players[0].hand.length === 14 && (
               <div 
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-40 border-2 border-dashed border-yellow-400 rounded-lg flex items-center justify-center bg-yellow-400/10 animate-pulse"
+                data-drop-zone="true"
+                className={`absolute flex items-center justify-center transition-all duration-200 ${
+                  isMobileDevice() 
+                    ? 'top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-24 text-center' // Mobile: positioned higher, with touch area
+                    : 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-40 border-2 border-dashed border-yellow-400 rounded-lg bg-yellow-400/10 animate-pulse' // Desktop: visible box
+                }`}
                 onDragOver={(e) => {
                   e.preventDefault();
-                  e.currentTarget.classList.add('bg-yellow-400/30', 'border-yellow-300', 'scale-110');
+                  e.currentTarget.classList.add('bg-green-400/30', 'border-green-400');
                 }}
                 onDragLeave={(e) => {
-                  e.currentTarget.classList.remove('bg-yellow-400/30', 'border-yellow-300', 'scale-110');
+                  e.currentTarget.classList.remove('bg-green-400/30', 'border-green-400');
                 }}
                 onDrop={(e) => {
                   e.preventDefault();
-                  e.currentTarget.classList.remove('bg-yellow-400/30', 'border-yellow-300', 'scale-110');
+                  e.currentTarget.classList.remove('bg-green-400/30', 'border-green-400');
                   
                   try {
                     const cardData = JSON.parse(e.dataTransfer.getData('text/plain'));
@@ -2295,20 +3577,20 @@ const ModularCardGame = () => {
                   }
                 }}
                 onTouchStart={(e) => {
-                  e.currentTarget.classList.add('bg-yellow-400/30', 'border-yellow-300', 'scale-110');
+                  e.currentTarget.classList.add('bg-green-400/30', 'border-green-400');
                 }}
                 onTouchMove={(e) => {
                   // Handle mobile drag over drop zone
-                  if (window.innerWidth < 768) {
+                  if (isMobileDevice()) {
                     e.preventDefault();
-                    e.currentTarget.classList.add('bg-yellow-400/50', 'border-yellow-200', 'scale-120');
+                    e.currentTarget.classList.add('bg-green-400/50', 'border-green-300');
                   }
                 }}
                 onTouchEnd={(e) => {
-                  e.currentTarget.classList.remove('bg-yellow-400/30', 'border-yellow-300', 'scale-110', 'bg-yellow-400/50', 'border-yellow-200', 'scale-120');
+                  e.currentTarget.classList.remove('bg-green-400/30', 'border-green-400', 'bg-green-400/50', 'border-green-300');
                   
                   // Enhanced mobile drop handling
-                  if (window.innerWidth < 768) {
+                  if (isMobileDevice()) {
                     // Check if we have a selected card or mobile drag data
                     let cardToDiscard = null;
                     
@@ -2358,15 +3640,20 @@ const ModularCardGame = () => {
                 }}
               >
                 <div className="text-center">
-                  <span className="text-yellow-400 text-xs text-center font-bold block">DROP CARD HERE</span>
-                  <span className="text-yellow-300 text-xs opacity-75 block mt-1">MUST THROW!</span>
+                  <span className={`text-center  block ${
+                    isMobileDevice() 
+                      ? 'text-green-200/50 text-sm backdrop-blur-sm bg-green-900/10 px-4 py-2 rounded-full border border-green-300/20' // Mobile: subtle, blended text
+                      : 'text-yellow-300 text-xs' // Desktop: smaller text in box
+                  }`}>
+                    DROP CARD HERE
+                  </span>
                 </div>
               </div>
             )}
 
             {/* Game Message */}
             {gameMessage && (
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-lg px-6 py-3 text-white text-center hidden md:block">
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/70 backdrop-blur-sm rounded-lg px-6 py-3 text-white text-center hidden lg:block">
                 <div className="text-lg font-bold text-yellow-300">{gameMessage}</div>
               </div>
             )}
@@ -2375,8 +3662,8 @@ const ModularCardGame = () => {
         </div>
 
         {/* Main Player (Bottom) - Mobile Responsive */}
-        <div className="absolute bottom-0 left-0 right-0 z-30 pb-0 pl-16 pr-1 pt-1 md:p-6">
-          <div className="max-w-6xl mx-auto">
+        <div className="absolute bottom-0 left-0 right-0 z-30 pb-1 pl-6 pr-0 pt-1 sm:px-1 md:p-6 lg:pl-16 lg:pr-8">
+          <div className="max-w-6xl mx-auto sm:max-w-4xl md:max-w-6xl lg:max-w-5xl">
             {/* Card Hand with Curved Layout */}
             <CardHand
               cards={gameState.players[0].hand}
@@ -2387,28 +3674,30 @@ const ModularCardGame = () => {
               jokers={gameState.jokers}
               addToLog={addToLog}
               canDeclare={canDeclare()}
-              className="mb-0 md:mb-4"
+              className="mb-0 lg:mb-4"
               key={`hand-${gameState.players[0].hand.length}`} // Force re-render when hand changes
               mobileDraggedCard={mobileDraggedCard}
               setMobileDraggedCard={setMobileDraggedCard}
+              onDiscardCard={discardCard}
             />
 
             {/* Action Messages Below Cards - Mobile Responsive */}
-            <div className="flex justify-center mb-0 md:mb-4 h-0 md:h-12">
+            <div className="flex justify-center mb-0 lg:mb-4 h-0 lg:h-12">
               {isPlayerTurn && !hasDrawnCard && (
-                <div className="hidden md:flex bg-blue-600 text-white font-bold px-3 md:px-6 py-1 md:py-2 rounded-lg animate-pulse items-center space-x-1 md:space-x-2">
-                  <span className="text-sm md:text-base">⚠️ Pick or draw a card!</span>
+                <div className="hidden lg:flex bg-blue-600 text-white font-bold px-3 lg:px-6 py-1 lg:py-2 rounded-lg animate-pulse items-center space-x-1 lg:space-x-2">
+                  <span className="text-sm lg:text-base">⚠️ Pick or draw a card!</span>
                 </div>
               )}
               
+              {/* Mobile action message for "Must throw a card" removed - desktop only via CSS classes */}
               {isPlayerTurn && hasDrawnCard && gameState.players[0].hand.length === 14 && (
-                <div className="bg-red-600 text-white font-bold px-3 md:px-6 py-1 md:py-2 rounded-lg animate-pulse flex items-center space-x-1 md:space-x-2">
-                  <span className="text-sm md:text-base">⚠️ Must throw a card!</span>
+                <div className="hidden lg:flex bg-red-600 text-white font-bold px-3 lg:px-6 py-1 lg:py-2 rounded-lg animate-pulse items-center space-x-1 lg:space-x-2">
+                  <span className="text-sm lg:text-base">⚠️ Must throw a card!</span>
                 </div>
               )}
               
               {declarationError && (
-                <div className="bg-red-600 text-white font-bold px-3 md:px-6 py-1 md:py-2 rounded-lg animate-pulse flex items-center space-x-1 md:space-x-2">
+                <div className="bg-red-600 text-white font-bold px-3 lg:px-6 py-1 lg:py-2 rounded-lg animate-pulse flex items-center space-x-1 lg:space-x-2">
                   <span className="text-sm md:text-base">❌ {declarationError}</span>
                 </div>
               )}
@@ -2436,7 +3725,7 @@ const ModularCardGame = () => {
               </div>
               
               {/* Desktop buttons */}
-              <div className="hidden md:flex flex-wrap justify-center gap-2 md:space-x-4">
+              <div className={`${isDesktop() ? 'flex' : 'hidden'} flex-wrap justify-center gap-2 lg:space-x-4`}>
                 <button
                   onClick={sortCards}
                   className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold px-2 md:px-6 py-1 md:py-3 rounded-lg md:rounded-xl shadow-lg transform hover:scale-105 transition-all flex items-center space-x-1 md:space-x-2"
@@ -2491,7 +3780,7 @@ const ModularCardGame = () => {
         </div>
 
         {/* Mobile Game Log - Bottom Left */}
-        <div className="md:hidden fixed bottom-4 left-4 z-50">
+        <div className="lg:hidden fixed bottom-4 left-4 z-50">
           <div className="relative">
             <button
               onClick={() => setShowGameLog(!showGameLog)}
@@ -2515,8 +3804,9 @@ const ModularCardGame = () => {
 
 
 
-        {/* Mobile Declare Button - Bottom Right */}
-        <div className="md:hidden fixed bottom-4 right-4 z-50">
+        {/* Mobile Declare Button - Bottom Right (for all non-desktop) */}
+        <div className={`${isMobileDevice() ? 'fixed' : 'hidden'} bottom-4 z-50`} 
+             style={{ right: isSmallPhone() ? '8px' : '16px' }}>
           <button
             onClick={() => {
               console.log('Declare button clicked!');
@@ -2527,14 +3817,20 @@ const ModularCardGame = () => {
               declareWin();
             }}
             disabled={!isPlayerTurn || !canDeclare()}
-            className={`font-bold px-3 py-2 rounded-full shadow-2xl transform transition-all flex items-center space-x-2 ${
+            className={`font-bold rounded-full shadow-2xl transform transition-all flex items-center ${
+              isSmallPhone() 
+                ? 'px-2 py-1 space-x-1' 
+                : 'px-3 py-2 space-x-2'
+            } ${
               canDeclare() && isPlayerTurn
                 ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white hover:scale-110'
                 : 'bg-gray-600 text-gray-300 cursor-not-allowed'
             }`}
           >
-            <Star className="w-5 h-5" />
-            <span className="text-sm font-bold">Declare</span>
+            <Star className={isSmallPhone() ? "w-4 h-4" : "w-5 h-5"} />
+            <span className={`font-bold ${isSmallPhone() ? 'text-xs' : 'text-sm'}`}>
+              {isSmallPhone() ? 'Declare' : 'Declare'}
+            </span>
           </button>
         </div>
 
@@ -2624,8 +3920,8 @@ const ModularCardGame = () => {
 
   // Elimination Screen
   if (gamePhase === 'elimination') {
-    const eliminatedPlayers = gameState.players.filter(player => checkElimination(player));
-    const activePlayers = gameState.players.filter(player => !checkElimination(player));
+    const eliminatedPlayers = gameState.players.filter(player => player.id !== 0 && checkElimination(player));
+    const activePlayers = gameState.players.filter(player => player.id === 0 || !checkElimination(player));
     const secondHighestScore = activePlayers.length > 0 ? 
       Math.max(...activePlayers.map(p => p.score)) : 0;
 
@@ -2637,7 +3933,7 @@ const ModularCardGame = () => {
           <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-green-300 rounded-full blur-2xl animate-pulse"></div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-8">
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-8 p-4">
           <div className="text-center">
             <h1 className="text-6xl font-bold text-white mb-4 drop-shadow-lg">
               Game Over!
@@ -2645,14 +3941,24 @@ const ModularCardGame = () => {
             <p className="text-2xl text-blue-100">Winner: {gameState.winner?.name}</p>
           </div>
 
+          {/* Display winning hand if available */}
+          {winningHandData && (
+            <WinningHandDisplay 
+              winningHand={winningHandData.winningHand}
+              arrangedHand={winningHandData.arrangedHand}
+              jokers={winningHandData.jokers}
+            />
+          )}
+
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-white min-w-md">
             <h2 className="text-2xl font-bold mb-4">Final Scores</h2>
             <div className="space-y-3">
               {gameState.players.map((player, index) => {
                 const handPoints = player.id === 0 ? 0 : calculateHandPoints(player.hand, gameState.jokers);
+                const isEliminated = player.id !== 0 && checkElimination(player);
                 return (
                   <div key={index} className={`flex justify-between items-center p-2 rounded ${
-                    checkElimination(player) ? 'bg-red-500/20 border border-red-400' : 'bg-black/20'
+                    isEliminated ? 'bg-red-500/20 border border-red-400' : 'bg-black/20'
                   }`}>
                     <span className="font-semibold">{player.name}</span>
                     <div className="flex items-center space-x-4">
@@ -2662,7 +3968,7 @@ const ModularCardGame = () => {
                       <span className="font-bold text-lg">
                         Total: {player.score}
                       </span>
-                      {checkElimination(player) && (
+                      {isEliminated && (
                         <span className="text-red-400 font-bold">ELIMINATED!</span>
                       )}
                     </div>
@@ -2680,7 +3986,7 @@ const ModularCardGame = () => {
                 Eliminated players can continue from {secondHighestScore} points by paying:
               </p>
               {eliminatedPlayers.map(player => {
-                const cost = calculateContinuationCost(player.score, secondHighestScore);
+                const cost = calculateContinuationCost(player.score, secondHighestScore, gamePoints);
                 return (
                   <div key={player.id} className="flex justify-between items-center p-2 bg-black/20 rounded mb-2">
                     <span>{player.name}</span>
@@ -2709,7 +4015,11 @@ const ModularCardGame = () => {
 
           <div className="flex space-x-4">
             <button 
-              onClick={() => setGamePhase('menu')}
+              onClick={() => {
+                setGamePhase('menu');
+                setWinningHandData(null);
+                localStorage.removeItem('rummyGameData'); // Clear saved data when going to menu
+              }}
               className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition-all"
             >
               Back to Menu
@@ -2718,10 +4028,17 @@ const ModularCardGame = () => {
               onClick={() => {
                 setGamePhase('setup');
                 setGameLog([]);
+                setWinningHandData(null);
               }}
               className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition-all"
             >
               Play Again
+            </button>
+            <button 
+              onClick={handleContinueGame}
+              className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition-all"
+            >
+              Continue Game
             </button>
           </div>
         </div>
@@ -2792,13 +4109,22 @@ const ModularCardGame = () => {
           <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-green-300 rounded-full blur-2xl animate-pulse"></div>
         </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-8">
+        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen space-y-8 p-4">
           <div className="text-center">
             <h1 className="text-6xl font-bold text-white mb-4 drop-shadow-lg">
               Game Over!
             </h1>
             <p className="text-2xl text-blue-100">Winner: {gameState.players[0].name}</p>
           </div>
+
+          {/* Display winning hand if available */}
+          {winningHandData && (
+            <WinningHandDisplay 
+              winningHand={winningHandData.winningHand}
+              arrangedHand={winningHandData.arrangedHand}
+              jokers={winningHandData.jokers}
+            />
+          )}
 
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-white">
             <h2 className="text-2xl font-bold mb-4">Final Scores</h2>
@@ -2814,7 +4140,11 @@ const ModularCardGame = () => {
 
           <div className="flex space-x-4">
             <button 
-              onClick={() => setGamePhase('menu')}
+              onClick={() => {
+                setGamePhase('menu');
+                setWinningHandData(null);
+                localStorage.removeItem('rummyGameData'); // Clear saved data when going to menu
+              }}
               className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition-all"
             >
               Back to Menu
@@ -2823,10 +4153,17 @@ const ModularCardGame = () => {
               onClick={() => {
                 setGamePhase('setup');
                 setGameLog([]);
+                setWinningHandData(null);
               }}
               className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition-all"
             >
               Play Again
+            </button>
+            <button 
+              onClick={handleContinueGame}
+              className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition-all"
+            >
+              Continue Game
             </button>
           </div>
         </div>
