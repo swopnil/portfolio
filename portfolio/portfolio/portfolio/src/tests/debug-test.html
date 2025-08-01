@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+</head>
+<body>
+    <h1>JavaScript Debug Test</h1>
+    <button onclick="testFunction()">Test Basic Function</button>
+    <button onclick="checkFunctions()">Check if functions exist</button>
+    <div id="output"></div>
+    
+    <script>
+        function testFunction() {
+            document.getElementById('output').innerHTML = 'Basic function works!<br>';
+        }
+        
+        function checkFunctions() {
+            const output = document.getElementById('output');
+            const functions = [
+                'testPerfectWinningHand',
+                'test3SequencesNeed4th', 
+                'testAllStraightRuns',
+                'testRandomCardsGame',
+                'testJokerHeavyHand',
+                'testAlmostWinning',
+                'testMixedCombinations',
+                'runAllTests'
+            ];
+            
+            let html = '<h3>Function Check Results:</h3>';
+            functions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    html += `✅ ${funcName} - EXISTS<br>`;
+                } else {
+                    html += `❌ ${funcName} - MISSING<br>`;
+                }
+            });
+            
+            output.innerHTML = html;
+        }
+        
+        // Test if the problematic functions exist
+        function testPerfectWinningHand() {
+            document.getElementById('output').innerHTML += '🏆 testPerfectWinningHand called!<br>';
+        }
+        
+        function test3SequencesNeed4th() {
+            document.getElementById('output').innerHTML += '🎯 test3SequencesNeed4th called!<br>';
+        }
+        
+        function runAllTests() {
+            document.getElementById('output').innerHTML += '🧪 runAllTests called!<br>';
+        }
+        
+        console.log('Debug test script loaded successfully');
+    </script>
+</body>
+</html>

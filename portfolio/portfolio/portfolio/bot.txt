@@ -1,0 +1,1701 @@
+
+Ready to run simulations...
+Click any button above to start testing the enhanced bot AI!
+[12:48:08 PM] 🚀 Enhanced Bot Simulation loaded successfully!
+[12:48:08 PM] 📋 Available commands:
+[12:48:08 PM] - runSingleGame() - Run one enhanced 3-bot game
+[12:48:08 PM] - run5Games() - Run 5 games and analyze results
+[12:48:08 PM] - run10Games() - Run 10 games and analyze results
+[12:48:08 PM] - run20Games() - Run 20 games and analyze results
+[12:48:10 PM] 🎯 === RUNNING SINGLE ENHANCED GAME ===
+[12:48:10 PM] 🎮 === ENHANCED 3-BOT RUMMY GAME SIMULATION ===
+[12:48:10 PM] 🃏 Wildcard: 3♥
+[12:48:10 PM] 🎭 Jokers: 3S, 3C, 4H
+[12:48:10 PM] 🤖 Sebastian: 13 cards dealt
+[12:48:10 PM] 🤖 Isaiah: 13 cards dealt
+[12:48:10 PM] 🤖 Marcus: 13 cards dealt
+[12:48:10 PM] 🗑️ Initial discard: 9♠
+[12:48:10 PM] 🎲 Starting game with 115 cards in draw pile
+[12:48:10 PM] --- Turn 1: Sebastian ---
+[12:48:10 PM] 📋 Hand size: 13 cards
+[12:48:10 PM] 🎲 Draw pile: 115 cards
+[12:48:10 PM] 🗑️ Discard pile: 1 cards
+[12:48:10 PM] 🎮 === GAME TURN START ===
+[12:48:10 PM] Current Player: Sebastian
+[12:48:10 PM] Turn Count: 1
+[12:48:10 PM] Players in game: 3
+[12:48:10 PM] 🆕 Creating new AI instance for Sebastian
+[12:48:10 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:10 PM] SPADES: king
+[12:48:10 PM] HEARTS: ace, 7, 7, queen
+[12:48:10 PM] DIAMONDS: ace, 2, 3
+[12:48:10 PM] CLUBS: 3, 4, 9, 9, queen
+[12:48:10 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:10 PM] 🎯 Potential SET: 2x 7 (H, H)
+[12:48:10 PM] 🎯 Potential SET: 2x 9 (C, C)
+[12:48:10 PM] 🎯 Potential SET: 2x ace (D, H)
+[12:48:10 PM] 🎯 Potential SET: 2x queen (C, H)
+[12:48:10 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:10 PM] 🔸 Partial run: 3-4 of clubs
+[12:48:10 PM] 🃏 Jokers in hand: 1
+[12:48:10 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:10 PM] 📋 Hand (13 cards): 3D, 2D, 4C, 3C, aceD, 9C, kingS, queenC, queenH, 7H, 9C, aceH, 7H
+[12:48:10 PM] 🎮 Game Phase: early | Turn: 1
+[12:48:10 PM] 🗑️ Top Discard: 9S
+[12:48:10 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:10 PM] 📈 Taking from discard pile (Score: 120.0)
+[12:48:10 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:10 PM] 🗑️ Will discard: kingS (usefulness: -12.0)
+[12:48:10 PM] 📊 Confidence: 95%
+[12:48:10 PM] ✅ === FINAL DECISION ===
+[12:48:10 PM] Action: takeDiscard
+[12:48:10 PM] Can Declare: NO
+[12:48:10 PM] Confidence: 95%
+[12:48:10 PM] === TURN END ===
+[12:48:10 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:10 PM] 🗑️ Will discard: K♠
+[12:48:10 PM] 🏆 Can declare: NO
+[12:48:10 PM] 📊 Confidence: 95%
+[12:48:10 PM] 📤 Took from discard: 9♠
+[12:48:10 PM] 📤 Discarded: K♠
+[12:48:10 PM] 📋 Final hand size: 13 cards
+[12:48:10 PM] --- Turn 2: Isaiah ---
+[12:48:10 PM] 📋 Hand size: 13 cards
+[12:48:10 PM] 🎲 Draw pile: 115 cards
+[12:48:10 PM] 🗑️ Discard pile: 1 cards
+[12:48:10 PM] 🎮 === GAME TURN START ===
+[12:48:10 PM] Current Player: Isaiah
+[12:48:10 PM] Turn Count: 2
+[12:48:10 PM] Players in game: 3
+[12:48:10 PM] 🆕 Creating new AI instance for Isaiah
+[12:48:10 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:10 PM] SPADES: 2, 5, 8, 10, queen
+[12:48:10 PM] HEARTS: 4, 5
+[12:48:10 PM] DIAMONDS: 2, 4, 5, 9
+[12:48:10 PM] CLUBS: jack, king
+[12:48:10 PM] 🎯 Potential SET: 2x 2 (D, S)
+[12:48:10 PM] 🎯 Potential SET: 2x 4 (H, D)
+[12:48:10 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:10 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:10 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:10 PM] 🃏 Jokers in hand: 1
+[12:48:10 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:10 PM] 📋 Hand (13 cards): 9D, 4H, 5S, jackC, 2D, 4D, 8S, 5H, 10S, kingC, 2S, 5D, queenS
+[12:48:10 PM] 🎮 Game Phase: early | Turn: 2
+[12:48:10 PM] 🗑️ Top Discard: kingS
+[12:48:10 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:10 PM] 📈 Taking from discard pile (Score: 185.0)
+[12:48:10 PM] Reasons: completesRun, completesSet, improvesHand, lowRisk
+[12:48:10 PM] 🗑️ Will discard: 9D (usefulness: 10.0)
+[12:48:10 PM] 📊 Confidence: 95%
+[12:48:10 PM] ✅ === FINAL DECISION ===
+[12:48:10 PM] Action: takeDiscard
+[12:48:10 PM] Can Declare: NO
+[12:48:10 PM] Confidence: 95%
+[12:48:10 PM] === TURN END ===
+[12:48:10 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:10 PM] 🗑️ Will discard: 9♦
+[12:48:10 PM] 🏆 Can declare: NO
+[12:48:10 PM] 📊 Confidence: 95%
+[12:48:10 PM] 📤 Took from discard: K♠
+[12:48:10 PM] 📤 Discarded: 9♦
+[12:48:10 PM] 📋 Final hand size: 13 cards
+[12:48:10 PM] --- Turn 3: Marcus ---
+[12:48:10 PM] 📋 Hand size: 13 cards
+[12:48:10 PM] 🎲 Draw pile: 115 cards
+[12:48:10 PM] 🗑️ Discard pile: 1 cards
+[12:48:10 PM] 🎮 === GAME TURN START ===
+[12:48:10 PM] Current Player: Marcus
+[12:48:10 PM] Turn Count: 3
+[12:48:10 PM] Players in game: 3
+[12:48:10 PM] 🆕 Creating new AI instance for Marcus
+[12:48:10 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:10 PM] SPADES: 5, 6, jack
+[12:48:10 PM] HEARTS: ace, 7, 10, king
+[12:48:10 PM] DIAMONDS: 6, 10, king
+[12:48:10 PM] CLUBS: 5, 7, 8
+[12:48:10 PM] 🎯 Potential SET: 2x 5 (C, S)
+[12:48:10 PM] 🎯 Potential SET: 2x 6 (D, S)
+[12:48:10 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:10 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:10 PM] 🎯 Potential SET: 2x king (D, H)
+[12:48:10 PM] 🔸 Partial run: 5-6 of spades
+[12:48:10 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:10 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:10 PM] 📋 Hand (13 cards): aceH, 10D, kingD, jackS, 8C, kingH, 6D, 5C, 7H, 6S, 7C, 5S, 10H
+[12:48:10 PM] 🎮 Game Phase: early | Turn: 3
+[12:48:10 PM] 🗑️ Top Discard: 9D
+[12:48:10 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:10 PM] 📈 Taking from discard pile (Score: 95.0)
+[12:48:10 PM] Reasons: improvesHand, lowRisk
+[12:48:10 PM] 🗑️ Will discard: jackS (usefulness: -1.0)
+[12:48:10 PM] 📊 Confidence: 95%
+[12:48:10 PM] ✅ === FINAL DECISION ===
+[12:48:10 PM] Action: takeDiscard
+[12:48:10 PM] Can Declare: NO
+[12:48:10 PM] Confidence: 95%
+[12:48:10 PM] === TURN END ===
+[12:48:10 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:10 PM] 🗑️ Will discard: J♠
+[12:48:10 PM] 🏆 Can declare: NO
+[12:48:10 PM] 📊 Confidence: 95%
+[12:48:10 PM] 📤 Took from discard: 9♦
+[12:48:10 PM] 📤 Discarded: J♠
+[12:48:10 PM] 📋 Final hand size: 13 cards
+[12:48:10 PM] --- Turn 4: Sebastian ---
+[12:48:10 PM] 📋 Hand size: 13 cards
+[12:48:10 PM] 🎲 Draw pile: 115 cards
+[12:48:10 PM] 🗑️ Discard pile: 1 cards
+[12:48:10 PM] 🎮 === GAME TURN START ===
+[12:48:10 PM] Current Player: Sebastian
+[12:48:10 PM] Turn Count: 4
+[12:48:10 PM] Players in game: 3
+[12:48:10 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:10 PM] SPADES: 9
+[12:48:10 PM] HEARTS: ace, 7, 7, queen
+[12:48:10 PM] DIAMONDS: ace, 2, 3
+[12:48:10 PM] CLUBS: 3, 4, 9, 9, queen
+[12:48:10 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:10 PM] 🎯 Potential SET: 2x 7 (H, H)
+[12:48:10 PM] 🎯 Potential SET: 3x 9 (C, C, S)
+[12:48:10 PM] 🎯 Potential SET: 2x ace (D, H)
+[12:48:10 PM] 🎯 Potential SET: 2x queen (C, H)
+[12:48:10 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:10 PM] 🔸 Partial run: 3-4 of clubs
+[12:48:10 PM] 🃏 Jokers in hand: 1
+[12:48:10 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:10 PM] 📋 Hand (13 cards): 3D, 2D, 4C, 3C, aceD, 9C, queenC, queenH, 7H, 9C, aceH, 7H, 9S
+[12:48:10 PM] 🎮 Game Phase: early | Turn: 4
+[12:48:10 PM] 🗑️ Top Discard: jackS
+[12:48:10 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:10 PM] 📈 Taking from discard pile (Score: 37.0)
+[12:48:10 PM] Reasons: improvesHand, lowRisk
+[12:48:10 PM] 🗑️ Will discard: 4C (usefulness: 35.0)
+[12:48:10 PM] 📊 Confidence: 93%
+[12:48:10 PM] ✅ === FINAL DECISION ===
+[12:48:10 PM] Action: takeDiscard
+[12:48:10 PM] Can Declare: NO
+[12:48:10 PM] Confidence: 93%
+[12:48:10 PM] === TURN END ===
+[12:48:10 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:10 PM] 🗑️ Will discard: 4♣
+[12:48:10 PM] 🏆 Can declare: NO
+[12:48:10 PM] 📊 Confidence: 93%
+[12:48:10 PM] 📤 Took from discard: J♠
+[12:48:10 PM] 📤 Discarded: 4♣
+[12:48:10 PM] 📋 Final hand size: 13 cards
+[12:48:10 PM] --- Turn 5: Isaiah ---
+[12:48:10 PM] 📋 Hand size: 13 cards
+[12:48:10 PM] 🎲 Draw pile: 115 cards
+[12:48:10 PM] 🗑️ Discard pile: 1 cards
+[12:48:10 PM] 🎮 === GAME TURN START ===
+[12:48:10 PM] Current Player: Isaiah
+[12:48:10 PM] Turn Count: 5
+[12:48:10 PM] Players in game: 3
+[12:48:10 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:10 PM] SPADES: 2, 5, 8, 10, queen, king
+[12:48:10 PM] HEARTS: 4, 5
+[12:48:10 PM] DIAMONDS: 2, 4, 5
+[12:48:10 PM] CLUBS: jack, king
+[12:48:10 PM] 🎯 Potential SET: 2x 2 (D, S)
+[12:48:10 PM] 🎯 Potential SET: 2x 4 (H, D)
+[12:48:10 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:10 PM] 🎯 Potential SET: 2x king (C, S)
+[12:48:10 PM] 🔸 Partial run: queen-king of spades
+[12:48:10 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:10 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:10 PM] 🃏 Jokers in hand: 1
+[12:48:10 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:10 PM] 📋 Hand (13 cards): 4H, 5S, jackC, 2D, 4D, 8S, 5H, 10S, kingC, 2S, 5D, queenS, kingS
+[12:48:10 PM] 🎮 Game Phase: early | Turn: 5
+[12:48:10 PM] 🗑️ Top Discard: 4C
+[12:48:10 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:10 PM] 📈 Taking from discard pile (Score: 85.0)
+[12:48:10 PM] Reasons: completesSet, improvesHand, lowRisk
+[12:48:10 PM] 🗑️ Will discard: jackC (usefulness: 37.0)
+[12:48:10 PM] 📊 Confidence: 95%
+[12:48:10 PM] ✅ === FINAL DECISION ===
+[12:48:10 PM] Action: takeDiscard
+[12:48:10 PM] Can Declare: NO
+[12:48:10 PM] Confidence: 95%
+[12:48:10 PM] === TURN END ===
+[12:48:10 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:10 PM] 🗑️ Will discard: J♣
+[12:48:10 PM] 🏆 Can declare: NO
+[12:48:10 PM] 📊 Confidence: 95%
+[12:48:10 PM] 📤 Took from discard: 4♣
+[12:48:10 PM] 📤 Discarded: J♣
+[12:48:10 PM] 📋 Final hand size: 13 cards
+[12:48:10 PM] --- Turn 6: Marcus ---
+[12:48:10 PM] 📋 Hand size: 13 cards
+[12:48:10 PM] 🎲 Draw pile: 115 cards
+[12:48:10 PM] 🗑️ Discard pile: 1 cards
+[12:48:10 PM] 🎮 === GAME TURN START ===
+[12:48:10 PM] Current Player: Marcus
+[12:48:10 PM] Turn Count: 6
+[12:48:10 PM] Players in game: 3
+[12:48:10 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:10 PM] SPADES: 5, 6
+[12:48:10 PM] HEARTS: ace, 7, 10, king
+[12:48:10 PM] DIAMONDS: 6, 9, 10, king
+[12:48:10 PM] CLUBS: 5, 7, 8
+[12:48:10 PM] 🎯 Potential SET: 2x 5 (C, S)
+[12:48:10 PM] 🎯 Potential SET: 2x 6 (D, S)
+[12:48:10 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:10 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:10 PM] 🎯 Potential SET: 2x king (D, H)
+[12:48:10 PM] 🔸 Partial run: 5-6 of spades
+[12:48:10 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:10 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:10 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:10 PM] 📋 Hand (13 cards): aceH, 10D, kingD, 8C, kingH, 6D, 5C, 7H, 6S, 7C, 5S, 10H, 9D
+[12:48:10 PM] 🎮 Game Phase: early | Turn: 6
+[12:48:10 PM] 🗑️ Top Discard: jackC
+[12:48:10 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 🎲 Drawing from pile (discard score too low: -1.0)
+[12:48:11 PM] 🗑️ Will discard: aceH (usefulness: 5.0)
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: drawFromPile
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 70%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:11 PM] 🗑️ Will discard: A♥
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] 🎲 Drew from pile: 9♠
+[12:48:11 PM] 📤 Discarded: A♥
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 7: Sebastian ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 114 cards
+[12:48:11 PM] 🗑️ Discard pile: 2 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Sebastian
+[12:48:11 PM] Turn Count: 7
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:11 PM] SPADES: 9, jack
+[12:48:11 PM] HEARTS: ace, 7, 7, queen
+[12:48:11 PM] DIAMONDS: ace, 2, 3
+[12:48:11 PM] CLUBS: 3, 9, 9, queen
+[12:48:11 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, H)
+[12:48:11 PM] 🎯 Potential SET: 3x 9 (C, C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x ace (D, H)
+[12:48:11 PM] 🎯 Potential SET: 2x queen (C, H)
+[12:48:11 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, queenC, queenH, 7H, 9C, aceH, 7H, 9S, jackS
+[12:48:11 PM] 🎮 Game Phase: early | Turn: 7
+[12:48:11 PM] 🗑️ Top Discard: aceH
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 145.0)
+[12:48:11 PM] Reasons: completesTanala, completesRun, completesSet, improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: jackS (usefulness: 37.0)
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 95%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: J♠
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] 📤 Took from discard: A♥
+[12:48:11 PM] 📤 Discarded: J♠
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 8: Isaiah ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 114 cards
+[12:48:11 PM] 🗑️ Discard pile: 2 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Isaiah
+[12:48:11 PM] Turn Count: 8
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:11 PM] SPADES: 2, 5, 8, 10, queen, king
+[12:48:11 PM] HEARTS: 4, 5
+[12:48:11 PM] DIAMONDS: 2, 4, 5
+[12:48:11 PM] CLUBS: 4, king
+[12:48:11 PM] 🎯 Potential SET: 2x 2 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 3x 4 (H, D, C)
+[12:48:11 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:11 PM] 🎯 Potential SET: 2x king (C, S)
+[12:48:11 PM] 🔸 Partial run: queen-king of spades
+[12:48:11 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:11 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 4H, 5S, 2D, 4D, 8S, 5H, 10S, kingC, 2S, 5D, queenS, kingS, 4C
+[12:48:11 PM] 🎮 Game Phase: early | Turn: 8
+[12:48:11 PM] 🗑️ Top Discard: jackS
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 267.0)
+[12:48:11 PM] Reasons: completesStraightRun, completesRun, improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: 8S (usefulness: 52.0)
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 95%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: 8♠
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] 📤 Took from discard: J♠
+[12:48:11 PM] 📤 Discarded: 8♠
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 9: Marcus ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 114 cards
+[12:48:11 PM] 🗑️ Discard pile: 2 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Marcus
+[12:48:11 PM] Turn Count: 9
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:11 PM] SPADES: 5, 6, 9
+[12:48:11 PM] HEARTS: 7, 10, king
+[12:48:11 PM] DIAMONDS: 6, 9, 10, king
+[12:48:11 PM] CLUBS: 5, 7, 8
+[12:48:11 PM] 🎯 Potential SET: 2x 5 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 6 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 9 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:11 PM] 🎯 Potential SET: 2x king (D, H)
+[12:48:11 PM] 🔸 Partial run: 5-6 of spades
+[12:48:11 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:11 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:11 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 10D, kingD, 8C, kingH, 6D, 5C, 7H, 6S, 7C, 5S, 10H, 9D, 9S
+[12:48:11 PM] 🎮 Game Phase: early | Turn: 9
+[12:48:11 PM] 🗑️ Top Discard: 8S
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 170.0)
+[12:48:11 PM] Reasons: improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: kingD (usefulness: 60.0)
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 95%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: K♦
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] 📤 Took from discard: 8♠
+[12:48:11 PM] 📤 Discarded: K♦
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 10: Sebastian ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 114 cards
+[12:48:11 PM] 🗑️ Discard pile: 2 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Sebastian
+[12:48:11 PM] Turn Count: 10
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:11 PM] SPADES: 9
+[12:48:11 PM] HEARTS: ace, ace, 7, 7, queen
+[12:48:11 PM] DIAMONDS: ace, 2, 3
+[12:48:11 PM] CLUBS: 3, 9, 9, queen
+[12:48:11 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, H)
+[12:48:11 PM] 🎯 Potential SET: 3x 9 (C, C, S)
+[12:48:11 PM] 🎯 Potential SET: 3x ace (D, H, H)
+[12:48:11 PM] 🎯 Potential SET: 2x queen (C, H)
+[12:48:11 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, queenC, queenH, 7H, 9C, aceH, 7H, 9S, aceH
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 10
+[12:48:11 PM] 🗑️ Top Discard: kingD
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 🎲 Drawing from pile (discard score too low: -7.0)
+[12:48:11 PM] 🗑️ Will discard: queenH (usefulness: 60.0)
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: drawFromPile
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 70%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:11 PM] 🗑️ Will discard: Q♥
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] 🎲 Drew from pile: 9♦
+[12:48:11 PM] 📤 Discarded: Q♥
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 11: Isaiah ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 113 cards
+[12:48:11 PM] 🗑️ Discard pile: 3 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Isaiah
+[12:48:11 PM] Turn Count: 11
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:11 PM] SPADES: 2, 5, 10, jack, queen, king
+[12:48:11 PM] HEARTS: 4, 5
+[12:48:11 PM] DIAMONDS: 2, 4, 5
+[12:48:11 PM] CLUBS: 4, king
+[12:48:11 PM] 🎯 Potential SET: 2x 2 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 3x 4 (H, D, C)
+[12:48:11 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:11 PM] 🎯 Potential SET: 2x king (C, S)
+[12:48:11 PM] 🎯 COMPLETE RUN: 10-jack-queen-king of spades
+[12:48:11 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:11 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 4H, 5S, 2D, 4D, 5H, 10S, kingC, 2S, 5D, queenS, kingS, 4C, jackS
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 11
+[12:48:11 PM] 🗑️ Top Discard: queenH
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 75.0)
+[12:48:11 PM] Reasons: completesSet, improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: kingC (usefulness: 55.0)
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 95%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: K♣
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] 📤 Took from discard: Q♥
+[12:48:11 PM] 📤 Discarded: K♣
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 12: Marcus ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 113 cards
+[12:48:11 PM] 🗑️ Discard pile: 3 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Marcus
+[12:48:11 PM] Turn Count: 12
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:11 PM] SPADES: 5, 6, 8, 9
+[12:48:11 PM] HEARTS: 7, 10, king
+[12:48:11 PM] DIAMONDS: 6, 9, 10
+[12:48:11 PM] CLUBS: 5, 7, 8
+[12:48:11 PM] 🎯 Potential SET: 2x 5 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 6 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 9 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:11 PM] 🔸 Partial run: 5-6 of spades
+[12:48:11 PM] 🔸 Partial run: 8-9 of spades
+[12:48:11 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:11 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:11 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 10D, 8C, kingH, 6D, 5C, 7H, 6S, 7C, 5S, 10H, 9D, 9S, 8S
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 12
+[12:48:11 PM] 🗑️ Top Discard: kingC
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 60.0)
+[12:48:11 PM] Reasons: improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: kingH (usefulness: -7.0)
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 95%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: K♥
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] 📤 Took from discard: K♣
+[12:48:11 PM] 📤 Discarded: K♥
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 13: Sebastian ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 113 cards
+[12:48:11 PM] 🗑️ Discard pile: 3 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Sebastian
+[12:48:11 PM] Turn Count: 13
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:11 PM] SPADES: 9
+[12:48:11 PM] HEARTS: ace, ace, 7, 7
+[12:48:11 PM] DIAMONDS: ace, 2, 3, 9
+[12:48:11 PM] CLUBS: 3, 9, 9, queen
+[12:48:11 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, H)
+[12:48:11 PM] 🎯 Potential SET: 4x 9 (C, C, S, D)
+[12:48:11 PM] 🎯 Potential SET: 3x ace (D, H, H)
+[12:48:11 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, queenC, 7H, 9C, aceH, 7H, 9S, aceH, 9D
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 13
+[12:48:11 PM] 🗑️ Top Discard: kingH
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 🎲 Drawing from pile (discard score too low: -7.0)
+[12:48:11 PM] 🗑️ Will discard: queenC (usefulness: 15.0)
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: drawFromPile
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 70%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:11 PM] 🗑️ Will discard: Q♣
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] 🎲 Drew from pile: 8♥
+[12:48:11 PM] 📤 Discarded: Q♣
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 14: Isaiah ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 112 cards
+[12:48:11 PM] 🗑️ Discard pile: 4 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Isaiah
+[12:48:11 PM] Turn Count: 14
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:11 PM] SPADES: 2, 5, 10, jack, queen, king
+[12:48:11 PM] HEARTS: 4, 5, queen
+[12:48:11 PM] DIAMONDS: 2, 4, 5
+[12:48:11 PM] CLUBS: 4
+[12:48:11 PM] 🎯 Potential SET: 2x 2 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 3x 4 (H, D, C)
+[12:48:11 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:11 PM] 🎯 Potential SET: 2x queen (S, H)
+[12:48:11 PM] 🎯 COMPLETE RUN: 10-jack-queen-king of spades
+[12:48:11 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:11 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 4H, 5S, 2D, 4D, 5H, 10S, 2S, 5D, queenS, kingS, 4C, jackS, queenH
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 14
+[12:48:11 PM] 🗑️ Top Discard: queenC
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 115.0)
+[12:48:11 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: queenH (usefulness: 60.0)
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 95%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: Q♥
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] 📤 Took from discard: Q♣
+[12:48:11 PM] 📤 Discarded: Q♥
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 15: Marcus ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 112 cards
+[12:48:11 PM] 🗑️ Discard pile: 4 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Marcus
+[12:48:11 PM] Turn Count: 15
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:11 PM] SPADES: 5, 6, 8, 9
+[12:48:11 PM] HEARTS: 7, 10
+[12:48:11 PM] DIAMONDS: 6, 9, 10
+[12:48:11 PM] CLUBS: 5, 7, 8, king
+[12:48:11 PM] 🎯 Potential SET: 2x 5 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 6 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 9 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:11 PM] 🔸 Partial run: 5-6 of spades
+[12:48:11 PM] 🔸 Partial run: 8-9 of spades
+[12:48:11 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:11 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:11 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 10D, 8C, 6D, 5C, 7H, 6S, 7C, 5S, 10H, 9D, 9S, 8S, kingC
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 15
+[12:48:11 PM] 🗑️ Top Discard: queenH
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 25.0)
+[12:48:11 PM] Reasons: improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: kingC (usefulness: -7.0)
+[12:48:11 PM] 📊 Confidence: 63%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 63%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: K♣
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 63%
+[12:48:11 PM] 📤 Took from discard: Q♥
+[12:48:11 PM] 📤 Discarded: K♣
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 16: Sebastian ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 112 cards
+[12:48:11 PM] 🗑️ Discard pile: 4 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Sebastian
+[12:48:11 PM] Turn Count: 16
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:11 PM] SPADES: 9
+[12:48:11 PM] HEARTS: ace, ace, 7, 7, 8
+[12:48:11 PM] DIAMONDS: ace, 2, 3, 9
+[12:48:11 PM] CLUBS: 3, 9, 9
+[12:48:11 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, H)
+[12:48:11 PM] 🎯 Potential SET: 4x 9 (C, C, S, D)
+[12:48:11 PM] 🎯 Potential SET: 3x ace (D, H, H)
+[12:48:11 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:11 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, 7H, 9C, aceH, 7H, 9S, aceH, 9D, 8H
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 16
+[12:48:11 PM] 🗑️ Top Discard: kingC
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 🎲 Drawing from pile (discard score too low: -7.0)
+[12:48:11 PM] 🗑️ Will discard: 9S (usefulness: 75.0)
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: drawFromPile
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 70%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:11 PM] 🗑️ Will discard: 9♠
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] 🎲 Drew from pile: 7♣
+[12:48:11 PM] 📤 Discarded: 9♠
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 17: Isaiah ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 111 cards
+[12:48:11 PM] 🗑️ Discard pile: 5 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Isaiah
+[12:48:11 PM] Turn Count: 17
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:11 PM] SPADES: 2, 5, 10, jack, queen, king
+[12:48:11 PM] HEARTS: 4, 5
+[12:48:11 PM] DIAMONDS: 2, 4, 5
+[12:48:11 PM] CLUBS: 4, queen
+[12:48:11 PM] 🎯 Potential SET: 2x 2 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 3x 4 (H, D, C)
+[12:48:11 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:11 PM] 🎯 Potential SET: 2x queen (S, C)
+[12:48:11 PM] 🎯 COMPLETE RUN: 10-jack-queen-king of spades
+[12:48:11 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:11 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 4H, 5S, 2D, 4D, 5H, 10S, 2S, 5D, queenS, kingS, 4C, jackS, queenC
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 17
+[12:48:11 PM] 🗑️ Top Discard: 9S
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 187.0)
+[12:48:11 PM] Reasons: completesStraightRun, completesRun, improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: queenC (usefulness: 55.0)
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 95%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: Q♣
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] 📤 Took from discard: 9♠
+[12:48:11 PM] 📤 Discarded: Q♣
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 18: Marcus ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 111 cards
+[12:48:11 PM] 🗑️ Discard pile: 5 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Marcus
+[12:48:11 PM] Turn Count: 18
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:11 PM] SPADES: 5, 6, 8, 9
+[12:48:11 PM] HEARTS: 7, 10, queen
+[12:48:11 PM] DIAMONDS: 6, 9, 10
+[12:48:11 PM] CLUBS: 5, 7, 8
+[12:48:11 PM] 🎯 Potential SET: 2x 5 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 6 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 9 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:11 PM] 🔸 Partial run: 5-6 of spades
+[12:48:11 PM] 🔸 Partial run: 8-9 of spades
+[12:48:11 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:11 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:11 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 10D, 8C, 6D, 5C, 7H, 6S, 7C, 5S, 10H, 9D, 9S, 8S, queenH
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 18
+[12:48:11 PM] 🗑️ Top Discard: queenC
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 📈 Taking from discard pile (Score: 60.0)
+[12:48:11 PM] Reasons: improvesHand, lowRisk
+[12:48:11 PM] 🗑️ Will discard: queenH (usefulness: 25.0)
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: takeDiscard
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 95%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:11 PM] 🗑️ Will discard: Q♥
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 95%
+[12:48:11 PM] 📤 Took from discard: Q♣
+[12:48:11 PM] 📤 Discarded: Q♥
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 19: Sebastian ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 111 cards
+[12:48:11 PM] 🗑️ Discard pile: 5 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Sebastian
+[12:48:11 PM] Turn Count: 19
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:11 PM] HEARTS: ace, ace, 7, 7, 8
+[12:48:11 PM] DIAMONDS: ace, 2, 3, 9
+[12:48:11 PM] CLUBS: 3, 7, 9, 9
+[12:48:11 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:11 PM] 🎯 Potential SET: 3x 7 (H, H, C)
+[12:48:11 PM] 🎯 Potential SET: 3x 9 (C, C, D)
+[12:48:11 PM] 🎯 Potential SET: 3x ace (D, H, H)
+[12:48:11 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:11 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, 7H, 9C, aceH, 7H, aceH, 9D, 8H, 7C
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 19
+[12:48:11 PM] 🗑️ Top Discard: queenH
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 🎲 Drawing from pile (discard score too low: -4.0)
+[12:48:11 PM] 🗑️ Will discard: aceH (usefulness: 80.0)
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: drawFromPile
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 70%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:11 PM] 🗑️ Will discard: A♥
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] 🎲 Drew from pile: 6♣
+[12:48:11 PM] 📤 Discarded: A♥
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 20: Isaiah ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 110 cards
+[12:48:11 PM] 🗑️ Discard pile: 6 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Isaiah
+[12:48:11 PM] Turn Count: 20
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:11 PM] SPADES: 2, 5, 9, 10, jack, queen, king
+[12:48:11 PM] HEARTS: 4, 5
+[12:48:11 PM] DIAMONDS: 2, 4, 5
+[12:48:11 PM] CLUBS: 4
+[12:48:11 PM] 🎯 Potential SET: 2x 2 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 3x 4 (H, D, C)
+[12:48:11 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:11 PM] 🎯 COMPLETE RUN: 9-10-jack-queen-king of spades
+[12:48:11 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:11 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:11 PM] 🃏 Jokers in hand: 1
+[12:48:11 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 4H, 5S, 2D, 4D, 5H, 10S, 2S, 5D, queenS, kingS, 4C, jackS, 9S
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 20
+[12:48:11 PM] 🗑️ Top Discard: aceH
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:11 PM] 🎲 Drawing from pile (discard score too low: 10.0)
+[12:48:11 PM] 🗑️ Will discard: 2S (usefulness: 65.0)
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] ✅ === FINAL DECISION ===
+[12:48:11 PM] Action: drawFromPile
+[12:48:11 PM] Can Declare: NO
+[12:48:11 PM] Confidence: 70%
+[12:48:11 PM] === TURN END ===
+[12:48:11 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:11 PM] 🗑️ Will discard: 2♠
+[12:48:11 PM] 🏆 Can declare: NO
+[12:48:11 PM] 📊 Confidence: 70%
+[12:48:11 PM] 🎲 Drew from pile: 7♠
+[12:48:11 PM] 📤 Discarded: 2♠
+[12:48:11 PM] 📋 Final hand size: 13 cards
+[12:48:11 PM] --- Turn 21: Marcus ---
+[12:48:11 PM] 📋 Hand size: 13 cards
+[12:48:11 PM] 🎲 Draw pile: 109 cards
+[12:48:11 PM] 🗑️ Discard pile: 7 cards
+[12:48:11 PM] 🎮 === GAME TURN START ===
+[12:48:11 PM] Current Player: Marcus
+[12:48:11 PM] Turn Count: 21
+[12:48:11 PM] Players in game: 3
+[12:48:11 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:11 PM] SPADES: 5, 6, 8, 9
+[12:48:11 PM] HEARTS: 7, 10
+[12:48:11 PM] DIAMONDS: 6, 9, 10
+[12:48:11 PM] CLUBS: 5, 7, 8, queen
+[12:48:11 PM] 🎯 Potential SET: 2x 5 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 6 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:11 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 9 (D, S)
+[12:48:11 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:11 PM] 🔸 Partial run: 5-6 of spades
+[12:48:11 PM] 🔸 Partial run: 8-9 of spades
+[12:48:11 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:11 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:11 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:11 PM] 📋 Hand (13 cards): 10D, 8C, 6D, 5C, 7H, 6S, 7C, 5S, 10H, 9D, 9S, 8S, queenC
+[12:48:11 PM] 🎮 Game Phase: mid | Turn: 21
+[12:48:11 PM] 🗑️ Top Discard: 2S
+[12:48:11 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:12 PM] 🎲 Drawing from pile (discard score too low: 5.0)
+[12:48:12 PM] 🗑️ Will discard: queenC (usefulness: -4.0)
+[12:48:12 PM] 📊 Confidence: 70%
+[12:48:12 PM] ✅ === FINAL DECISION ===
+[12:48:12 PM] Action: drawFromPile
+[12:48:12 PM] Can Declare: NO
+[12:48:12 PM] Confidence: 70%
+[12:48:12 PM] === TURN END ===
+[12:48:12 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:12 PM] 🗑️ Will discard: Q♣
+[12:48:12 PM] 🏆 Can declare: NO
+[12:48:12 PM] 📊 Confidence: 70%
+[12:48:12 PM] 🎲 Drew from pile: 9♥
+[12:48:12 PM] 📤 Discarded: Q♣
+[12:48:12 PM] 📋 Final hand size: 13 cards
+[12:48:12 PM] --- Turn 22: Sebastian ---
+[12:48:12 PM] 📋 Hand size: 13 cards
+[12:48:12 PM] 🎲 Draw pile: 108 cards
+[12:48:12 PM] 🗑️ Discard pile: 8 cards
+[12:48:12 PM] 🎮 === GAME TURN START ===
+[12:48:12 PM] Current Player: Sebastian
+[12:48:12 PM] Turn Count: 22
+[12:48:12 PM] Players in game: 3
+[12:48:12 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:12 PM] HEARTS: ace, 7, 7, 8
+[12:48:12 PM] DIAMONDS: ace, 2, 3, 9
+[12:48:12 PM] CLUBS: 3, 6, 7, 9, 9
+[12:48:12 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:12 PM] 🎯 Potential SET: 3x 7 (H, H, C)
+[12:48:12 PM] 🎯 Potential SET: 3x 9 (C, C, D)
+[12:48:12 PM] 🎯 Potential SET: 2x ace (D, H)
+[12:48:12 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:12 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:12 PM] 🔸 Partial run: 6-7 of clubs
+[12:48:12 PM] 🃏 Jokers in hand: 1
+[12:48:12 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:12 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, 7H, 9C, 7H, aceH, 9D, 8H, 7C, 6C
+[12:48:12 PM] 🎮 Game Phase: mid | Turn: 22
+[12:48:12 PM] 🗑️ Top Discard: queenC
+[12:48:12 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:12 PM] 🎲 Drawing from pile (discard score too low: 15.0)
+[12:48:12 PM] 🗑️ Will discard: aceH (usefulness: 60.0)
+[12:48:12 PM] 📊 Confidence: 70%
+[12:48:12 PM] ✅ === FINAL DECISION ===
+[12:48:12 PM] Action: drawFromPile
+[12:48:12 PM] Can Declare: NO
+[12:48:12 PM] Confidence: 70%
+[12:48:12 PM] === TURN END ===
+[12:48:12 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:12 PM] 🗑️ Will discard: A♥
+[12:48:12 PM] 🏆 Can declare: NO
+[12:48:12 PM] 📊 Confidence: 70%
+[12:48:12 PM] 🎲 Drew from pile: 6♣
+[12:48:12 PM] 📤 Discarded: A♥
+[12:48:12 PM] 📋 Final hand size: 13 cards
+[12:48:12 PM] --- Turn 23: Isaiah ---
+[12:48:12 PM] 📋 Hand size: 13 cards
+[12:48:12 PM] 🎲 Draw pile: 107 cards
+[12:48:12 PM] 🗑️ Discard pile: 9 cards
+[12:48:12 PM] 🎮 === GAME TURN START ===
+[12:48:12 PM] Current Player: Isaiah
+[12:48:12 PM] Turn Count: 23
+[12:48:12 PM] Players in game: 3
+[12:48:12 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:12 PM] SPADES: 5, 7, 9, 10, jack, queen, king
+[12:48:12 PM] HEARTS: 4, 5
+[12:48:12 PM] DIAMONDS: 2, 4, 5
+[12:48:12 PM] CLUBS: 4
+[12:48:12 PM] 🎯 Potential SET: 3x 4 (H, D, C)
+[12:48:12 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:12 PM] 🎯 COMPLETE RUN: 9-10-jack-queen-king of spades
+[12:48:12 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:12 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:12 PM] 🃏 Jokers in hand: 1
+[12:48:12 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:12 PM] 📋 Hand (13 cards): 4H, 5S, 2D, 4D, 5H, 10S, 5D, queenS, kingS, 4C, jackS, 9S, 7S
+[12:48:12 PM] 🎮 Game Phase: mid | Turn: 23
+[12:48:12 PM] 🗑️ Top Discard: aceH
+[12:48:12 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:12 PM] 🎲 Drawing from pile (discard score too low: 10.0)
+[12:48:12 PM] 🗑️ Will discard: 2D (usefulness: 47.0)
+[12:48:12 PM] 📊 Confidence: 70%
+[12:48:12 PM] ✅ === FINAL DECISION ===
+[12:48:12 PM] Action: drawFromPile
+[12:48:12 PM] Can Declare: NO
+[12:48:12 PM] Confidence: 70%
+[12:48:12 PM] === TURN END ===
+[12:48:12 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:12 PM] 🗑️ Will discard: 2♦
+[12:48:12 PM] 🏆 Can declare: NO
+[12:48:12 PM] 📊 Confidence: 70%
+[12:48:12 PM] 🎲 Drew from pile: 9♥
+[12:48:12 PM] 📤 Discarded: 2♦
+[12:48:12 PM] 📋 Final hand size: 13 cards
+[12:48:12 PM] --- Turn 24: Marcus ---
+[12:48:12 PM] 📋 Hand size: 13 cards
+[12:48:12 PM] 🎲 Draw pile: 106 cards
+[12:48:12 PM] 🗑️ Discard pile: 10 cards
+[12:48:12 PM] 🎮 === GAME TURN START ===
+[12:48:12 PM] Current Player: Marcus
+[12:48:12 PM] Turn Count: 24
+[12:48:12 PM] Players in game: 3
+[12:48:12 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:12 PM] SPADES: 5, 6, 8, 9
+[12:48:12 PM] HEARTS: 7, 9, 10
+[12:48:12 PM] DIAMONDS: 6, 9, 10
+[12:48:12 PM] CLUBS: 5, 7, 8
+[12:48:12 PM] 🎯 Potential SET: 2x 5 (C, S)
+[12:48:12 PM] 🎯 Potential SET: 2x 6 (D, S)
+[12:48:12 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:12 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:12 PM] 🎯 Potential SET: 3x 9 (D, S, H)
+[12:48:12 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:12 PM] 🔸 Partial run: 5-6 of spades
+[12:48:12 PM] 🔸 Partial run: 8-9 of spades
+[12:48:12 PM] 🔸 Partial run: 9-10 of hearts
+[12:48:12 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:12 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:12 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:12 PM] 📋 Hand (13 cards): 10D, 8C, 6D, 5C, 7H, 6S, 7C, 5S, 10H, 9D, 9S, 8S, 9H
+[12:48:12 PM] 🎮 Game Phase: mid | Turn: 24
+[12:48:12 PM] 🗑️ Top Discard: 2D
+[12:48:12 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:12 PM] 🎲 Drawing from pile (discard score too low: 5.0)
+[12:48:12 PM] 🗑️ Will discard: 6D (usefulness: 65.0)
+[12:48:12 PM] 📊 Confidence: 70%
+[12:48:12 PM] ✅ === FINAL DECISION ===
+[12:48:12 PM] Action: drawFromPile
+[12:48:12 PM] Can Declare: NO
+[12:48:12 PM] Confidence: 70%
+[12:48:12 PM] === TURN END ===
+[12:48:12 PM] 🧠 Enhanced AI Decision: drawFromPile
+[12:48:12 PM] 🗑️ Will discard: 6♦
+[12:48:12 PM] 🏆 Can declare: NO
+[12:48:12 PM] 📊 Confidence: 70%
+[12:48:12 PM] 🎲 Drew from pile: 5♣
+[12:48:12 PM] 📤 Discarded: 6♦
+[12:48:12 PM] 📋 Final hand size: 13 cards
+[12:48:12 PM] --- Turn 25: Sebastian ---
+[12:48:12 PM] 📋 Hand size: 13 cards
+[12:48:12 PM] 🎲 Draw pile: 105 cards
+[12:48:12 PM] 🗑️ Discard pile: 11 cards
+[12:48:12 PM] 🎮 === GAME TURN START ===
+[12:48:12 PM] Current Player: Sebastian
+[12:48:12 PM] Turn Count: 25
+[12:48:12 PM] Players in game: 3
+[12:48:12 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:12 PM] HEARTS: 7, 7, 8
+[12:48:12 PM] DIAMONDS: ace, 2, 3, 9
+[12:48:12 PM] CLUBS: 3, 6, 6, 7, 9, 9
+[12:48:12 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:12 PM] 🎯 Potential SET: 2x 6 (C, C)
+[12:48:12 PM] 🎯 Potential SET: 3x 7 (H, H, C)
+[12:48:12 PM] 🎯 Potential SET: 3x 9 (C, C, D)
+[12:48:12 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:12 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:12 PM] 🔸 Partial run: 6-7 of clubs
+[12:48:12 PM] 🃏 Jokers in hand: 1
+[12:48:12 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:12 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, 7H, 9C, 7H, 9D, 8H, 7C, 6C, 6C
+[12:48:12 PM] 🎮 Game Phase: late | Turn: 25
+[12:48:12 PM] 🗑️ Top Discard: 6D
+[12:48:12 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:12 PM] 📈 Taking from discard pile (Score: 170.0)
+[12:48:12 PM] Reasons: completesTanala, completesRun, completesSet, improvesHand, lowRisk
+[12:48:12 PM] 🗑️ Will discard: 9D (usefulness: 80.0)
+[12:48:12 PM] 📊 Confidence: 95%
+[12:48:12 PM] ✅ === FINAL DECISION ===
+[12:48:12 PM] Action: takeDiscard
+[12:48:12 PM] Can Declare: NO
+[12:48:12 PM] Confidence: 95%
+[12:48:12 PM] === TURN END ===
+[12:48:12 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:12 PM] 🗑️ Will discard: 9♦
+[12:48:12 PM] 🏆 Can declare: NO
+[12:48:12 PM] 📊 Confidence: 95%
+[12:48:12 PM] 📤 Took from discard: 6♦
+[12:48:12 PM] 📤 Discarded: 9♦
+[12:48:12 PM] 📋 Final hand size: 13 cards
+[12:48:12 PM] --- Turn 26: Isaiah ---
+[12:48:12 PM] 📋 Hand size: 13 cards
+[12:48:12 PM] 🎲 Draw pile: 105 cards
+[12:48:12 PM] 🗑️ Discard pile: 11 cards
+[12:48:12 PM] 🎮 === GAME TURN START ===
+[12:48:12 PM] Current Player: Isaiah
+[12:48:12 PM] Turn Count: 26
+[12:48:12 PM] Players in game: 3
+[12:48:12 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:12 PM] SPADES: 5, 7, 9, 10, jack, queen, king
+[12:48:12 PM] HEARTS: 4, 5, 9
+[12:48:12 PM] DIAMONDS: 4, 5
+[12:48:12 PM] CLUBS: 4
+[12:48:12 PM] 🎯 Potential SET: 3x 4 (H, D, C)
+[12:48:12 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:12 PM] 🎯 Potential SET: 2x 9 (S, H)
+[12:48:12 PM] 🎯 COMPLETE RUN: 9-10-jack-queen-king of spades
+[12:48:12 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:12 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:12 PM] 🃏 Jokers in hand: 1
+[12:48:12 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:12 PM] 📋 Hand (13 cards): 4H, 5S, 4D, 5H, 10S, 5D, queenS, kingS, 4C, jackS, 9S, 7S, 9H
+[12:48:12 PM] 🎮 Game Phase: late | Turn: 26
+[12:48:12 PM] 🗑️ Top Discard: 9D
+[12:48:12 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:12 PM] 📈 Taking from discard pile (Score: 140.0)
+[12:48:12 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:12 PM] 🗑️ Will discard: 4C (usefulness: 65.0)
+[12:48:12 PM] 📊 Confidence: 95%
+[12:48:12 PM] ✅ === FINAL DECISION ===
+[12:48:12 PM] Action: takeDiscard
+[12:48:12 PM] Can Declare: NO
+[12:48:12 PM] Confidence: 95%
+[12:48:12 PM] === TURN END ===
+[12:48:12 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:12 PM] 🗑️ Will discard: 4♣
+[12:48:12 PM] 🏆 Can declare: NO
+[12:48:12 PM] 📊 Confidence: 95%
+[12:48:12 PM] 📤 Took from discard: 9♦
+[12:48:12 PM] 📤 Discarded: 4♣
+[12:48:12 PM] 📋 Final hand size: 13 cards
+[12:48:12 PM] --- Turn 27: Marcus ---
+[12:48:12 PM] 📋 Hand size: 13 cards
+[12:48:12 PM] 🎲 Draw pile: 105 cards
+[12:48:12 PM] 🗑️ Discard pile: 11 cards
+[12:48:12 PM] 🎮 === GAME TURN START ===
+[12:48:12 PM] Current Player: Marcus
+[12:48:12 PM] Turn Count: 27
+[12:48:12 PM] Players in game: 3
+[12:48:12 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:12 PM] SPADES: 5, 6, 8, 9
+[12:48:12 PM] HEARTS: 7, 9, 10
+[12:48:12 PM] DIAMONDS: 9, 10
+[12:48:12 PM] CLUBS: 5, 5, 7, 8
+[12:48:12 PM] 🎯 Potential SET: 3x 5 (C, S, C)
+[12:48:12 PM] 🎯 Potential SET: 2x 7 (H, C)
+[12:48:12 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:12 PM] 🎯 Potential SET: 3x 9 (D, S, H)
+[12:48:12 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:12 PM] 🔸 Partial run: 5-6 of spades
+[12:48:12 PM] 🔸 Partial run: 8-9 of spades
+[12:48:12 PM] 🔸 Partial run: 9-10 of hearts
+[12:48:12 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:12 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:12 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:12 PM] 📋 Hand (13 cards): 10D, 8C, 5C, 7H, 6S, 7C, 5S, 10H, 9D, 9S, 8S, 9H, 5C
+[12:48:12 PM] 🎮 Game Phase: late | Turn: 27
+[12:48:12 PM] 🗑️ Top Discard: 4C
+[12:48:12 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:12 PM] 📈 Taking from discard pile (Score: 215.0)
+[12:48:12 PM] Reasons: completesRun, improvesHand, lowRisk
+[12:48:12 PM] 🗑️ Will discard: 7H (usefulness: 85.0)
+[12:48:12 PM] 📊 Confidence: 95%
+[12:48:12 PM] ✅ === FINAL DECISION ===
+[12:48:12 PM] Action: takeDiscard
+[12:48:12 PM] Can Declare: NO
+[12:48:12 PM] Confidence: 95%
+[12:48:12 PM] === TURN END ===
+[12:48:12 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:12 PM] 🗑️ Will discard: 7♥
+[12:48:12 PM] 🏆 Can declare: NO
+[12:48:12 PM] 📊 Confidence: 95%
+[12:48:12 PM] 📤 Took from discard: 4♣
+[12:48:12 PM] 📤 Discarded: 7♥
+[12:48:12 PM] 📋 Final hand size: 13 cards
+[12:48:12 PM] --- Turn 28: Sebastian ---
+[12:48:12 PM] 📋 Hand size: 13 cards
+[12:48:12 PM] 🎲 Draw pile: 105 cards
+[12:48:12 PM] 🗑️ Discard pile: 11 cards
+[12:48:12 PM] 🎮 === GAME TURN START ===
+[12:48:12 PM] Current Player: Sebastian
+[12:48:12 PM] Turn Count: 28
+[12:48:12 PM] Players in game: 3
+[12:48:12 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:12 PM] HEARTS: 7, 7, 8
+[12:48:12 PM] DIAMONDS: ace, 2, 3, 6
+[12:48:12 PM] CLUBS: 3, 6, 6, 7, 9, 9
+[12:48:12 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:12 PM] 🎯 Potential SET: 3x 6 (C, C, D)
+[12:48:12 PM] 🎯 Potential SET: 3x 7 (H, H, C)
+[12:48:12 PM] 🎯 Potential SET: 2x 9 (C, C)
+[12:48:12 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:12 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:12 PM] 🔸 Partial run: 6-7 of clubs
+[12:48:12 PM] 🃏 Jokers in hand: 1
+[12:48:12 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:12 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, 7H, 9C, 7H, 8H, 7C, 6C, 6C, 6D
+[12:48:12 PM] 🎮 Game Phase: late | Turn: 28
+[12:48:12 PM] 🗑️ Top Discard: 7H
+[12:48:12 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:12 PM] 📈 Taking from discard pile (Score: 255.0)
+[12:48:12 PM] Reasons: completesTanala, completesRun, completesSet, improvesHand, lowRisk
+[12:48:12 PM] 🗑️ Will discard: 6D (usefulness: 85.0)
+[12:48:12 PM] 📊 Confidence: 95%
+[12:48:12 PM] ✅ === FINAL DECISION ===
+[12:48:12 PM] Action: takeDiscard
+[12:48:12 PM] Can Declare: NO
+[12:48:12 PM] Confidence: 95%
+[12:48:12 PM] === TURN END ===
+[12:48:12 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:12 PM] 🗑️ Will discard: 6♦
+[12:48:12 PM] 🏆 Can declare: NO
+[12:48:12 PM] 📊 Confidence: 95%
+[12:48:12 PM] 📤 Took from discard: 7♥
+[12:48:12 PM] 📤 Discarded: 6♦
+[12:48:12 PM] 📋 Final hand size: 13 cards
+[12:48:12 PM] --- Turn 29: Isaiah ---
+[12:48:12 PM] 📋 Hand size: 13 cards
+[12:48:12 PM] 🎲 Draw pile: 105 cards
+[12:48:12 PM] 🗑️ Discard pile: 11 cards
+[12:48:12 PM] 🎮 === GAME TURN START ===
+[12:48:12 PM] Current Player: Isaiah
+[12:48:12 PM] Turn Count: 29
+[12:48:12 PM] Players in game: 3
+[12:48:12 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:12 PM] SPADES: 5, 7, 9, 10, jack, queen, king
+[12:48:12 PM] HEARTS: 4, 5, 9
+[12:48:12 PM] DIAMONDS: 4, 5, 9
+[12:48:12 PM] 🎯 Potential SET: 2x 4 (H, D)
+[12:48:12 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:12 PM] 🎯 Potential SET: 3x 9 (S, H, D)
+[12:48:12 PM] 🎯 COMPLETE RUN: 9-10-jack-queen-king of spades
+[12:48:12 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:12 PM] 🔸 Partial run: 4-5 of diamonds
+[12:48:12 PM] 🃏 Jokers in hand: 1
+[12:48:12 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:12 PM] 📋 Hand (13 cards): 4H, 5S, 4D, 5H, 10S, 5D, queenS, kingS, jackS, 9S, 7S, 9H, 9D
+[12:48:12 PM] 🎮 Game Phase: late | Turn: 29
+[12:48:12 PM] 🗑️ Top Discard: 6D
+[12:48:12 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:13 PM] 📈 Taking from discard pile (Score: 202.0)
+[12:48:13 PM] Reasons: completesStraightRun, completesRun, improvesHand, lowRisk
+[12:48:13 PM] 🗑️ Will discard: 9H (usefulness: 80.0)
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] ✅ === FINAL DECISION ===
+[12:48:13 PM] Action: takeDiscard
+[12:48:13 PM] Can Declare: NO
+[12:48:13 PM] Confidence: 95%
+[12:48:13 PM] === TURN END ===
+[12:48:13 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:13 PM] 🗑️ Will discard: 9♥
+[12:48:13 PM] 🏆 Can declare: NO
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] 📤 Took from discard: 6♦
+[12:48:13 PM] 📤 Discarded: 9♥
+[12:48:13 PM] 📋 Final hand size: 13 cards
+[12:48:13 PM] --- Turn 30: Marcus ---
+[12:48:13 PM] 📋 Hand size: 13 cards
+[12:48:13 PM] 🎲 Draw pile: 105 cards
+[12:48:13 PM] 🗑️ Discard pile: 11 cards
+[12:48:13 PM] 🎮 === GAME TURN START ===
+[12:48:13 PM] Current Player: Marcus
+[12:48:13 PM] Turn Count: 30
+[12:48:13 PM] Players in game: 3
+[12:48:13 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:13 PM] SPADES: 5, 6, 8, 9
+[12:48:13 PM] HEARTS: 9, 10
+[12:48:13 PM] DIAMONDS: 9, 10
+[12:48:13 PM] CLUBS: 4, 5, 5, 7, 8
+[12:48:13 PM] 🎯 Potential SET: 3x 5 (C, S, C)
+[12:48:13 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:13 PM] 🎯 Potential SET: 3x 9 (D, S, H)
+[12:48:13 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:13 PM] 🔸 Partial run: 5-6 of spades
+[12:48:13 PM] 🔸 Partial run: 8-9 of spades
+[12:48:13 PM] 🔸 Partial run: 9-10 of hearts
+[12:48:13 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:13 PM] 🔸 Partial run: 4-5 of clubs
+[12:48:13 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:13 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:13 PM] 📋 Hand (13 cards): 10D, 8C, 5C, 6S, 7C, 5S, 10H, 9D, 9S, 8S, 9H, 5C, 4C
+[12:48:13 PM] 🎮 Game Phase: late | Turn: 30
+[12:48:13 PM] 🗑️ Top Discard: 9H
+[12:48:13 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:13 PM] 📈 Taking from discard pile (Score: 225.0)
+[12:48:13 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:13 PM] 🗑️ Will discard: 6S (usefulness: 115.0)
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] ✅ === FINAL DECISION ===
+[12:48:13 PM] Action: takeDiscard
+[12:48:13 PM] Can Declare: NO
+[12:48:13 PM] Confidence: 95%
+[12:48:13 PM] === TURN END ===
+[12:48:13 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:13 PM] 🗑️ Will discard: 6♠
+[12:48:13 PM] 🏆 Can declare: NO
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] 📤 Took from discard: 9♥
+[12:48:13 PM] 📤 Discarded: 6♠
+[12:48:13 PM] 📋 Final hand size: 13 cards
+[12:48:13 PM] --- Turn 31: Sebastian ---
+[12:48:13 PM] 📋 Hand size: 13 cards
+[12:48:13 PM] 🎲 Draw pile: 105 cards
+[12:48:13 PM] 🗑️ Discard pile: 11 cards
+[12:48:13 PM] 🎮 === GAME TURN START ===
+[12:48:13 PM] Current Player: Sebastian
+[12:48:13 PM] Turn Count: 31
+[12:48:13 PM] Players in game: 3
+[12:48:13 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:13 PM] HEARTS: 7, 7, 7, 8
+[12:48:13 PM] DIAMONDS: ace, 2, 3
+[12:48:13 PM] CLUBS: 3, 6, 6, 7, 9, 9
+[12:48:13 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:13 PM] 🎯 Potential SET: 2x 6 (C, C)
+[12:48:13 PM] 🎯 Potential SET: 4x 7 (H, H, C, H)
+[12:48:13 PM] 🎯 Potential SET: 2x 9 (C, C)
+[12:48:13 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:13 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:13 PM] 🔸 Partial run: 6-7 of clubs
+[12:48:13 PM] 🃏 Jokers in hand: 1
+[12:48:13 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:13 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 9C, 7H, 9C, 7H, 8H, 7C, 6C, 6C, 7H
+[12:48:13 PM] 🎮 Game Phase: late | Turn: 31
+[12:48:13 PM] 🗑️ Top Discard: 6S
+[12:48:13 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:13 PM] 📈 Taking from discard pile (Score: 135.0)
+[12:48:13 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:13 PM] 🗑️ Will discard: 9C (usefulness: 117.0)
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] ✅ === FINAL DECISION ===
+[12:48:13 PM] Action: takeDiscard
+[12:48:13 PM] Can Declare: NO
+[12:48:13 PM] Confidence: 95%
+[12:48:13 PM] === TURN END ===
+[12:48:13 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:13 PM] 🗑️ Will discard: 9♣
+[12:48:13 PM] 🏆 Can declare: NO
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] 📤 Took from discard: 6♠
+[12:48:13 PM] 📤 Discarded: 9♣
+[12:48:13 PM] 📋 Final hand size: 13 cards
+[12:48:13 PM] --- Turn 32: Isaiah ---
+[12:48:13 PM] 📋 Hand size: 13 cards
+[12:48:13 PM] 🎲 Draw pile: 105 cards
+[12:48:13 PM] 🗑️ Discard pile: 11 cards
+[12:48:13 PM] 🎮 === GAME TURN START ===
+[12:48:13 PM] Current Player: Isaiah
+[12:48:13 PM] Turn Count: 32
+[12:48:13 PM] Players in game: 3
+[12:48:13 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:13 PM] SPADES: 5, 7, 9, 10, jack, queen, king
+[12:48:13 PM] HEARTS: 4, 5
+[12:48:13 PM] DIAMONDS: 4, 5, 6, 9
+[12:48:13 PM] 🎯 Potential SET: 2x 4 (H, D)
+[12:48:13 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:13 PM] 🎯 Potential SET: 2x 9 (S, D)
+[12:48:13 PM] 🎯 COMPLETE RUN: 9-10-jack-queen-king of spades
+[12:48:13 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:13 PM] 🎯 COMPLETE RUN: 4-5-6 of diamonds
+[12:48:13 PM] 🃏 Jokers in hand: 1
+[12:48:13 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:13 PM] 📋 Hand (13 cards): 4H, 5S, 4D, 5H, 10S, 5D, queenS, kingS, jackS, 9S, 7S, 9D, 6D
+[12:48:13 PM] 🎮 Game Phase: late | Turn: 32
+[12:48:13 PM] 🗑️ Top Discard: 9C
+[12:48:13 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:13 PM] 📈 Taking from discard pile (Score: 135.0)
+[12:48:13 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:13 PM] 🗑️ Will discard: 9D (usefulness: 70.0)
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] ✅ === FINAL DECISION ===
+[12:48:13 PM] Action: takeDiscard
+[12:48:13 PM] Can Declare: NO
+[12:48:13 PM] Confidence: 95%
+[12:48:13 PM] === TURN END ===
+[12:48:13 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:13 PM] 🗑️ Will discard: 9♦
+[12:48:13 PM] 🏆 Can declare: NO
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] 📤 Took from discard: 9♣
+[12:48:13 PM] 📤 Discarded: 9♦
+[12:48:13 PM] 📋 Final hand size: 13 cards
+[12:48:13 PM] --- Turn 33: Marcus ---
+[12:48:13 PM] 📋 Hand size: 13 cards
+[12:48:13 PM] 🎲 Draw pile: 105 cards
+[12:48:13 PM] 🗑️ Discard pile: 11 cards
+[12:48:13 PM] 🎮 === GAME TURN START ===
+[12:48:13 PM] Current Player: Marcus
+[12:48:13 PM] Turn Count: 33
+[12:48:13 PM] Players in game: 3
+[12:48:13 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:13 PM] SPADES: 5, 8, 9
+[12:48:13 PM] HEARTS: 9, 9, 10
+[12:48:13 PM] DIAMONDS: 9, 10
+[12:48:13 PM] CLUBS: 4, 5, 5, 7, 8
+[12:48:13 PM] 🎯 Potential SET: 3x 5 (C, S, C)
+[12:48:13 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:13 PM] 🎯 Potential SET: 4x 9 (D, S, H, H)
+[12:48:13 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:13 PM] 🔸 Partial run: 8-9 of spades
+[12:48:13 PM] 🔸 Partial run: 9-10 of hearts
+[12:48:13 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:13 PM] 🔸 Partial run: 4-5 of clubs
+[12:48:13 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:13 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:13 PM] 📋 Hand (13 cards): 10D, 8C, 5C, 7C, 5S, 10H, 9D, 9S, 8S, 9H, 5C, 4C, 9H
+[12:48:13 PM] 🎮 Game Phase: late | Turn: 33
+[12:48:13 PM] 🗑️ Top Discard: 9D
+[12:48:13 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:13 PM] 📈 Taking from discard pile (Score: 225.0)
+[12:48:13 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:13 PM] 🗑️ Will discard: 5S (usefulness: 80.0)
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] ✅ === FINAL DECISION ===
+[12:48:13 PM] Action: takeDiscard
+[12:48:13 PM] Can Declare: NO
+[12:48:13 PM] Confidence: 95%
+[12:48:13 PM] === TURN END ===
+[12:48:13 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:13 PM] 🗑️ Will discard: 5♠
+[12:48:13 PM] 🏆 Can declare: NO
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] 📤 Took from discard: 9♦
+[12:48:13 PM] 📤 Discarded: 5♠
+[12:48:13 PM] 📋 Final hand size: 13 cards
+[12:48:13 PM] --- Turn 34: Sebastian ---
+[12:48:13 PM] 📋 Hand size: 13 cards
+[12:48:13 PM] 🎲 Draw pile: 105 cards
+[12:48:13 PM] 🗑️ Discard pile: 11 cards
+[12:48:13 PM] 🎮 === GAME TURN START ===
+[12:48:13 PM] Current Player: Sebastian
+[12:48:13 PM] Turn Count: 34
+[12:48:13 PM] Players in game: 3
+[12:48:13 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:13 PM] SPADES: 6
+[12:48:13 PM] HEARTS: 7, 7, 7, 8
+[12:48:13 PM] DIAMONDS: ace, 2, 3
+[12:48:13 PM] CLUBS: 3, 6, 6, 7, 9
+[12:48:13 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:13 PM] 🎯 Potential SET: 3x 6 (C, C, S)
+[12:48:13 PM] 🎯 Potential SET: 4x 7 (H, H, C, H)
+[12:48:13 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:13 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:13 PM] 🔸 Partial run: 6-7 of clubs
+[12:48:13 PM] 🃏 Jokers in hand: 1
+[12:48:13 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:13 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 7H, 9C, 7H, 8H, 7C, 6C, 6C, 7H, 6S
+[12:48:13 PM] 🎮 Game Phase: late | Turn: 34
+[12:48:13 PM] 🗑️ Top Discard: 5S
+[12:48:13 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:13 PM] 📈 Taking from discard pile (Score: 105.0)
+[12:48:13 PM] Reasons: improvesHand, lowRisk
+[12:48:13 PM] 🗑️ Will discard: 9C (usefulness: 57.0)
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] ✅ === FINAL DECISION ===
+[12:48:13 PM] Action: takeDiscard
+[12:48:13 PM] Can Declare: NO
+[12:48:13 PM] Confidence: 95%
+[12:48:13 PM] === TURN END ===
+[12:48:13 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:13 PM] 🗑️ Will discard: 9♣
+[12:48:13 PM] 🏆 Can declare: NO
+[12:48:13 PM] 📊 Confidence: 95%
+[12:48:13 PM] 📤 Took from discard: 5♠
+[12:48:13 PM] 📤 Discarded: 9♣
+[12:48:13 PM] 📋 Final hand size: 13 cards
+[12:48:13 PM] --- Turn 35: Isaiah ---
+[12:48:13 PM] 📋 Hand size: 13 cards
+[12:48:13 PM] 🎲 Draw pile: 105 cards
+[12:48:13 PM] 🗑️ Discard pile: 11 cards
+[12:48:13 PM] 🎮 === GAME TURN START ===
+[12:48:13 PM] Current Player: Isaiah
+[12:48:13 PM] Turn Count: 35
+[12:48:13 PM] Players in game: 3
+[12:48:13 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:13 PM] SPADES: 5, 7, 9, 10, jack, queen, king
+[12:48:13 PM] HEARTS: 4, 5
+[12:48:13 PM] DIAMONDS: 4, 5, 6
+[12:48:13 PM] CLUBS: 9
+[12:48:13 PM] 🎯 Potential SET: 2x 4 (H, D)
+[12:48:13 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:13 PM] 🎯 Potential SET: 2x 9 (S, C)
+[12:48:13 PM] 🎯 COMPLETE RUN: 9-10-jack-queen-king of spades
+[12:48:13 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:13 PM] 🎯 COMPLETE RUN: 4-5-6 of diamonds
+[12:48:13 PM] 🃏 Jokers in hand: 1
+[12:48:13 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:13 PM] 📋 Hand (13 cards): 4H, 5S, 4D, 5H, 10S, 5D, queenS, kingS, jackS, 9S, 7S, 6D, 9C
+[12:48:13 PM] 🎮 Game Phase: late | Turn: 35
+[12:48:13 PM] 🗑️ Top Discard: 9C
+[12:48:13 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:14 PM] 📈 Taking from discard pile (Score: 140.0)
+[12:48:14 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:14 PM] 🗑️ Will discard: 9C (usefulness: 60.0)
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] ✅ === FINAL DECISION ===
+[12:48:14 PM] Action: takeDiscard
+[12:48:14 PM] Can Declare: NO
+[12:48:14 PM] Confidence: 95%
+[12:48:14 PM] === TURN END ===
+[12:48:14 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:14 PM] 🗑️ Will discard: 9♣
+[12:48:14 PM] 🏆 Can declare: NO
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] 📤 Took from discard: 9♣
+[12:48:14 PM] 📤 Discarded: 9♣
+[12:48:14 PM] 📋 Final hand size: 13 cards
+[12:48:14 PM] --- Turn 36: Marcus ---
+[12:48:14 PM] 📋 Hand size: 13 cards
+[12:48:14 PM] 🎲 Draw pile: 105 cards
+[12:48:14 PM] 🗑️ Discard pile: 11 cards
+[12:48:14 PM] 🎮 === GAME TURN START ===
+[12:48:14 PM] Current Player: Marcus
+[12:48:14 PM] Turn Count: 36
+[12:48:14 PM] Players in game: 3
+[12:48:14 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:14 PM] SPADES: 8, 9
+[12:48:14 PM] HEARTS: 9, 9, 10
+[12:48:14 PM] DIAMONDS: 9, 9, 10
+[12:48:14 PM] CLUBS: 4, 5, 5, 7, 8
+[12:48:14 PM] 🎯 Potential SET: 2x 5 (C, C)
+[12:48:14 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:14 PM] 🎯 Potential SET: 5x 9 (D, S, H, H, D)
+[12:48:14 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:14 PM] 🔸 Partial run: 8-9 of spades
+[12:48:14 PM] 🔸 Partial run: 9-10 of hearts
+[12:48:14 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:14 PM] 🔸 Partial run: 4-5 of clubs
+[12:48:14 PM] 🔸 Partial run: 7-8 of clubs
+[12:48:14 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:14 PM] 📋 Hand (13 cards): 10D, 8C, 5C, 7C, 10H, 9D, 9S, 8S, 9H, 5C, 4C, 9H, 9D
+[12:48:14 PM] 🎮 Game Phase: late | Turn: 36
+[12:48:14 PM] 🗑️ Top Discard: 9C
+[12:48:14 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:14 PM] 📈 Taking from discard pile (Score: 265.0)
+[12:48:14 PM] Reasons: completesStraightRun, completesTanala, completesRun, completesSet, improvesHand, lowRisk
+[12:48:14 PM] 🗑️ Will discard: 7C (usefulness: 135.0)
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] ✅ === FINAL DECISION ===
+[12:48:14 PM] Action: takeDiscard
+[12:48:14 PM] Can Declare: NO
+[12:48:14 PM] Confidence: 95%
+[12:48:14 PM] === TURN END ===
+[12:48:14 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:14 PM] 🗑️ Will discard: 7♣
+[12:48:14 PM] 🏆 Can declare: NO
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] 📤 Took from discard: 9♣
+[12:48:14 PM] 📤 Discarded: 7♣
+[12:48:14 PM] 📋 Final hand size: 13 cards
+[12:48:14 PM] --- Turn 37: Sebastian ---
+[12:48:14 PM] 📋 Hand size: 13 cards
+[12:48:14 PM] 🎲 Draw pile: 105 cards
+[12:48:14 PM] 🗑️ Discard pile: 11 cards
+[12:48:14 PM] 🎮 === GAME TURN START ===
+[12:48:14 PM] Current Player: Sebastian
+[12:48:14 PM] Turn Count: 37
+[12:48:14 PM] Players in game: 3
+[12:48:14 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:14 PM] SPADES: 5, 6
+[12:48:14 PM] HEARTS: 7, 7, 7, 8
+[12:48:14 PM] DIAMONDS: ace, 2, 3
+[12:48:14 PM] CLUBS: 3, 6, 6, 7
+[12:48:14 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:14 PM] 🎯 Potential SET: 3x 6 (C, C, S)
+[12:48:14 PM] 🎯 Potential SET: 4x 7 (H, H, C, H)
+[12:48:14 PM] 🔸 Partial run: 5-6 of spades
+[12:48:14 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:14 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:14 PM] 🔸 Partial run: 6-7 of clubs
+[12:48:14 PM] 🃏 Jokers in hand: 1
+[12:48:14 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:14 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 7H, 7H, 8H, 7C, 6C, 6C, 7H, 6S, 5S
+[12:48:14 PM] 🎮 Game Phase: late | Turn: 37
+[12:48:14 PM] 🗑️ Top Discard: 7C
+[12:48:14 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:14 PM] 📈 Taking from discard pile (Score: 335.0)
+[12:48:14 PM] Reasons: completesTanala, completesRun, completesSet, improvesHand, lowRisk
+[12:48:14 PM] 🗑️ Will discard: 5S (usefulness: 90.0)
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] ✅ === FINAL DECISION ===
+[12:48:14 PM] Action: takeDiscard
+[12:48:14 PM] Can Declare: NO
+[12:48:14 PM] Confidence: 95%
+[12:48:14 PM] === TURN END ===
+[12:48:14 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:14 PM] 🗑️ Will discard: 5♠
+[12:48:14 PM] 🏆 Can declare: NO
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] 📤 Took from discard: 7♣
+[12:48:14 PM] 📤 Discarded: 5♠
+[12:48:14 PM] 📋 Final hand size: 13 cards
+[12:48:14 PM] --- Turn 38: Isaiah ---
+[12:48:14 PM] 📋 Hand size: 13 cards
+[12:48:14 PM] 🎲 Draw pile: 105 cards
+[12:48:14 PM] 🗑️ Discard pile: 11 cards
+[12:48:14 PM] 🎮 === GAME TURN START ===
+[12:48:14 PM] Current Player: Isaiah
+[12:48:14 PM] Turn Count: 38
+[12:48:14 PM] Players in game: 3
+[12:48:14 PM] 🔍 === DETAILED HAND ANALYSIS for Isaiah ===
+[12:48:14 PM] SPADES: 5, 7, 9, 10, jack, queen, king
+[12:48:14 PM] HEARTS: 4, 5
+[12:48:14 PM] DIAMONDS: 4, 5, 6
+[12:48:14 PM] CLUBS: 9
+[12:48:14 PM] 🎯 Potential SET: 2x 4 (H, D)
+[12:48:14 PM] 🎯 Potential SET: 3x 5 (S, H, D)
+[12:48:14 PM] 🎯 Potential SET: 2x 9 (S, C)
+[12:48:14 PM] 🎯 COMPLETE RUN: 9-10-jack-queen-king of spades
+[12:48:14 PM] 🔸 Partial run: 4-5 of hearts
+[12:48:14 PM] 🎯 COMPLETE RUN: 4-5-6 of diamonds
+[12:48:14 PM] 🃏 Jokers in hand: 1
+[12:48:14 PM] 🤖 === Isaiah TURN ANALYSIS ===
+[12:48:14 PM] 📋 Hand (13 cards): 4H, 5S, 4D, 5H, 10S, 5D, queenS, kingS, jackS, 9S, 7S, 6D, 9C
+[12:48:14 PM] 🎮 Game Phase: late | Turn: 38
+[12:48:14 PM] 🗑️ Top Discard: 5S
+[12:48:14 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:14 PM] 📈 Taking from discard pile (Score: 202.0)
+[12:48:14 PM] Reasons: completesTanala, completesRun, completesSet, improvesHand, lowRisk
+[12:48:14 PM] 🗑️ Will discard: 9C (usefulness: 60.0)
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] ✅ === FINAL DECISION ===
+[12:48:14 PM] Action: takeDiscard
+[12:48:14 PM] Can Declare: NO
+[12:48:14 PM] Confidence: 95%
+[12:48:14 PM] === TURN END ===
+[12:48:14 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:14 PM] 🗑️ Will discard: 9♣
+[12:48:14 PM] 🏆 Can declare: NO
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] 📤 Took from discard: 5♠
+[12:48:14 PM] 📤 Discarded: 9♣
+[12:48:14 PM] 📋 Final hand size: 13 cards
+[12:48:14 PM] --- Turn 39: Marcus ---
+[12:48:14 PM] 📋 Hand size: 13 cards
+[12:48:14 PM] 🎲 Draw pile: 105 cards
+[12:48:14 PM] 🗑️ Discard pile: 11 cards
+[12:48:14 PM] 🎮 === GAME TURN START ===
+[12:48:14 PM] Current Player: Marcus
+[12:48:14 PM] Turn Count: 39
+[12:48:14 PM] Players in game: 3
+[12:48:14 PM] 🔍 === DETAILED HAND ANALYSIS for Marcus ===
+[12:48:14 PM] SPADES: 8, 9
+[12:48:14 PM] HEARTS: 9, 9, 10
+[12:48:14 PM] DIAMONDS: 9, 9, 10
+[12:48:14 PM] CLUBS: 4, 5, 5, 8, 9
+[12:48:14 PM] 🎯 Potential SET: 2x 5 (C, C)
+[12:48:14 PM] 🎯 Potential SET: 2x 8 (C, S)
+[12:48:14 PM] 🎯 Potential SET: 6x 9 (D, S, H, H, D, C)
+[12:48:14 PM] 🎯 Potential SET: 2x 10 (D, H)
+[12:48:14 PM] 🔸 Partial run: 8-9 of spades
+[12:48:14 PM] 🔸 Partial run: 9-10 of hearts
+[12:48:14 PM] 🔸 Partial run: 9-10 of diamonds
+[12:48:14 PM] 🔸 Partial run: 4-5 of clubs
+[12:48:14 PM] 🔸 Partial run: 8-9 of clubs
+[12:48:14 PM] 🤖 === Marcus TURN ANALYSIS ===
+[12:48:14 PM] 📋 Hand (13 cards): 10D, 8C, 5C, 10H, 9D, 9S, 8S, 9H, 5C, 4C, 9H, 9D, 9C
+[12:48:14 PM] 🎮 Game Phase: late | Turn: 39
+[12:48:14 PM] 🗑️ Top Discard: 9C
+[12:48:14 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:14 PM] 📈 Taking from discard pile (Score: 225.0)
+[12:48:14 PM] Reasons: completesTanala, completesSet, improvesHand, lowRisk
+[12:48:14 PM] 🗑️ Will discard: 8S (usefulness: 145.0)
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] ✅ === FINAL DECISION ===
+[12:48:14 PM] Action: takeDiscard
+[12:48:14 PM] Can Declare: NO
+[12:48:14 PM] Confidence: 95%
+[12:48:14 PM] === TURN END ===
+[12:48:14 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:14 PM] 🗑️ Will discard: 8♠
+[12:48:14 PM] 🏆 Can declare: NO
+[12:48:14 PM] 📊 Confidence: 95%
+[12:48:14 PM] 📤 Took from discard: 9♣
+[12:48:14 PM] 📤 Discarded: 8♠
+[12:48:14 PM] 📋 Final hand size: 13 cards
+[12:48:14 PM] --- Turn 40: Sebastian ---
+[12:48:14 PM] 📋 Hand size: 13 cards
+[12:48:14 PM] 🎲 Draw pile: 105 cards
+[12:48:14 PM] 🗑️ Discard pile: 11 cards
+[12:48:14 PM] 🎮 === GAME TURN START ===
+[12:48:14 PM] Current Player: Sebastian
+[12:48:14 PM] Turn Count: 40
+[12:48:14 PM] Players in game: 3
+[12:48:14 PM] 🔍 === DETAILED HAND ANALYSIS for Sebastian ===
+[12:48:14 PM] SPADES: 6
+[12:48:14 PM] HEARTS: 7, 7, 7, 8
+[12:48:14 PM] DIAMONDS: ace, 2, 3
+[12:48:14 PM] CLUBS: 3, 6, 6, 7, 7
+[12:48:14 PM] 🎯 Potential SET: 2x 3 (D, C)
+[12:48:14 PM] 🎯 Potential SET: 3x 6 (C, C, S)
+[12:48:14 PM] 🎯 Potential SET: 5x 7 (H, H, C, H, C)
+[12:48:14 PM] 🔸 Partial run: 7-8 of hearts
+[12:48:14 PM] 🎯 COMPLETE RUN: ace-2-3 of diamonds
+[12:48:14 PM] 🔸 Partial run: 6-7 of clubs
+[12:48:14 PM] 🃏 Jokers in hand: 1
+[12:48:14 PM] 🤖 === Sebastian TURN ANALYSIS ===
+[12:48:14 PM] 📋 Hand (13 cards): 3D, 2D, 3C, aceD, 7H, 7H, 8H, 7C, 6C, 6C, 7H, 6S, 7C
+[12:48:14 PM] 🎮 Game Phase: late | Turn: 40
+[12:48:14 PM] 🗑️ Top Discard: 8S
+[12:48:14 PM] 🃏 Jokers: 3S, 3C, 4H
+[12:48:14 PM] 🏆 CAN WIN! Taking from discard pile
+[12:48:14 PM] 🗑️ Will discard: 6S
+[12:48:14 PM] ✅ === FINAL DECISION ===
+[12:48:14 PM] Action: takeDiscard
+[12:48:14 PM] Can Declare: YES
+[12:48:14 PM] Confidence: 100%
+[12:48:14 PM] === TURN END ===
+[12:48:14 PM] 🧠 Enhanced AI Decision: takeDiscard
+[12:48:14 PM] 🗑️ Will discard: 6♠
+[12:48:14 PM] 🏆 Can declare: YES
+[12:48:14 PM] 📊 Confidence: 100%
+[12:48:14 PM] 📤 Took from discard: 8♠
+[12:48:14 PM] 🏆 Sebastian DECLARES RUMMY!
+[12:48:14 PM] 📋 Final hand: 3♦, 2♦, 3♣, A♦, 7♥, 7♥, 8♥, 7♣, 6♣, 6♣, 7♥, 6♠, 7♣, 8♠
+[12:48:14 PM] ✅ Win verified! Game ends after 40 turns.
+[12:48:14 PM] 📊 Winning hand analysis:
+[12:48:14 PM] Group A: A♦, 2♦, 3♦
+[12:48:14 PM] Group B: 3♣, 7♥, 8♥
+[12:48:14 PM] Group C: 6♣, 6♣, 6♠
+[12:48:14 PM] Group D: 7♥, 7♣, 7♥, 7♣
+[12:48:14 PM] 🏁 === GAME SUMMARY ===
+[12:48:14 PM] 🎉 Winner: Sebastian
+[12:48:14 PM] 🎯 Game completed in 40 turns
+[12:48:14 PM] ⏱️ Average turns per player: 13.3
+[12:48:14 PM] 📊 Final Hand Sizes:
+[12:48:14 PM] Sebastian: 14 cards
+[12:48:14 PM] Isaiah: 13 cards
+[12:48:14 PM] Marcus: 13 cards
+[12:48:14 PM] 🎲 Cards remaining in draw pile: 105
+[12:48:14 PM] 🗑️ Cards in discard pile: 10
+[12:48:14 PM] ✅ Single game completed!
+[12:48:14 PM] 🏆 Winner: Sebastian
+[12:48:14 PM] ⏱️ Game completed in 40 turns

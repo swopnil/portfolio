@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Bot Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .console {
+            background: #1e1e1e;
+            color: #e0e0e0;
+            padding: 15px;
+            border-radius: 5px;
+            height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .loading {
+            display: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Enhanced Bot Rummy Test</h1>
+        <p>Test if the enhanced bots from rummyBotAI.js can actually win games.</p>
+        
+        <div>
+            <button onclick="runSingleGame()">Run Single Game</button>
+            <button onclick="run5Games()">Run 5 Games</button>
+            <button onclick="run10Games()">Run 10 Games</button>
+            <button onclick="clearConsole()">Clear Console</button>
+        </div>
+        
+        <div id="loading" class="loading">Running simulation...</div>
+        
+        <div id="console" class="console">
+            <div>🎮 Enhanced Bot Test Console</div>
+            <div>Click a button above to start testing...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the enhanced bot simulation
+        import { simulateEnhanced3BotGame, runMultipleEnhancedSimulations } from './enhancedBotSimulation.js';
+        
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const consoleElement = document.getElementById('console');
+        
+        function addToConsole(message, isError = false) {
+            const div = document.createElement('div');
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            if (isError) div.style.color = '#ff6b6b';
+            consoleElement.appendChild(div);
+            consoleElement.scrollTop = consoleElement.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            addToConsole(message);
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            addToConsole(message, true);
+        };
+        
+        // Make functions available globally after module loads
+        window.simulateEnhanced3BotGame = simulateEnhanced3BotGame;
+        window.runMultipleEnhancedSimulations = runMultipleEnhancedSimulations;
+        
+        console.log('🚀 Enhanced Bot Test loaded successfully!');
+    </script>
+    
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        async function runSingleGame() {
+            showLoading();
+            console.log('\n🎯 === RUNNING SINGLE ENHANCED GAME ===');
+            
+            try {
+                const result = await simulateEnhanced3BotGame();
+                console.log('\n✅ Single game completed!');
+                if (result.completed) {
+                    console.log(`🏆 Winner: ${result.winner.name}`);
+                    console.log(`⏱️ Game completed in ${result.turns} turns`);
+                } else {
+                    console.log('❌ No winner - game ended without declaration');
+                }
+            } catch (error) {
+                console.error('❌ Error running single game:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        async function run5Games() {
+            showLoading();
+            console.log('\n🎲 === RUNNING 5 ENHANCED GAMES ===');
+            
+            try {
+                const results = await runMultipleEnhancedSimulations(5);
+                console.log('\n✅ 5 games completed!');
+                console.log(`📊 Results: ${results.filter(r => r.completed).length}/5 games completed successfully`);
+            } catch (error) {
+                console.error('❌ Error running 5 games:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        async function run10Games() {
+            showLoading();
+            console.log('\n🏆 === RUNNING 10 ENHANCED GAMES ===');
+            
+            try {
+                const results = await runMultipleEnhancedSimulations(10);
+                console.log('\n✅ 10 games completed!');
+                console.log(`📊 Results: ${results.filter(r => r.completed).length}/10 games completed successfully`);
+            } catch (error) {
+                console.error('❌ Error running 10 games:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        function clearConsole() {
+            const consoleElement = document.getElementById('console');
+            consoleElement.innerHTML = `
+                <div>🎮 Enhanced Bot Test Console</div>
+                <div>Console cleared...</div>
+            `;
+        }
+        
+        // Make functions available globally
+        window.runSingleGame = runSingleGame;
+        window.run5Games = run5Games;
+        window.run10Games = run10Games;
+        window.clearConsole = clearConsole;
+    </script>
+</body>
+</html> 
