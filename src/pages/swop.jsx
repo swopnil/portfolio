@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Vertex Inc brand colors and theme
@@ -170,25 +170,147 @@ const ContentCard = ({ children, delay = 0, direction = 'left' }) => (
   </motion.div>
 );
 
-const ImageCard = ({ src, alt, delay = 0 }) => (
-  <motion.div 
-    style={{ 
-      border: `3px solid ${theme.primary}`, 
-      borderRadius: '20px', 
-      overflow: 'hidden', 
-      maxWidth: '500px', 
-      margin: '2rem',
-      boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-      background: 'white'
-    }}
-    initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
-    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-    transition={{ duration: 1, delay, type: 'spring' }}
-    whileHover={{ scale: 1.05, boxShadow: `0 25px 50px rgba(0,102,204,0.4)` }}
-  >
-    <img src={src} alt={alt} style={{ width: '100%', height: 'auto', display: 'block' }} />
-  </motion.div>
-);
+const Slideshow = ({ images, delay = 0 }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Auto-advance slideshow every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 10000);
+    
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
+
+  return (
+    <motion.div 
+      style={{ 
+        border: `3px solid ${theme.primary}`, 
+        borderRadius: '20px', 
+        overflow: 'hidden', 
+        maxWidth: '500px', 
+        margin: '2rem',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+        background: 'white',
+        position: 'relative'
+      }}
+      initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
+      animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+      transition={{ duration: 1, delay, type: 'spring' }}
+      whileHover={{ scale: 1.05, boxShadow: `0 25px 50px rgba(0,102,204,0.4)` }}
+    >
+      <div style={{ position: 'relative', height: 'auto', overflow: 'hidden', background: '#f0f0f0' }}>
+        <img
+          src={images[currentIndex].src}
+          alt={images[currentIndex].alt}
+          style={{ 
+            width: '100%', 
+            height: 'auto', 
+            display: 'block'
+          }}
+          onError={() => {
+            console.log('Image failed to load:', images[currentIndex].src);
+          }}
+          onLoad={() => {
+            console.log('Image loaded successfully:', images[currentIndex].src);
+          }}
+        />
+      </div>
+
+      {/* Navigation Controls */}
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '10px',
+        transform: 'translateY(-50%)',
+        background: 'rgba(0,0,0,0.5)',
+        borderRadius: '50%',
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        zIndex: 10
+      }} onClick={prevSlide}>
+        <span style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>‹</span>
+      </div>
+
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        right: '10px',
+        transform: 'translateY(-50%)',
+        background: 'rgba(0,0,0,0.5)',
+        borderRadius: '50%',
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        zIndex: 10
+      }} onClick={nextSlide}>
+        <span style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>›</span>
+      </div>
+
+      {/* Dots Indicator */}
+      <div style={{
+        position: 'absolute',
+        bottom: '10px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        gap: '8px',
+        zIndex: 10
+      }}>
+        {images.map((_, index) => (
+          <div
+            key={index}
+            onClick={() => goToSlide(index)}
+            style={{
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              background: index === currentIndex ? theme.primary : 'rgba(255,255,255,0.5)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              border: '2px solid white',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Progress Bar */}
+      <motion.div
+        style={{
+          position: 'absolute',
+          bottom: '0',
+          left: '0',
+          height: '4px',
+          background: theme.secondary,
+          borderRadius: '0 0 17px 17px'
+        }}
+        initial={{ width: '0%' }}
+        animate={{ width: '100%' }}
+        transition={{ duration: 10, ease: 'linear', repeat: Infinity }}
+      />
+    </motion.div>
+  );
+};
 
 const StyledButton = ({ onClick, children, delay = 0 }) => (
   <motion.button 
@@ -258,7 +380,15 @@ const Scene1 = ({ onNext }) => (
           🚀 Ready to blast off into an epic journey!
         </motion.div>
       </ContentCard>
-      <ImageCard src="https://placehold.co/500x400/0066CC/FFFFFF?text=Welcome+to+Vertex" alt="Personal Intro" delay={0.6} />
+      <Slideshow 
+        images={[
+          { src: "/vlogo.png", alt: "Welcome to Vertex" },
+          { src: "/c2g.png", alt: "Course to Go" },
+          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=Villanova+Student", alt: "Villanova Student" },
+          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=CS+Major", alt: "Computer Science Major" }
+        ]} 
+        delay={0.6} 
+      />
     </div>
     <StyledButton onClick={onNext} delay={2}>Start My Vertex Journey</StyledButton>
   </SceneWrapper>
@@ -267,7 +397,16 @@ const Scene1 = ({ onNext }) => (
 const Scene2 = ({ onNext }) => (
   <SceneWrapper sceneNumber={2}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-      <ImageCard src="https://placehold.co/500x400/FF6600/FFFFFF?text=Certificate+Center+Team" alt="Team Structure" delay={0.3} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=Certificate+Center+Team", alt: "Certificate Center Team" },
+          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Manager+Rhonda+Shaw", alt: "Manager Rhonda Shaw" },
+          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=Night+Watch+Team", alt: "Night Watch Team" },
+          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=Dragon+Keepers", alt: "Dragon Keepers" },
+          { src: "https://placehold.co/500x400/00B4D8/FFFFFF?text=Delta+Force", alt: "Delta Force" }
+        ]} 
+        delay={0.3} 
+      />
       <ContentCard direction="right" delay={0.6}>
         <motion.h1 
           style={{ color: theme.primary, fontSize: '2.5rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace" }}
@@ -334,7 +473,16 @@ const Scene3 = ({ onNext }) => (
           <p style={{marginTop: '1rem', fontStyle: 'italic'}}>This project taught me the critical importance of monitoring in development environments!</p>
         </motion.div>
       </ContentCard>
-      <ImageCard src="https://placehold.co/500x400/00B4D8/FFFFFF?text=Datadog+Dashboard+Metrics" alt="Dashboard Project" delay={0.6} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/00B4D8/FFFFFF?text=Datadog+Dashboard+Metrics", alt: "Dashboard Project" },
+          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=P95+P99+Metrics", alt: "Performance Metrics" },
+          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=SQL+Monitoring", alt: "SQL Monitoring" },
+          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=Request+Tracking", alt: "Request Tracking" },
+          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Error+Monitoring", alt: "Error Monitoring" }
+        ]} 
+        delay={0.6} 
+      />
     </div>
     <StyledButton onClick={onNext} delay={2}>Submit the Dashboard</StyledButton>
   </SceneWrapper>
@@ -343,7 +491,15 @@ const Scene3 = ({ onNext }) => (
 const Scene4 = ({ onNext }) => (
   <SceneWrapper sceneNumber={4}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-      <ImageCard src="https://placehold.co/500x400/0066CC/FFFFFF?text=Terraform+Infrastructure" alt="Terraform Integration" delay={0.3} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Terraform+Infrastructure", alt: "Terraform Integration" },
+          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=Infrastructure+as+Code", alt: "Infrastructure as Code" },
+          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=Scalable+Monitoring", alt: "Scalable Monitoring" },
+          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=Automated+Deployment", alt: "Automated Deployment" }
+        ]} 
+        delay={0.3} 
+      />
       <ContentCard direction="right" delay={0.6}>
         <motion.h1 
           style={{ color: theme.secondary, fontSize: '3rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace" }}
@@ -421,7 +577,16 @@ const Scene5 = ({ onNext }) => (
           </p>
         </motion.div>
       </ContentCard>
-      <ImageCard src="https://placehold.co/500x400/228B22/FFFFFF?text=Spring+Boot+Learning+Journey" alt="Spring Boot" delay={0.6} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=Spring+Boot+Learning+Journey", alt: "Spring Boot Learning" },
+          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Night+Watch+Team", alt: "Night Watch Team" },
+          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=Backend+Architecture", alt: "Backend Architecture" },
+          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=Test+Cases+Writing", alt: "Test Cases" },
+          { src: "https://placehold.co/500x400/00B4D8/FFFFFF?text=Certificate+Wizard", alt: "Certificate Wizard" }
+        ]} 
+        delay={0.6} 
+      />
     </div>
     <StyledButton onClick={onNext} delay={2}>Submit My First PR</StyledButton>
   </SceneWrapper>
@@ -430,7 +595,15 @@ const Scene5 = ({ onNext }) => (
 const Scene6 = ({ onNext }) => (
   <SceneWrapper sceneNumber={6}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-      <ImageCard src="https://placehold.co/500x400/FF0000/FFFFFF?text=NPE+ALERT%21" alt="NPE Alert" delay={0.3} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/FF0000/FFFFFF?text=NPE+ALERT%21", alt: "NPE Alert" },
+          { src: "https://placehold.co/500x400/8B0000/FFFFFF?text=Root+Cause+Analysis", alt: "Root Cause Analysis" },
+          { src: "https://placehold.co/500x400/DC143C/FFFFFF?text=Testing+Importance", alt: "Testing Importance" },
+          { src: "https://placehold.co/500x400/B22222/FFFFFF?text=Code+Quality+Learning", alt: "Code Quality" }
+        ]} 
+        delay={0.3} 
+      />
       <ContentCard direction="right" delay={0.6}>
         <motion.h1 
           style={{ color: theme.secondary, fontSize: '3.2rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace", textAlign: 'center' }}
@@ -529,7 +702,15 @@ const Scene7 = ({ onNext }) => (
           </p>
         </motion.div>
       </ContentCard>
-      <ImageCard src="https://placehold.co/500x400/00B4D8/FFFFFF?text=Security+Fortress+Built" alt="Security Fixes" delay={0.6} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/00B4D8/FFFFFF?text=Security+Fortress+Built", alt: "Security Fixes" },
+          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Vulnerability+Detection", alt: "Vulnerability Detection" },
+          { src: "https://placehold.co/500x400/4169E1/FFFFFF?text=System+Architecture", alt: "System Architecture" },
+          { src: "https://placehold.co/500x400/1E90FF/FFFFFF?text=Repository+Analysis", alt: "Repository Analysis" }
+        ]} 
+        delay={0.6} 
+      />
     </div>
     <StyledButton onClick={onNext} delay={2}>Get Things Serious</StyledButton>
   </SceneWrapper>
@@ -538,7 +719,15 @@ const Scene7 = ({ onNext }) => (
 const Scene8 = ({ onNext }) => (
   <SceneWrapper sceneNumber={8}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-      <ImageCard src="https://placehold.co/500x400/8A2BE2/FFFFFF?text=AI+OCR+Innovation" alt="OCR Project" delay={0.3} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=AI+OCR+Innovation", alt: "OCR Project" },
+          { src: "https://placehold.co/500x400/9932CC/FFFFFF?text=AI+Revolution", alt: "AI Revolution" },
+          { src: "https://placehold.co/500x400/BA55D3/FFFFFF?text=Customer+Benefits", alt: "Customer Benefits" },
+          { src: "https://placehold.co/500x400/DA70D6/FFFFFF?text=Project+Lifecycle", alt: "Project Lifecycle" }
+        ]} 
+        delay={0.3} 
+      />
       <ContentCard direction="right" delay={0.6}>
         <motion.h1 
           style={{ color: theme.secondary, fontSize: '2.5rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace", textAlign: 'center' }}
@@ -634,7 +823,16 @@ const Scene9 = ({ onNext }) => (
           </p>
         </motion.div>
       </ContentCard>
-      <ImageCard src="https://placehold.co/500x400/FF6600/FFFFFF?text=OCR+UI+Foundation+Built" alt="OCR UI Foundation" delay={0.6} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=OCR+UI+Foundation+Built", alt: "OCR UI Foundation" },
+          { src: "https://placehold.co/500x400/FF8C00/FFFFFF?text=Validation+Systems", alt: "Validation Systems" },
+          { src: "https://placehold.co/500x400/FFA500/FFFFFF?text=Error+Handling", alt: "Error Handling" },
+          { src: "https://placehold.co/500x400/FFB347/FFFFFF?text=Mock+Environment", alt: "Mock Environment" },
+          { src: "https://placehold.co/500x400/FFCC80/FFFFFF?text=API+Integration", alt: "API Integration" }
+        ]} 
+        delay={0.6} 
+      />
     </div>
     <StyledButton onClick={onNext} delay={2}>The Launchpad</StyledButton>
   </SceneWrapper>
@@ -643,7 +841,16 @@ const Scene9 = ({ onNext }) => (
 const Scene10 = ({ onNext }) => (
   <SceneWrapper sceneNumber={10}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-      <ImageCard src="https://placehold.co/500x400/0066CC/FFFFFF?text=Vertex+HQ+Experience" alt="Vertex Headquarters" delay={0.3} />
+      <Slideshow 
+        images={[
+          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Vertex+HQ+Experience", alt: "Vertex Headquarters" },
+          { src: "https://placehold.co/500x400/4169E1/FFFFFF?text=King+of+Prussia+Office", alt: "King of Prussia Office" },
+          { src: "https://placehold.co/500x400/1E90FF/FFFFFF?text=Intern+Connections", alt: "Intern Connections" },
+          { src: "https://placehold.co/500x400/00BFFF/FFFFFF?text=Hackathon+Team", alt: "Hackathon Team" },
+          { src: "https://placehold.co/500x400/87CEEB/FFFFFF?text=E-Invoice+Verifier", alt: "E-Invoice Verifier" }
+        ]} 
+        delay={0.3} 
+      />
       <ContentCard direction="right" delay={0.6}>
         <motion.h1 
           style={{ color: theme.primary, fontSize: '2.2rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace", textAlign: 'center' }}
