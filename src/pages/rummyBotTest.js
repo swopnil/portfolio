@@ -1,5 +1,5 @@
 // Comprehensive test suite for Rummy Bot AI
-const { RummyBot, isWinningHand, findBestDiscardForWin, arrangeWinningHand } = require('./rummyBotAI.js');
+const { RummyBot, isWinningHand, findBestDiscardForWin } = require('./rummyBotAI.js');
 
 // Test card creation helper
 const createCard = (rank, suit, id = null) => ({

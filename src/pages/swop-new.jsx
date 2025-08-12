@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Code, Database, Shield, Zap, Users, Rocket, Star, Award, Heart, Terminal, Bug, Lock, Scan, Building, Lightbulb, ArrowDown, Network, Moon, Sparkles } from 'lucide-react';
+import { ChevronRight, Code, Database, Shield, Zap, Users, Rocket, Star, Heart, Building, Lightbulb, ArrowDown, Network, Moon, Sparkles } from 'lucide-react';
 
 const VertexJourney = () => {
   const [currentScene, setCurrentScene] = useState(0);

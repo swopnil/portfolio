@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -114,7 +115,7 @@ const AnimatedBackground = () => (
   </div>
 );
 
-const SceneWrapper = ({ children, sceneNumber }) => (
+const SceneWrapper = ({ children, sceneNumber, onBack }) => (
   <div style={{ 
     height: '100vh', 
     width: '100vw', 
@@ -144,6 +145,10 @@ const SceneWrapper = ({ children, sceneNumber }) => (
         Scene {sceneNumber}/12
       </span>
     </motion.div>
+    {/* Show back button only if not the first scene and onBack is provided */}
+    {sceneNumber > 1 && onBack && (
+      <BackButton onBack={onBack} delay={0.8} />
+    )}
     <div style={{ position: 'relative', zIndex: 2, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       {children}
     </div>
@@ -312,6 +317,70 @@ const Slideshow = ({ images, delay = 0 }) => {
   );
 };
 
+const WebsiteIframe = ({ url = "https://example.com", delay = 0, useProxy = false }) => {
+  // Option 1: Use a CORS proxy (may not work for complex sites)
+  const proxyUrl = useProxy ? `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}` : url;
+  
+  return (
+    <motion.div 
+      style={{ 
+        border: `3px solid ${theme.primary}`, 
+        borderRadius: '20px', 
+        overflow: 'hidden', 
+        maxWidth: '500px', 
+        width: '500px',
+        height: '400px',
+        margin: '2rem',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+        background: 'white',
+        position: 'relative'
+      }}
+      initial={{ opacity: 0, scale: 0.8, rotateY: 90 }}
+      animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+      transition={{ duration: 1, delay, type: 'spring' }}
+      whileHover={{ scale: 1.05, boxShadow: `0 25px 50px rgba(0,102,204,0.4)` }}
+    >
+      {useProxy ? (
+        // Option 2: Use object tag instead of iframe
+        <object
+          data={proxyUrl}
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '17px'
+          }}
+          title="Embedded Website"
+        >
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            color: theme.primary,
+            fontSize: '1.2rem'
+          }}>
+            Loading Datadog...
+          </div>
+        </object>
+      ) : (
+        <iframe
+          src={proxyUrl}
+          style={{
+            width: '100%',
+            height: '100%',
+            border: 'none',
+            borderRadius: '17px'
+          }}
+          title="Embedded Website"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+          // Option 3: Try to bypass CSP with referrerpolicy
+          referrerPolicy="no-referrer"
+        />
+      )}
+    </motion.div>
+  );
+};
+
 const StyledButton = ({ onClick, children, delay = 0 }) => (
   <motion.button 
     onClick={onClick} 
@@ -347,9 +416,48 @@ const StyledButton = ({ onClick, children, delay = 0 }) => (
   </motion.button>
 );
 
+const BackButton = ({ onBack, delay = 0 }) => (
+  <motion.button 
+    onClick={onBack} 
+    style={{ 
+      position: 'absolute', 
+      bottom: '3rem', 
+      left: '3rem', 
+      padding: '1rem', 
+      background: `rgba(255, 255, 255, 0.2)`,
+      color: theme.primary, 
+      border: `2px solid ${theme.primary}`, 
+      cursor: 'pointer', 
+      borderRadius: '50%',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+      width: '60px',
+      height: '60px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backdropFilter: 'blur(10px)',
+      boxShadow: '0 8px 30px rgba(0,102,204,0.3)',
+      zIndex: 10
+    }}
+    initial={{ opacity: 0, x: -100 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.6, delay }}
+    whileHover={{ 
+      scale: 1.1, 
+      background: theme.primary,
+      color: 'white',
+      boxShadow: `0 12px 40px rgba(0,102,204,0.6)`
+    }}
+    whileTap={{ scale: 0.9 }}
+  >
+    ←
+  </motion.button>
+);
+
 // Scene Components
-const Scene1 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={1}>
+const Scene1 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={1} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -391,8 +499,8 @@ const Scene1 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene2 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={2}>
+const Scene2 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={2} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
@@ -432,8 +540,8 @@ const Scene2 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene3 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={3}>
+const Scene3 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={3} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -467,23 +575,18 @@ const Scene3 = ({ onNext }) => (
           <p style={{marginTop: '1rem', fontStyle: 'italic'}}>This project taught me the critical importance of monitoring in development environments!</p>
         </motion.div>
       </ContentCard>
-      <Slideshow 
-        images={[
-          { src: "dashbord1.png", alt: "Dashboard Project" },
-          { src: "dashboard2.png", alt: "Performance Metrics" },
-          { src: "obs1.png", alt: "SQL Monitoring" },
-          { src: "monitor1.png", alt: "Request Tracking" },
-
-        ]} 
-        delay={0.6} 
+      <WebsiteIframe 
+        url="https://www.datadoghq.com"
+        delay={0.6}
+        useProxy={true}
       />
     </div>
     <StyledButton onClick={onNext} delay={2}>Submit the Dashboard</StyledButton>
   </SceneWrapper>
 );
 
-const Scene4 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={4}>
+const Scene4 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={4} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
@@ -529,8 +632,8 @@ const Scene4 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene5 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={5}>
+const Scene5 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={5} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -583,8 +686,8 @@ const Scene5 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene6 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={6}>
+const Scene6 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={6} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
@@ -653,8 +756,8 @@ const Scene6 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene7 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={7}>
+const Scene7 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={7} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -704,8 +807,8 @@ const Scene7 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene8 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={8}>
+const Scene8 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={8} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
@@ -767,8 +870,8 @@ const Scene8 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene9 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={9}>
+const Scene9 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={9} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -826,8 +929,8 @@ const Scene9 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene10 = ({ onNext }) => (
-  <SceneWrapper sceneNumber={10}>
+const Scene10 = ({ onNext, onBack }) => (
+  <SceneWrapper sceneNumber={10} onBack={onBack}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
@@ -893,7 +996,7 @@ const Scene10 = ({ onNext }) => (
   </SceneWrapper>
 );
 
-const Scene11 = ({ onNext }) => {
+const Scene11 = ({ onNext, onBack }) => {
   const highlights = [
     'https://placehold.co/800x500/0066CC/FFFFFF?text=Dashboard+Success',
     'https://placehold.co/800x500/FF6600/FFFFFF?text=Spring+Boot+Mastery', 
@@ -904,7 +1007,7 @@ const Scene11 = ({ onNext }) => {
   ];
 
   return (
-    <SceneWrapper sceneNumber={11}>
+    <SceneWrapper sceneNumber={11} onBack={onBack}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '2rem' }}>
         <ContentCard delay={0.3}>
           <motion.h1 
@@ -1004,8 +1107,8 @@ const Scene11 = ({ onNext }) => {
   );
 };
 
-const FinalScene = () => (
-  <SceneWrapper sceneNumber={12}>
+const FinalScene = ({ onBack }) => (
+  <SceneWrapper sceneNumber={12} onBack={onBack}>
     <motion.div
       style={{ 
         display: 'flex', 
@@ -1083,12 +1186,28 @@ const VertexJourneyApp = () => {
       // Add a delay to ensure the transition animation starts
       setTimeout(() => {
         completeTransition();
-      }, 2000); // Complete transition after rocket starts flying
+      }, 1000); // Complete transition after rocket starts flying
+    }
+  };
+
+  const handleBack = () => {
+    if (currentScene > 0 && !isTransitioning) {
+      setIsTransitioning(true);
+      
+      // Add a delay to ensure the transition animation starts
+      setTimeout(() => {
+        completeBackTransition();
+      }, 1000); // Complete transition after rocket starts flying
     }
   };
 
   const completeTransition = () => {
     setCurrentScene(prev => prev + 1);
+    setIsTransitioning(false);
+  };
+
+  const completeBackTransition = () => {
+    setCurrentScene(prev => prev - 1);
     setIsTransitioning(false);
   };
 
@@ -1108,7 +1227,7 @@ const VertexJourneyApp = () => {
             exit={{ opacity: 0, x: '-100vw' }}
             transition={{ duration: 1, ease: 'easeInOut' }}
           >
-            <CurrentScene onNext={handleNext} />
+            <CurrentScene onNext={handleNext} onBack={handleBack} />
           </motion.div>
         )}
       </AnimatePresence>
