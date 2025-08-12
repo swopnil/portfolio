@@ -358,7 +358,7 @@ const Scene1 = ({ onNext }) => (
           animate={{ scale: 1, rotate: 0 }} 
           transition={{ delay: 0.8, duration: 1, type: 'spring' }}
         >
-          Meet Swopnil Panday
+          My Name is Swopnil Panday
         </motion.h1>
         <motion.div 
           style={{ fontSize: '1.3rem', lineHeight: '1.6', color: theme.dark }}
@@ -382,10 +382,7 @@ const Scene1 = ({ onNext }) => (
       </ContentCard>
       <Slideshow 
         images={[
-          { src: "/vlogo.png", alt: "Welcome to Vertex" },
-          { src: "/c2g.png", alt: "Course to Go" },
-          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=Villanova+Student", alt: "Villanova Student" },
-          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=CS+Major", alt: "Computer Science Major" }
+          { src: "personal.jpeg", alt: "Welcome to Vertex" },
         ]} 
         delay={0.6} 
       />
@@ -399,11 +396,8 @@ const Scene2 = ({ onNext }) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
-          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=Certificate+Center+Team", alt: "Certificate Center Team" },
-          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Manager+Rhonda+Shaw", alt: "Manager Rhonda Shaw" },
-          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=Night+Watch+Team", alt: "Night Watch Team" },
-          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=Dragon+Keepers", alt: "Dragon Keepers" },
-          { src: "https://placehold.co/500x400/00B4D8/FFFFFF?text=Delta+Force", alt: "Delta Force" }
+          { src: "vtx.png", alt: "Certificate Center Team" },
+          { src: "cer.png", alt: "Manager Rhonda Shaw" },
         ]} 
         delay={0.3} 
       />
@@ -456,7 +450,7 @@ const Scene3 = ({ onNext }) => (
           animate={{ opacity: 1 }} 
           transition={{ delay: 1, duration: 1 }}
         >
-          <p><strong style={{color: theme.secondary}}>🤝 Collaboration:</strong> Worked alongside another intern with Datadog</p>
+          <p><strong style={{color: theme.secondary}}>🤝 Collaboration:</strong> Worked alongside Daniel with Datadog</p>
           <p><strong style={{color: theme.secondary}}>👨‍🏫 Mentor:</strong> Matthew Dickens</p>
           <p><strong style={{color: theme.secondary}}>🎯 Purpose:</strong> Display Cert Center API endpoints data for developer convenience</p>
           
@@ -475,11 +469,11 @@ const Scene3 = ({ onNext }) => (
       </ContentCard>
       <Slideshow 
         images={[
-          { src: "https://placehold.co/500x400/00B4D8/FFFFFF?text=Datadog+Dashboard+Metrics", alt: "Dashboard Project" },
-          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=P95+P99+Metrics", alt: "Performance Metrics" },
-          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=SQL+Monitoring", alt: "SQL Monitoring" },
-          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=Request+Tracking", alt: "Request Tracking" },
-          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Error+Monitoring", alt: "Error Monitoring" }
+          { src: "dashbord1.png", alt: "Dashboard Project" },
+          { src: "dashboard2.png", alt: "Performance Metrics" },
+          { src: "obs1.png", alt: "SQL Monitoring" },
+          { src: "monitor1.png", alt: "Request Tracking" },
+
         ]} 
         delay={0.6} 
       />
@@ -493,10 +487,7 @@ const Scene4 = ({ onNext }) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
-          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Terraform+Infrastructure", alt: "Terraform Integration" },
-          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=Infrastructure+as+Code", alt: "Infrastructure as Code" },
-          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=Scalable+Monitoring", alt: "Scalable Monitoring" },
-          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=Automated+Deployment", alt: "Automated Deployment" }
+          { src: "terra.png", alt: "Terraform Integration" }
         ]} 
         delay={0.3} 
       />
@@ -579,11 +570,11 @@ const Scene5 = ({ onNext }) => (
       </ContentCard>
       <Slideshow 
         images={[
-          { src: "https://placehold.co/500x400/228B22/FFFFFF?text=Spring+Boot+Learning+Journey", alt: "Spring Boot Learning" },
-          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Night+Watch+Team", alt: "Night Watch Team" },
-          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=Backend+Architecture", alt: "Backend Architecture" },
-          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=Test+Cases+Writing", alt: "Test Cases" },
-          { src: "https://placehold.co/500x400/00B4D8/FFFFFF?text=Certificate+Wizard", alt: "Certificate Wizard" }
+          { src: "customv5.png", alt: "Spring Boot Learning" },
+          { src: "spring-boot.png", alt: "Night Watch Team" },
+          { src: "backend_architecture.png", alt: "Backend Architecture" },
+          { src: "test_cases_writing.png", alt: "Test Cases" },
+          { src: "certificate_wizard.png", alt: "Certificate Wizard" }
         ]} 
         delay={0.6} 
       />
@@ -704,10 +695,7 @@ const Scene7 = ({ onNext }) => (
       </ContentCard>
       <Slideshow 
         images={[
-          { src: "https://placehold.co/500x400/00B4D8/FFFFFF?text=Security+Fortress+Built", alt: "Security Fixes" },
-          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Vulnerability+Detection", alt: "Vulnerability Detection" },
-          { src: "https://placehold.co/500x400/4169E1/FFFFFF?text=System+Architecture", alt: "System Architecture" },
-          { src: "https://placehold.co/500x400/1E90FF/FFFFFF?text=Repository+Analysis", alt: "Repository Analysis" }
+          { src: "cert.png", alt: "Security Fixes" }
         ]} 
         delay={0.6} 
       />
@@ -721,7 +709,7 @@ const Scene8 = ({ onNext }) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
-          { src: "https://placehold.co/500x400/8A2BE2/FFFFFF?text=AI+OCR+Innovation", alt: "OCR Project" },
+          { src: "ocr.png", alt: "OCR Project" },
           { src: "https://placehold.co/500x400/9932CC/FFFFFF?text=AI+Revolution", alt: "AI Revolution" },
           { src: "https://placehold.co/500x400/BA55D3/FFFFFF?text=Customer+Benefits", alt: "Customer Benefits" },
           { src: "https://placehold.co/500x400/DA70D6/FFFFFF?text=Project+Lifecycle", alt: "Project Lifecycle" }
@@ -825,11 +813,11 @@ const Scene9 = ({ onNext }) => (
       </ContentCard>
       <Slideshow 
         images={[
-          { src: "https://placehold.co/500x400/FF6600/FFFFFF?text=OCR+UI+Foundation+Built", alt: "OCR UI Foundation" },
-          { src: "https://placehold.co/500x400/FF8C00/FFFFFF?text=Validation+Systems", alt: "Validation Systems" },
-          { src: "https://placehold.co/500x400/FFA500/FFFFFF?text=Error+Handling", alt: "Error Handling" },
-          { src: "https://placehold.co/500x400/FFB347/FFFFFF?text=Mock+Environment", alt: "Mock Environment" },
-          { src: "https://placehold.co/500x400/FFCC80/FFFFFF?text=API+Integration", alt: "API Integration" }
+          { src: "ocrsuccess.png", alt: "OCR UI Foundation" },
+          { src: "ocwarning.png", alt: "Validation Systems" },
+          { src: "cypress.png", alt: "Error Handling" },
+          { src: "ocrpr.png", alt: "Mock Environment" },
+          { src: "ocrpr2.png", alt: "API Integration" }
         ]} 
         delay={0.6} 
       />
@@ -843,11 +831,11 @@ const Scene10 = ({ onNext }) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
-          { src: "https://placehold.co/500x400/0066CC/FFFFFF?text=Vertex+HQ+Experience", alt: "Vertex Headquarters" },
-          { src: "https://placehold.co/500x400/4169E1/FFFFFF?text=King+of+Prussia+Office", alt: "King of Prussia Office" },
-          { src: "https://placehold.co/500x400/1E90FF/FFFFFF?text=Intern+Connections", alt: "Intern Connections" },
-          { src: "https://placehold.co/500x400/00BFFF/FFFFFF?text=Hackathon+Team", alt: "Hackathon Team" },
-          { src: "https://placehold.co/500x400/87CEEB/FFFFFF?text=E-Invoice+Verifier", alt: "E-Invoice Verifier" }
+          { src: "launchpad.png", alt: "Vertex Headquarters" },
+          { src: "launchpad1.png", alt: "King of Prussia Office" },
+          { src: "launchpad4.png", alt: "Intern Connections" },
+          { src: "launchpad3.png", alt: "Hackathon Team" },
+          { src: "einvoice1.png", alt: "E-Invoice Verifier" }
         ]} 
         delay={0.3} 
       />
@@ -1095,7 +1083,7 @@ const VertexJourneyApp = () => {
       // Add a delay to ensure the transition animation starts
       setTimeout(() => {
         completeTransition();
-      }, 1000); // Complete transition after rocket starts flying
+      }, 2000); // Complete transition after rocket starts flying
     }
   };
 
