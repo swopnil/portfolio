@@ -115,7 +115,7 @@ const AnimatedBackground = () => (
   </div>
 );
 
-const SceneWrapper = ({ children, sceneNumber, onBack }) => (
+const SceneWrapper = ({ children, sceneNumber, onBack, onSceneClick }) => (
   <div style={{ 
     height: '100vh', 
     width: '100vw', 
@@ -135,14 +135,29 @@ const SceneWrapper = ({ children, sceneNumber, onBack }) => (
         padding: '0.5rem 1rem', 
         borderRadius: '20px',
         backdropFilter: 'blur(10px)',
-        zIndex: 10
+        zIndex: 10,
+        cursor: 'pointer',
+        transition: 'all 0.3s ease'
       }}
       initial={{ opacity: 0, x: 100 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay: 0.3 }}
+      whileHover={{ 
+        scale: 1.05,
+        boxShadow: `0 8px 25px ${theme.primary}40`
+      }}
+      whileTap={{ scale: 0.95 }}
+      onClick={onSceneClick}
     >
-      <span style={{ color: theme.primary, fontWeight: 'bold', fontFamily: "'Orbitron', monospace" }}>
-        Scene {sceneNumber}/12
+      <span style={{ 
+        color: theme.primary, 
+        fontWeight: 'bold', 
+        fontFamily: "'Orbitron', monospace",
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem'
+      }}>
+        🎬 Scene {sceneNumber}/9
       </span>
     </motion.div>
     {/* Show back button only if not the first scene and onBack is provided */}
@@ -205,7 +220,7 @@ const Slideshow = ({ images, delay = 0 }) => {
         border: `3px solid ${theme.primary}`, 
         borderRadius: '20px', 
         overflow: 'hidden', 
-        maxWidth: '500px', 
+        maxWidth: '900px', 
         margin: '2rem',
         boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
         background: 'white',
@@ -456,8 +471,8 @@ const BackButton = ({ onBack, delay = 0 }) => (
 );
 
 // Scene Components
-const Scene1 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={1} onBack={onBack}>
+const Scene1 = ({ onNext, onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={1} onBack={onBack} onSceneClick={onSceneClick}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -466,7 +481,7 @@ const Scene1 = ({ onNext, onBack }) => (
           animate={{ scale: 1, rotate: 0 }} 
           transition={{ delay: 0.8, duration: 1, type: 'spring' }}
         >
-          My Name is Swopnil Panday
+          I am Swopnil Panday
         </motion.h1>
         <motion.div 
           style={{ fontSize: '1.3rem', lineHeight: '1.6', color: theme.dark }}
@@ -477,7 +492,7 @@ const Scene1 = ({ onNext, onBack }) => (
           <p><strong style={{color: theme.primary}}>🎓 College:</strong> Rising Senior at Villanova University</p>
           <p><strong style={{color: theme.primary}}>📚 Major:</strong> Computer Science, Mathematics (Minor)</p>
           <p><strong style={{color: theme.primary}}>🌟 Discovery:</strong> Found Vertex Inc through campus alumni network</p>
-          <p><strong style={{color: theme.primary}}>💻 Passion:</strong> Software development since youth - Python, JavaScript, building solutions for organizations</p>
+          <p><strong style={{color: theme.primary}}>💻 Passion:</strong> Soccer, Motorbikes, Building cool products</p>
         </motion.div>
         <motion.div 
           initial={{ opacity: 0, scale: 0 }} 
@@ -499,8 +514,8 @@ const Scene1 = ({ onNext, onBack }) => (
   </SceneWrapper>
 );
 
-const Scene2 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={2} onBack={onBack}>
+const Scene2 = ({ onNext, onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={2} onBack={onBack} onSceneClick={onSceneClick}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
@@ -528,9 +543,9 @@ const Scene2 = ({ onNext, onBack }) => (
           <p><strong style={{color: theme.secondary}}>🎯 Mission:</strong> Managing tax exemption certificates for customers</p>
           <p><strong style={{color: theme.secondary}}>🛡️ Three Elite Teams:</strong></p>
           <ul style={{marginLeft: '1.5rem', marginTop: '1rem'}}>
-            <li><strong>Night Watch</strong> - The vigilant guardians</li>
-            <li><strong>Dragon Keepers</strong> - The fierce protectors</li>
-            <li><strong>Delta Force</strong> - The precision specialists</li>
+            <li><strong>Night Watch</strong>  </li>
+            <li><strong>Dragon Keepers</strong>  </li>
+            <li><strong>Delta Force</strong> </li>
           </ul>
           <p style={{marginTop: '1rem'}}><em>Started with Dragon Keepers, expanded to Night Watch for maximum impact and full-stack experience!</em></p>
         </motion.div>
@@ -540,8 +555,8 @@ const Scene2 = ({ onNext, onBack }) => (
   </SceneWrapper>
 );
 
-const Scene3 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={3} onBack={onBack}>
+const Scene3 = ({ onNext, onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={3} onBack={onBack} onSceneClick={onSceneClick}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -560,7 +575,7 @@ const Scene3 = ({ onNext, onBack }) => (
         >
           <p><strong style={{color: theme.secondary}}>🤝 Collaboration:</strong> Worked alongside Daniel with Datadog</p>
           <p><strong style={{color: theme.secondary}}>👨‍🏫 Mentor:</strong> Matthew Dickens</p>
-          <p><strong style={{color: theme.secondary}}>🎯 Purpose:</strong> Display Cert Center API endpoints data for developer convenience</p>
+          <p><strong style={{color: theme.secondary}}>🎯 Purpose:</strong> To ensure the reliability, performance, and scalability of our systems</p>
           
           <div style={{background: 'rgba(0,102,204,0.1)', padding: '1rem', borderRadius: '10px', marginTop: '1.5rem'}}>
             <p><strong>Dashboard Features:</strong></p>
@@ -575,18 +590,23 @@ const Scene3 = ({ onNext, onBack }) => (
           <p style={{marginTop: '1rem', fontStyle: 'italic'}}>This project taught me the critical importance of monitoring in development environments!</p>
         </motion.div>
       </ContentCard>
-      <WebsiteIframe 
-        url="https://www.datadoghq.com"
+ <Slideshow 
+        images={[
+          { src: "dashbord1.png", alt: "Dashboard Project" },
+          { src: "dashboard2.png", alt: "SQL Monitoring" },
+          { src: "obs1.png", alt: "Request Tracking" },
+          { src: "monitor1.png", alt: "Error Monitoring" }
+        ]} 
         delay={0.6}
-        useProxy={true}
+
       />
     </div>
     <StyledButton onClick={onNext} delay={2}>Submit the Dashboard</StyledButton>
   </SceneWrapper>
 );
 
-const Scene4 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={4} onBack={onBack}>
+const Scene4 = ({ onNext, onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={4} onBack={onBack} onSceneClick={onSceneClick}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <Slideshow 
         images={[
@@ -632,8 +652,8 @@ const Scene4 = ({ onNext, onBack }) => (
   </SceneWrapper>
 );
 
-const Scene5 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={5} onBack={onBack}>
+const Scene5 = ({ onNext, onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={5} onBack={onBack} onSceneClick={onSceneClick}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -650,24 +670,29 @@ const Scene5 = ({ onNext, onBack }) => (
           animate={{ opacity: 1 }} 
           transition={{ delay: 1, duration: 1 }}
         >
-          <p>Simultaneously working with <strong style={{color: theme.secondary}}>Night Watch team</strong> on a critical mission:</p>
+          <p>Working with <strong style={{color: theme.secondary}}>Night Watch team</strong> on Spring Boot Tickets:</p>
           
           <div style={{background: 'rgba(0,102,204,0.1)', padding: '1.5rem', borderRadius: '15px', marginTop: '1.5rem'}}>
-            <p><strong>🐛 The Challenge:</strong></p>
-            <p>Forms in our Certificate Center wizard were experiencing issues</p>
-            
-            <p style={{marginTop: '1rem'}}><strong>🚀 The Solution:</strong></p>
+            <p><strong>� The Journey:</strong></p>
             <ul style={{marginLeft: '1rem'}}>
-              <li>Dive into <strong>Spring Boot backend</strong> (completely new to me!)</li>
-              <li>Ask countless questions to senior developers</li>
-              <li>Learn Spring Boot architecture from one ticket</li>
-              <li>Connect with amazing team members</li>
+              <li>Dive into <strong>Spring Boot backend</strong> (completely new!)</li>
+              <li>Learn Spring Boot architecture through mentorship</li>
               <li>Write comprehensive test cases</li>
+              <li>Submit first PR with confidence</li>
+            </ul>
+          </div>
+
+          <div style={{background: 'rgba(255,0,0,0.1)', padding: '1.5rem', borderRadius: '15px', marginTop: '1.5rem', border: '2px solid rgba(255,0,0,0.3)'}}>
+            <p><strong style={{color: '#FF0000'}}>💥 First Error Learning:</strong></p>
+            <ul style={{marginLeft: '1rem', marginTop: '1rem'}}>
+              <li>🔍 Discovered my own bug</li>
+              <li>💡 Analyzed root cause thoroughly</li>
+              <li>🔧 Implemented proper fix</li>
             </ul>
           </div>
           
           <p style={{marginTop: '1.5rem', fontStyle: 'italic', color: theme.primary}}>
-            This single ticket became my Spring Boot masterclass - showing me the immense value of asking questions and writing tests!
+            This experience taught me that every bug is a lesson in disguise - from Spring Boot basics to the critical importance of thorough testing!
           </p>
         </motion.div>
       </ContentCard>
@@ -675,89 +700,16 @@ const Scene5 = ({ onNext, onBack }) => (
         images={[
           { src: "customv5.png", alt: "Spring Boot Learning" },
           { src: "spring-boot.png", alt: "Night Watch Team" },
-          { src: "backend_architecture.png", alt: "Backend Architecture" },
-          { src: "test_cases_writing.png", alt: "Test Cases" },
-          { src: "certificate_wizard.png", alt: "Certificate Wizard" }
         ]} 
         delay={0.6} 
       />
     </div>
-    <StyledButton onClick={onNext} delay={2}>Submit My First PR</StyledButton>
+    <StyledButton onClick={onNext} delay={2}>Security First ☁️</StyledButton>
   </SceneWrapper>
 );
 
-const Scene6 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={6} onBack={onBack}>
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-      <Slideshow 
-        images={[
-          { src: "https://placehold.co/500x400/FF0000/FFFFFF?text=NPE+ALERT%21", alt: "NPE Alert" },
-          { src: "https://placehold.co/500x400/8B0000/FFFFFF?text=Root+Cause+Analysis", alt: "Root Cause Analysis" },
-          { src: "https://placehold.co/500x400/DC143C/FFFFFF?text=Testing+Importance", alt: "Testing Importance" },
-          { src: "https://placehold.co/500x400/B22222/FFFFFF?text=Code+Quality+Learning", alt: "Code Quality" }
-        ]} 
-        delay={0.3} 
-      />
-      <ContentCard direction="right" delay={0.6}>
-        <motion.h1 
-          style={{ color: theme.secondary, fontSize: '3.2rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace", textAlign: 'center' }}
-          initial={{ opacity: 0, scale: 0 }} 
-          animate={{ 
-            opacity: 1, 
-            scale: [0, 1.2, 1], 
-            color: [theme.secondary, '#FF0000', theme.secondary] 
-          }} 
-          transition={{ delay: 0.9, duration: 1.5, times: [0, 0.5, 1] }}
-        >
-          💥 Hit My First NPE!
-        </motion.h1>
-        
-        <motion.div 
-          style={{ fontSize: '6rem', textAlign: 'center', margin: '1rem 0' }}
-          initial={{ scale: 0, opacity: 0, rotate: 0 }}
-          animate={{ 
-            scale: [0, 2, 1], 
-            opacity: [0, 1, 0.8], 
-            rotate: [0, 360, 0] 
-          }}
-          transition={{ delay: 1.3, duration: 2, ease: 'easeOut' }}
-        >
-          🚨
-        </motion.div>
-        
-        <motion.div 
-          style={{ fontSize: '1.2rem', lineHeight: '1.6', color: theme.dark }}
-          initial={{ opacity: 0, x: 50 }} 
-          animate={{ opacity: 1, x: 0 }} 
-          transition={{ delay: 2, duration: 1 }}
-        >
-          <div style={{background: 'rgba(255,0,0,0.1)', padding: '1.5rem', borderRadius: '15px', border: '2px solid rgba(255,0,0,0.3)'}}>
-            <p><strong style={{color: '#FF0000'}}>The Learning Moment:</strong></p>
-            <ul style={{marginLeft: '1rem', marginTop: '1rem'}}>
-              <li>🔍 Discovered the NPE myself</li>
-              <li>🤔 Took full responsibility</li>
-              <li>💡 Analyzed and understood the root cause</li>
-              <li>🔧 Implemented the fix properly</li>
-              <li>✅ Learned the importance of thorough testing</li>
-            </ul>
-          </div>
-          
-          <p style={{marginTop: '1.5rem', fontSize: '1.1rem', color: theme.primary, fontWeight: 'bold'}}>
-            This NPE taught me more than any textbook ever could - the critical importance of understanding code deeply to deliver perfection!
-          </p>
-          
-          <p style={{marginTop: '1rem', textAlign: 'center', fontSize: '1.5rem'}}>
-            Every bug is a lesson in disguise! 🌟
-          </p>
-        </motion.div>
-      </ContentCard>
-    </div>
-    <StyledButton onClick={onNext} delay={3}>Submit My First PR 🙏</StyledButton>
-  </SceneWrapper>
-);
-
-const Scene7 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={7} onBack={onBack}>
+const Scene6 = ({ onNext, onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={6} onBack={onBack} onSceneClick={onSceneClick}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
@@ -779,7 +731,6 @@ const Scene7 = ({ onNext, onBack }) => (
           <div style={{background: 'rgba(0,180,216,0.1)', padding: '1.5rem', borderRadius: '15px', marginTop: '1.5rem'}}>
             <p><strong style={{color: theme.accent}}>🔒 Security Vulnerabilities Mission:</strong></p>
             <ul style={{marginLeft: '1rem', marginTop: '1rem'}}>
-              <li>🕵️ Identified multiple security vulnerabilities</li>
               <li>🔧 Developed comprehensive fixes</li>
               <li>🧪 Rigorously tested all solutions</li>
               <li>📚 Explored numerous repositories</li>
@@ -807,80 +758,17 @@ const Scene7 = ({ onNext, onBack }) => (
   </SceneWrapper>
 );
 
-const Scene8 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={8} onBack={onBack}>
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-      <Slideshow 
-        images={[
-          { src: "ocr.png", alt: "OCR Project" },
-          { src: "https://placehold.co/500x400/9932CC/FFFFFF?text=AI+Revolution", alt: "AI Revolution" },
-          { src: "https://placehold.co/500x400/BA55D3/FFFFFF?text=Customer+Benefits", alt: "Customer Benefits" },
-          { src: "https://placehold.co/500x400/DA70D6/FFFFFF?text=Project+Lifecycle", alt: "Project Lifecycle" }
-        ]} 
-        delay={0.3} 
-      />
-      <ContentCard direction="right" delay={0.6}>
-        <motion.h1 
-          style={{ color: theme.secondary, fontSize: '2.5rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace", textAlign: 'center' }}
-          initial={{ y: 200, opacity: 0 }} 
-          animate={{ y: 0, opacity: 1 }} 
-          transition={{ delay: 0.9, duration: 0.8 }}
-        >
-          🚀 One-of-a-Kind Project
-        </motion.h1>
-        <motion.div 
-          style={{ fontSize: '1.2rem', lineHeight: '1.6', color: theme.dark }}
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          transition={{ delay: 1.3, duration: 1 }}
-        >
-          <div style={{background: 'linear-gradient(135deg, rgba(138,43,226,0.1), rgba(0,102,204,0.1))', padding: '2rem', borderRadius: '20px', border: '2px solid rgba(138,43,226,0.3)'}}>
-            <p><strong style={{color: '#8A2BE2', fontSize: '1.4rem'}}>🤖 OCR - The AI Revolution at Vertex</strong></p>
-            <p style={{marginTop: '1rem'}}>This wasn't just another project - it was <em>the</em> project that would bring AI benefits directly to our customers, built completely from scratch.</p>
-            
-            <div style={{marginTop: '1.5rem', background: 'rgba(255,255,255,0.7)', padding: '1rem', borderRadius: '10px'}}>
-              <p><strong>My Deep Dive Approach:</strong></p>
-              <ul style={{marginLeft: '1rem', marginTop: '0.5rem'}}>
-                <li>📅 Attended every single meeting</li>
-                <li>👀 Observed how work gets started, divided, and executed</li>
-                <li>📖 Extensive research and reading</li>
-                <li>💡 Devoted genuine interest and curiosity</li>
-                <li>🔍 Reviewed every PR, understanding its importance</li>
-                <li>🧠 Absorbed every learning opportunity</li>
-              </ul>
-            </div>
-          </div>
-          
-          <p style={{marginTop: '1.5rem', fontSize: '1.1rem', color: theme.primary, textAlign: 'center'}}>
-            While I didn't make extensive backend changes, I became a sponge for knowledge - understanding the entire system architecture and project lifecycle!
-          </p>
-          
-          <motion.div 
-            initial={{ opacity: 0, rotate: 0 }} 
-            animate={{ opacity: 1, rotate: [0, 360] }} 
-            transition={{ delay: 2, duration: 2, ease: 'easeInOut' }} 
-            style={{ fontSize: '2rem', textAlign: 'center', marginTop: '1rem', color: theme.secondary }}
-          >
-            🤖✨ AI Magic in the Making! ✨🤖
-          </motion.div>
-        </motion.div>
-      </ContentCard>
-    </div>
-    <StyledButton onClick={onNext} delay={2.5}>Get Some Work Done</StyledButton>
-  </SceneWrapper>
-);
-
-const Scene9 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={9} onBack={onBack}>
+const Scene7 = ({ onNext, onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={7} onBack={onBack} onSceneClick={onSceneClick}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
       <ContentCard direction="left" delay={0.3}>
         <motion.h1 
-          style={{ color: theme.primary, fontSize: '2.3rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace" }}
-          initial={{ opacity: 0, scale: 0 }} 
-          animate={{ opacity: 1, scale: 1 }} 
-          transition={{ delay: 0.6, duration: 0.8, type: 'spring' }}
+          style={{ color: theme.secondary, fontSize: '2.3rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace", textAlign: 'center' }}
+          initial={{ y: 200, opacity: 0 }} 
+          animate={{ y: 0, opacity: 1 }} 
+          transition={{ delay: 0.6, duration: 0.8 }}
         >
-          🎨 OCR UI Foundation Work
+          🤖 
         </motion.h1>
         <motion.div 
           style={{ fontSize: '1.2rem', lineHeight: '1.6', color: theme.dark }}
@@ -888,227 +776,122 @@ const Scene9 = ({ onNext, onBack }) => (
           animate={{ opacity: 1 }} 
           transition={{ delay: 1, duration: 1 }}
         >
-          <p>Got the crucial role in <strong style={{color: theme.secondary}}>OCR Foundation</strong> due to my extensive frontend and mock server experience!</p>
-          
-          <div style={{background: 'rgba(255,102,0,0.1)', padding: '1.5rem', borderRadius: '15px', marginTop: '1.5rem'}}>
-            <p><strong style={{color: theme.secondary}}>🏗️ The Challenge:</strong></p>
-            <p>Build a robust UI while the backend wasn't ready yet</p>
+          <div style={{background: 'linear-gradient(135deg, rgba(138,43,226,0.1), rgba(0,102,204,0.1))', padding: '1.5rem', borderRadius: '15px', border: '2px solid rgba(138,43,226,0.3)', marginBottom: '1.5rem'}}>
+            <p><strong style={{color: '#8A2BE2', fontSize: '1.3rem'}}>🚀 Automated Certificate Ingestion and Validation</strong></p>
+            <p>Integrating AI-powered models to bring cutting-edge benefits directly to customers!</p>
             
-            <p style={{marginTop: '1rem'}}><strong>🎯 Key Accomplishments:</strong></p>
-            <ul style={{marginLeft: '1rem', marginTop: '0.5rem'}}>
+            <div style={{marginTop: '1rem', background: 'rgba(255,255,255,0.7)', padding: '1rem', borderRadius: '10px'}}>
+              <p><strong>My Deep Dive Approach:</strong></p>
+              <ul style={{marginLeft: '1rem', fontSize: '0.95rem'}}>
+                <li>📅 Attended every meeting to understand project lifecycle</li>
+                <li>🔍 Reviewed every PR for system understanding</li>
+                <li>💡 Absorbed every learning opportunity</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style={{background: 'rgba(255,102,0,0.1)', padding: '1.5rem', borderRadius: '15px'}}>
+            <p><strong style={{color: theme.secondary}}>� UI Foundation Work:</strong></p>
+            <ul style={{marginLeft: '1rem', marginTop: '0.5rem', fontSize: '0.95rem'}}>
               <li>✅ Built comprehensive validation systems</li>
-              <li>🚨 Implemented error handling</li>
-              <li>🔄 Created UI that doesn't disrupt normal flow</li>
-              <li>🎭 Developed advanced mocking for testing</li>
-              <li>📡 API fetching for add/edit pages</li>
-              <li>🧪 Environment mocking without hardcoded test cases</li>
+              <li>🚨 Implemented advanced error handling</li>
+              <li>🎭 Developed flexible mocking for testing</li>
+              <li>📡 Created API integration for add/edit pages</li>
+              <li>🧪 Cypress tests for changes made</li>
             </ul>
           </div>
           
-          <p style={{marginTop: '1.5rem', color: theme.primary, fontSize: '1.1rem'}}>
-            <strong>💡 Biggest Learning:</strong> Creating a mock environment that could adapt to real scenarios without hardcoding - this taught me invaluable lessons about flexible architecture!
-          </p>
-          
-          <p style={{textAlign: 'center', fontSize: '1.4rem', color: theme.secondary, marginTop: '1rem'}}>
-            🎨 Building the frontend fortress that would power AI innovation!
+          <p style={{marginTop: '1.5rem', fontSize: '1.1rem', color: theme.primary, textAlign: 'center'}}>
+            � Learning big-scale frontend development while contributing to AI innovation!
           </p>
         </motion.div>
       </ContentCard>
       <Slideshow 
         images={[
+          { src: "ocr.png", alt: "OCR Project" },
           { src: "ocrsuccess.png", alt: "OCR UI Foundation" },
-          { src: "ocwarning.png", alt: "Validation Systems" },
-          { src: "cypress.png", alt: "Error Handling" },
+          { src: "ocrwarning.png", alt: "Validation Systems" },
           { src: "ocrpr.png", alt: "Mock Environment" },
           { src: "ocrpr2.png", alt: "API Integration" }
         ]} 
         delay={0.6} 
       />
     </div>
-    <StyledButton onClick={onNext} delay={2}>The Launchpad</StyledButton>
+    <StyledButton onClick={onNext} delay={2}>Understanding Vertex Culture</StyledButton>
   </SceneWrapper>
 );
 
-const Scene10 = ({ onNext, onBack }) => (
-  <SceneWrapper sceneNumber={10} onBack={onBack}>
+const Scene8 = ({ onNext, onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={8} onBack={onBack} onSceneClick={onSceneClick}>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', width: '100%' }}>
-      <Slideshow 
-        images={[
-          { src: "launchpad.png", alt: "Vertex Headquarters" },
-          { src: "launchpad1.png", alt: "King of Prussia Office" },
-          { src: "launchpad4.png", alt: "Intern Connections" },
-          { src: "launchpad3.png", alt: "Hackathon Team" },
-          { src: "einvoice1.png", alt: "E-Invoice Verifier" }
-        ]} 
-        delay={0.3} 
-      />
-      <ContentCard direction="right" delay={0.6}>
+      <ContentCard delay={0.3}>
         <motion.h1 
           style={{ color: theme.primary, fontSize: '2.2rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace", textAlign: 'center' }}
-          initial={{ opacity: 0, x: 200 }} 
-          animate={{ opacity: 1, x: 0 }} 
-          transition={{ delay: 0.9, duration: 0.8 }}
+          initial={{ y: -50, opacity: 0 }} 
+          animate={{ y: 0, opacity: 1 }} 
+          transition={{ delay: 0.6, duration: 0.8 }}
         >
-          🏢 Understanding Vertex at its Core
+          🏢 Launchpad & Lessons Learned
         </motion.h1>
         <motion.div 
-          style={{ fontSize: '1.2rem', lineHeight: '1.6', color: theme.dark }}
+          style={{ fontSize: '1.1rem', lineHeight: '1.6', color: theme.dark }}
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
-          transition={{ delay: 1.3, duration: 1 }}
+          transition={{ delay: 1, duration: 1 }}
         >
           <div style={{background: 'rgba(0,102,204,0.1)', padding: '1.5rem', borderRadius: '15px', marginBottom: '1.5rem'}}>
-            <p><strong style={{color: theme.primary, fontSize: '1.3rem'}}>🚀 In-Person Launchpad Event</strong></p>
-            <p style={{marginTop: '1rem'}}>Visited the head office in <strong>King of Prussia</strong></p>
-            <ul style={{marginLeft: '1rem', marginTop: '1rem'}}>
-              <li>🤝 Connected with fellow interns</li>
-              <li>👥 Interacted with senior leaders</li>
-              <li>🌐 Learned about different teams across Vertex</li>
-              <li>🔗 Understood how teams collaborate</li>
-              <li>💼 Gained insights into company culture</li>
-            </ul>
+            <p><strong style={{color: theme.primary, fontSize: '1.2rem'}}>🚀 Launchpad Experience</strong></p>
+            <p>Visited King of Prussia office - connected with interns, leaders, and teams</p>
+            <p style={{marginTop: '0.5rem'}}>🏆 Built "E-Invoice Verifier" at hackathon!</p>
           </div>
-          
-          <div style={{background: 'rgba(255,102,0,0.1)', padding: '1.5rem', borderRadius: '15px'}}>
-            <p><strong style={{color: theme.secondary, fontSize: '1.3rem'}}>🏆 Hackathon Experience</strong></p>
-            <p style={{marginTop: '1rem'}}>Built <strong>"E-Invoice Verifier"</strong> - a real-time solution for Vertex!</p>
-            <ul style={{marginLeft: '1rem', marginTop: '1rem'}}>
-              <li>💻 Real-time development under pressure</li>
-              <li>🎯 Created something genuinely useful for Vertex</li>
-              <li>🤝 Amazing team collaboration</li>
-              <li>📚 Incredible learning experience</li>
+
+          <div style={{background: 'linear-gradient(135deg, rgba(0,102,204,0.1), rgba(255,102,0,0.1))', padding: '1.5rem', borderRadius: '15px'}}>
+            <p><strong style={{color: theme.primary, fontSize: '1.2rem'}}>🚀 Key Growth Areas:</strong></p>
+            <ul style={{marginTop: '1rem', fontSize: '0.95rem'}}>
+              <li>🔧 Full-stack experience</li>
+              <li>🤝 Collaborative problem-solving</li>
+              <li>🛡️ Security-first mindset</li>
+              <li>🏗️ Infrastructure experience</li>
+              <li>📦 API design and integration</li>
             </ul>
-            <p style={{marginTop: '1rem', fontStyle: 'italic'}}>We didn't win, but the experience was priceless!</p>
           </div>
           
           <motion.div 
-            initial={{ opacity: 0, rotate: 0 }} 
-            animate={{ opacity: 1, rotate: [0, 360] }} 
-            transition={{ delay: 2, duration: 2 }} 
-            style={{ fontSize: '1.5rem', textAlign: 'center', marginTop: '1rem', color: theme.secondary }}
+            style={{ 
+              textAlign: 'center', 
+              fontSize: '1.1rem', 
+              color: theme.primary, 
+              marginTop: '1.5rem',
+              background: 'rgba(0,102,204,0.1)',
+              padding: '1rem',
+              borderRadius: '15px',
+              border: `1px solid ${theme.primary}30`
+            }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.8, duration: 0.8 }}
           >
-            🚀 Launching ideas and building connections!
+            💝 <strong style={{color: theme.secondary}}>Grateful</strong> for this transformative journey at Vertex Inc!
           </motion.div>
         </motion.div>
       </ContentCard>
+      
+      <Slideshow 
+        images={[
+          { src: "launchpad.png", alt: "Vertex Headquarters" },
+          { src: "dashboard2.png", alt: "Dashboard Success" },
+          { src: "ocrsuccess.png", alt: "OCR Innovation" },
+          { src: "terra.png", alt: "Infrastructure Growth" }
+        ]} 
+        delay={0.6} 
+      />
     </div>
-    <StyledButton onClick={onNext} delay={2.5}>My Journey Altogether</StyledButton>
+    <StyledButton onClick={onNext} delay={2.5}>Thank You, Vertex!</StyledButton>
   </SceneWrapper>
 );
 
-const Scene11 = ({ onNext, onBack }) => {
-  const highlights = [
-    'https://placehold.co/800x500/0066CC/FFFFFF?text=Dashboard+Success',
-    'https://placehold.co/800x500/FF6600/FFFFFF?text=Spring+Boot+Mastery', 
-    'https://placehold.co/800x500/00B4D8/FFFFFF?text=Security+Champion',
-    'https://placehold.co/800x500/8A2BE2/FFFFFF?text=OCR+AI+Innovation',
-    'https://placehold.co/800x500/228B22/FFFFFF?text=Team+Collaboration',
-    'https://placehold.co/800x500/FF1493/FFFFFF?text=Hackathon+Spirit'
-  ];
-
-  return (
-    <SceneWrapper sceneNumber={11} onBack={onBack}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '2rem' }}>
-        <ContentCard delay={0.3}>
-          <motion.h1 
-            style={{ color: theme.primary, fontSize: '3rem', marginBottom: '1.5rem', fontFamily: "'Orbitron', monospace", textAlign: 'center' }}
-            initial={{ y: -50, opacity: 0 }} 
-            animate={{ y: 0, opacity: 1 }} 
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            📚 The Lessons Learned
-          </motion.h1>
-          <motion.div 
-            style={{ fontSize: '1.3rem', lineHeight: '1.8', color: theme.dark, textAlign: 'center' }}
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            transition={{ delay: 1, duration: 1 }}
-          >
-            <div style={{background: 'linear-gradient(135deg, rgba(0,102,204,0.1), rgba(255,102,0,0.1))', padding: '2rem', borderRadius: '20px', marginBottom: '2rem'}}>
-              <p><strong style={{color: theme.primary, fontSize: '1.4rem'}}>🚀 Growth as a Developer:</strong></p>
-              <ul style={{textAlign: 'left', marginTop: '1rem', marginLeft: '2rem'}}>
-                <li>🔧 Mastered full-stack development across multiple teams</li>
-                <li>🤝 Learned the power of asking questions and collaboration</li>
-                <li>🛡️ Understood the critical importance of testing and security</li>
-                <li>🏗️ Gained experience in infrastructure as code with Terraform</li>
-                <li>🤖 Contributed to cutting-edge AI projects from the ground up</li>
-                <li>📊 Appreciated the value of monitoring and observability</li>
-              </ul>
-            </div>
-            
-            <p style={{fontSize: '1.2rem', color: theme.secondary, fontStyle: 'italic'}}>
-              "Every challenge was a stepping stone, every bug was a lesson, every collaboration was growth."
-            </p>
-          </motion.div>
-        </ContentCard>
-        
-        <motion.div 
-          style={{ 
-            position: 'relative', 
-            width: '70%', 
-            height: '300px', 
-            marginTop: '2rem', 
-            overflow: 'hidden',
-            borderRadius: '25px',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.3)'
-          }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
-        >
-          <AnimatePresence>
-            {highlights.map((src, index) => (
-              <motion.img
-                key={index}
-                src={src}
-                style={{ 
-                  position: 'absolute', 
-                  top: 0, 
-                  left: 0, 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'cover',
-                  borderRadius: '25px'
-                }}
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ 
-                  duration: 1.5, 
-                  delay: index * 2, 
-                  repeat: Infinity, 
-                  repeatDelay: (highlights.length - 1) * 2 
-                }}
-              />
-            ))}
-          </AnimatePresence>
-        </motion.div>
-        
-        <motion.div 
-          style={{ 
-            textAlign: 'center', 
-            fontSize: '1.4rem', 
-            color: theme.primary, 
-            marginTop: '2rem',
-            background: theme.cardBg,
-            padding: '1.5rem',
-            borderRadius: '20px',
-            backdropFilter: 'blur(10px)'
-          }}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2, duration: 1 }}
-        >
-          💝 <strong style={{color: theme.secondary}}>Gratitude:</strong> To Vertex Inc, my mentors, teammates, and this incredible journey that transformed me from a curious student into a confident developer ready to tackle any challenge!
-        </motion.div>
-      </div>
-      <StyledButton onClick={onNext} delay={3}>Thank You</StyledButton>
-    </SceneWrapper>
-  );
-};
-
-const FinalScene = ({ onBack }) => (
-  <SceneWrapper sceneNumber={12} onBack={onBack}>
+const Scene9 = ({ onBack, onSceneClick }) => (
+  <SceneWrapper sceneNumber={9} onBack={onBack} onSceneClick={onSceneClick}>
     <motion.div
       style={{ 
         display: 'flex', 
@@ -1173,11 +956,245 @@ const FinalScene = ({ onBack }) => (
 );
 
 // Main App Component
-const scenes = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, Scene8, Scene9, Scene10, Scene11, FinalScene];
+const scenes = [Scene1, Scene2, Scene3, Scene4, Scene5, Scene6, Scene7, Scene8, Scene9];
+
+// Timer Component
+const Timer = () => {
+  const [timeElapsed, setTimeElapsed] = useState(0);
+
+  useEffect(() => {
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      setTimeElapsed(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <motion.div
+      style={{
+        position: 'fixed',
+        bottom: '0rem',
+        right: '2rem',
+        background: theme.cardBg,
+        backdropFilter: 'blur(15px)',
+        padding: '0.75rem 1rem',
+        borderRadius: '20px',
+        boxShadow: '0 8px 25px rgba(0, 102, 204, 0.3)',
+        border: `2px solid rgba(0, 102, 204, 0.3)`,
+        zIndex: 1000,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        fontFamily: "'Orbitron', monospace",
+        fontSize: '0.9rem',
+        color: theme.primary,
+        fontWeight: 'bold'
+      }}
+      initial={{ opacity: 0, scale: 0, x: 100 }}
+      animate={{ opacity: 1, scale: 1, x: 0 }}
+      transition={{ duration: 0.6, type: 'spring', stiffness: 120 }}
+      whileHover={{ scale: 1.05 }}
+    >
+      <motion.div
+        style={{
+          width: '12px',
+          height: '12px',
+          borderRadius: '50%',
+          background: theme.secondary,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [1, 0.7, 1]
+        }}
+        transition={{ duration: 1, repeat: Infinity }}
+      >
+        ⏱️
+      </motion.div>
+      {formatTime(timeElapsed)}
+    </motion.div>
+  );
+};
+
+// Scene Navigator Component
+const SceneNavigator = ({ currentScene, onSceneSelect, onClose }) => {
+  const sceneNames = [
+    "Introduction",
+    "Certificate Center Team",
+    "Observability",
+    "Development Team",
+    "Spring Boot & Security Experience",
+    "Security Team",
+    "Automated Certificate Ingestion and Validation",
+    "Launchpad & Lessons Learned",
+    "Thank You"
+  ];
+
+  return (
+    <motion.div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        background: 'rgba(0, 0, 0, 0.8)',
+        backdropFilter: 'blur(10px)',
+        zIndex: 2000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '2rem'
+      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        style={{
+          background: theme.cardBg,
+          borderRadius: '25px',
+          padding: '3rem',
+          maxWidth: '90vw',
+          maxHeight: '80vh',
+          overflow: 'auto',
+          boxShadow: '0 25px 50px rgba(0, 102, 204, 0.5)',
+          border: `2px solid ${theme.primary}30`
+        }}
+        initial={{ scale: 0.8, y: 50 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.8, y: 50 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '2rem'
+        }}>
+          <h2 style={{
+            color: theme.primary,
+            fontFamily: "'Orbitron', monospace",
+            fontSize: '2rem',
+            margin: 0
+          }}>
+            🎬 Scene Navigator
+          </h2>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'transparent',
+              border: `2px solid ${theme.primary}`,
+              color: theme.primary,
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            ×
+          </button>
+        </div>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '1rem',
+          maxHeight: '60vh',
+          overflow: 'auto'
+        }}>
+          {sceneNames.map((name, index) => (
+            <motion.div
+              key={index}
+              style={{
+                background: currentScene === index 
+                  ? `linear-gradient(135deg, ${theme.primary}20, ${theme.secondary}20)`
+                  : 'rgba(255, 255, 255, 0.1)',
+                border: currentScene === index 
+                  ? `2px solid ${theme.primary}`
+                  : '2px solid transparent',
+                borderRadius: '15px',
+                padding: '1.5rem',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                backdropFilter: 'blur(5px)'
+              }}
+              whileHover={{
+                scale: 1.05,
+                background: `linear-gradient(135deg, ${theme.primary}30, ${theme.secondary}30)`
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onSceneSelect(index)}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '1rem'
+              }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  background: currentScene === index 
+                    ? theme.primary 
+                    : `${theme.primary}50`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  fontFamily: "'Orbitron', monospace"
+                }}>
+                  {index + 1}
+                </div>
+                <div>
+                  <h3 style={{
+                    color: theme.primary,
+                    margin: 0,
+                    fontSize: '1.1rem',
+                    fontFamily: "'Space Grotesk', sans-serif"
+                  }}>
+                    {name}
+                  </h3>
+                  {currentScene === index && (
+                    <p style={{
+                      color: theme.secondary,
+                      margin: '0.5rem 0 0 0',
+                      fontSize: '0.9rem',
+                      fontStyle: 'italic'
+                    }}>
+                      Currently viewing
+                    </p>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const VertexJourneyApp = () => {
   const [currentScene, setCurrentScene] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showSceneNavigator, setShowSceneNavigator] = useState(false);
 
   const handleNext = () => {
     if (currentScene < scenes.length - 1 && !isTransitioning) {
@@ -1211,6 +1228,17 @@ const VertexJourneyApp = () => {
     setIsTransitioning(false);
   };
 
+  const jumpToScene = (sceneIndex) => {
+    if (sceneIndex !== currentScene && !isTransitioning) {
+      setCurrentScene(sceneIndex);
+      setShowSceneNavigator(false);
+    }
+  };
+
+  const toggleSceneNavigator = () => {
+    setShowSceneNavigator(!showSceneNavigator);
+  };
+
   const CurrentScene = scenes[currentScene];
 
   return (
@@ -1227,8 +1255,23 @@ const VertexJourneyApp = () => {
             exit={{ opacity: 0, x: '-100vw' }}
             transition={{ duration: 1, ease: 'easeInOut' }}
           >
-            <CurrentScene onNext={handleNext} onBack={handleBack} />
+            <CurrentScene 
+              onNext={handleNext} 
+              onBack={handleBack} 
+              onSceneClick={toggleSceneNavigator}
+            />
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Scene Navigator Overlay */}
+      <AnimatePresence>
+        {showSceneNavigator && (
+          <SceneNavigator
+            currentScene={currentScene}
+            onSceneSelect={jumpToScene}
+            onClose={() => setShowSceneNavigator(false)}
+          />
         )}
       </AnimatePresence>
 
@@ -1326,6 +1369,9 @@ const VertexJourneyApp = () => {
         </motion.div>
       )}
 
+      {/* Timer Component - Always visible */}
+      <Timer />
+
       <style>{`
         * {
           margin: 0;
@@ -1360,6 +1406,14 @@ const VertexJourneyApp = () => {
             right: 1rem !important;
             padding: 1rem 1.5rem !important;
             font-size: 0.9rem !important;
+          }
+          
+          /* Timer responsive styles */
+          div[style*="position: fixed"][style*="bottom: '2rem'"][style*="right: '2rem'"] {
+            bottom: 1rem !important;
+            right: 1rem !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 0.8rem !important;
           }
           
           h1 {
