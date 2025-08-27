@@ -1,0 +1,51 @@
+/* Ensure proper scrolling for AI Education components */
+.ai-education-container {
+  width: 100% !important;
+  max-width: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: 100vh !important;
+  position: relative;
+}
+
+/* Fix any potential width constraints */
+.ai-education-content {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ai-education-content * {
+  box-sizing: border-box;
+}
+
+/* Ensure responsive images and SVGs */
+.ai-education-content svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for webkit browsers */
+.ai-education-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ai-education-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.ai-education-container::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.3);
+  border-radius: 4px;
+}
+
+.ai-education-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.5);
+}

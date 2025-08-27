@@ -1,0 +1,427 @@
+/* Neural Network Simulator Styles */
+.neural-network-container {
+  width: 100% !important;
+  max-width: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: 100vh !important;
+  position: relative;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+}
+
+.neural-network-content {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.neural-network-content * {
+  box-sizing: border-box;
+}
+
+/* Custom scrollbar for webkit browsers */
+.neural-network-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.neural-network-container::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.3);
+  border-radius: 6px;
+}
+
+.neural-network-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.6), rgba(147, 51, 234, 0.6));
+  border-radius: 6px;
+  border: 2px solid rgba(30, 41, 59, 0.3);
+}
+
+.neural-network-container::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(147, 51, 234, 0.8));
+}
+
+/* Network Builder Styles */
+.network-canvas {
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(147, 51, 234, 0.1) 0%, transparent 50%),
+    linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background-size: 100px 100px, 100px 100px, 100% 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Prevent sidebar movement during scroll */
+.layer-library {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: layout style paint;
+  isolation: isolate;
+}
+
+/* Ensure sidebars stay in place */
+.layer-library.right-sidebar {
+  right: 1rem !important;
+  left: auto !important;
+}
+
+.layer-library.left-sidebar {
+  left: 1rem !important;
+  right: auto !important;
+}
+
+.layer-node {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: move;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.layer-node:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.layer-node.dragging {
+  transform: rotate(5deg) scale(1.1);
+  z-index: 1000;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(59, 130, 246, 0.3);
+}
+
+.layer-node.selected {
+  border-color: #3b82f6;
+  box-shadow: 
+    0 0 0 3px rgba(59, 130, 246, 0.3),
+    0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.connection-line {
+  stroke: url(#connectionGradient);
+  stroke-width: 3;
+  fill: none;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.4));
+}
+
+.connection-line:hover {
+  stroke-width: 4;
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
+}
+
+.connection-line.active {
+  stroke-width: 4;
+  opacity: 1;
+  animation: pulse-connection 2s infinite;
+}
+
+@keyframes pulse-connection {
+  0%, 100% { 
+    stroke-width: 3;
+    opacity: 0.7;
+  }
+  50% { 
+    stroke-width: 5;
+    opacity: 1;
+  }
+}
+
+/* Layer Library Styles */
+.layer-library {
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 24px;
+  position: fixed !important;
+  top: 1rem !important;
+  z-index: 50 !important;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.layer-item {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: grab;
+  transition: all 0.3s ease;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.layer-item:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.05));
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 25px -8px rgba(59, 130, 246, 0.3);
+}
+
+.layer-item:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+.layer-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.layer-item:hover::before {
+  left: 100%;
+}
+
+/* Training Visualization Styles */
+.training-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 24px;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.3);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.metric-card:hover::before {
+  opacity: 1;
+}
+
+.loss-curve {
+  stroke: #ef4444;
+  stroke-width: 3;
+  fill: none;
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.4));
+  animation: draw-line 2s ease-in-out;
+}
+
+.accuracy-curve {
+  stroke: #10b981;
+  stroke-width: 3;
+  fill: none;
+  filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.4));
+  animation: draw-line 2s ease-in-out 0.5s both;
+}
+
+@keyframes draw-line {
+  from {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Neuron Visualization Styles */
+.neuron {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+  border: 2px solid rgba(59, 130, 246, 0.4);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.neuron.active {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, transparent 70%);
+  border-color: #3b82f6;
+  box-shadow: 
+    0 0 20px rgba(59, 130, 246, 0.6),
+    inset 0 0 20px rgba(59, 130, 246, 0.2);
+  animation: neuron-pulse 1.5s infinite;
+}
+
+@keyframes neuron-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.neuron::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: #3b82f6;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.neuron.active::before {
+  background: #60a5fa;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+  animation: neuron-core-pulse 1.5s infinite;
+}
+
+@keyframes neuron-core-pulse {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+/* Data Flow Animation */
+.data-particle {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  position: absolute;
+  animation: flow-particle 2s linear infinite;
+  filter: blur(1px);
+}
+
+@keyframes flow-particle {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  10% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* Gradient Definitions */
+.gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1) 0%,
+    rgba(147, 51, 234, 0.05) 50%,
+    rgba(236, 72, 153, 0.1) 100%
+  );
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .neural-network-container {
+    height: 100vh !important;
+  }
+  
+  .training-dashboard {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 16px;
+  }
+  
+  .layer-library {
+    padding: 16px;
+    max-height: 60vh;
+  }
+  
+  .metric-card {
+    padding: 16px;
+  }
+  
+  .layer-node {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .network-canvas {
+    background-size: 50px 50px, 50px 50px, 100% 100%;
+  }
+  
+  .layer-node {
+    min-width: 100px;
+    font-size: 14px;
+  }
+  
+  .neuron {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* Animation Performance Optimizations */
+.layer-node,
+.neuron,
+.connection-line,
+.metric-card {
+  will-change: transform, opacity;
+}
+
+/* Dark mode specific enhancements */
+@media (prefers-color-scheme: dark) {
+  .neural-network-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  }
+  
+  .layer-node {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .metric-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+}

@@ -5,15 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import MyStory from './MyStory';
 import { 
   GithubIcon, LinkedinIcon, Mail, Download, Book, Briefcase, Code,
-  Brain, Server, Layout, Shield, Terminal, Globe
+  Brain, Server, Layout, Shield, Terminal, Globe, Sparkles, Activity
 } from 'lucide-react';
 
 const gradients = {
-  first: "from-blue-600 to-purple-600",
-  second: "from-purple-600 to-indigo-600",
-  third: "from-indigo-600 to-blue-600",
+  first: "from-blue-600 to-cyan-600",
+  second: "from-blue-600 to-cyan-600",
+  third: "from-blue-600 to-cyan-600",
   fourth: "from-blue-600 to-cyan-600",
-  fifth: "from-cyan-600 to-blue-600"
+  fifth: "from-blue-600 to-cyan-6000"
 };
 // ProjectOrbit Component
 
@@ -261,7 +261,7 @@ const Home = () => {
       <section 
         id="hero"
         ref={heroRef}
-        className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-600 to-purple-600 text-white"
+        className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-600 to-cyan-600 text-white"
       >
         {/* Background animated circles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -296,7 +296,7 @@ const Home = () => {
       transition={{ delay: 0.5 }}
       className="text-xl max-w-2xl mx-auto"
     >
-      Passionate about building technology that better lives, combining my love for AI/ML and software development to turn creative ideas into real solutions. Visit My Story to see my journey so far.
+Building AI solutions that make a real difference. Explore my projects and journey in machine learning and software development.
     </motion.p>
     
     <motion.div
@@ -366,6 +366,28 @@ const Home = () => {
       >
         My Story
       </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          navigate('/how-ai-learns');
+        }}
+        className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors cursor-pointer z-50 text-sm sm:text-base font-semibold shadow-lg"
+      >
+        <Brain size={20} />
+        How AI Learns
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          navigate('/ai');
+        }}
+        className="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors cursor-pointer z-50 text-sm sm:text-base font-semibold shadow-lg"
+      >
+        AI Education
+      </button>
+
     </motion.div>
   </div>
 </div>
