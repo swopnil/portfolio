@@ -372,7 +372,7 @@ Building AI solutions that make a real difference. Explore my projects and journ
           e.stopPropagation();
           navigate('/how-ai-learns');
         }}
-        className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors cursor-pointer z-50 text-sm sm:text-base font-semibold shadow-lg"
+        className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors cursor-pointer z-50 text-sm sm:text-base"
       >
         <Brain size={20} />
         How AI Learns
@@ -381,11 +381,11 @@ Building AI solutions that make a real difference. Explore my projects and journ
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          navigate('/ai');
+          navigate('/rummy');
         }}
-        className="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors cursor-pointer z-50 text-sm sm:text-base font-semibold shadow-lg"
+        className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors cursor-pointer z-50 text-sm sm:text-base"
       >
-        AI Education
+        Nepali Rummy
       </button>
 
     </motion.div>

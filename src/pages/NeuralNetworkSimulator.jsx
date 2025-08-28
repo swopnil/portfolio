@@ -23,6 +23,22 @@ const NeuralNetworkSimulator = () => {
 
   const modules = [
     {
+      id: 'educational',
+      title: 'Learning Hub',
+      icon: BookOpen,
+      description: 'Guided tutorials, challenges, and research paper implementations',
+      features: [
+        'Interactive Tutorials',
+        'Architecture Challenges',
+        'Research Paper Demos',
+        'Debugging Tools',
+        'Best Practices Guide'
+      ],
+      gradient: 'from-yellow-500 via-orange-500 to-red-500',
+      bgPattern: 'bg-gradient-to-br from-yellow-50 to-orange-50',
+      status: 'ready'
+    },
+    {
       id: 'network-builder',
       title: 'Architecture Designer',
       icon: Network,
@@ -86,22 +102,6 @@ const NeuralNetworkSimulator = () => {
       bgPattern: 'bg-gradient-to-br from-purple-50 to-pink-50',
       status: Object.keys(modelMetrics).length > 0 ? 'ready' : 'locked'
     },
-    {
-      id: 'educational',
-      title: 'Learning Hub',
-      icon: BookOpen,
-      description: 'Guided tutorials, challenges, and research paper implementations',
-      features: [
-        'Interactive Tutorials',
-        'Architecture Challenges',
-        'Research Paper Demos',
-        'Debugging Tools',
-        'Best Practices Guide'
-      ],
-      gradient: 'from-yellow-500 via-orange-500 to-red-500',
-      bgPattern: 'bg-gradient-to-br from-yellow-50 to-orange-50',
-      status: 'ready'
-    }
   ];
 
   const FloatingNeurons = () => (
