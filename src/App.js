@@ -11,6 +11,8 @@ import AIEducation from './pages/AIEducation';
 import NeuralNetworkSimulator from './pages/NeuralNetworkSimulator';
 import AILearningDemo from './components/AILearningDemo';
 import TokenizationJourney from './pages/TokenizationJourney';
+import TaskManager from './pages/jira';
+import Quiz from './pages/quiz';
 const App = () => {
   return (
     <Routes>
@@ -21,6 +23,8 @@ const App = () => {
       <Route path="neural-network" element={<NeuralNetworkSimulator />} />
       <Route path="how-ai-learns" element={<AILearningDemo />} />
       <Route path="tokenization-journey" element={<TokenizationJourney />} />
+      <Route path="jira" element={<TaskManager />} />
+      <Route path="quiz" element={<Quiz />} />
 
       <Route element={<Layout />}>
         <Route index element={<Home />} />

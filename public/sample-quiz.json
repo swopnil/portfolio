@@ -1,0 +1,83 @@
+{
+  "quiz": {
+    "title": "CSS Comprehensive Quiz",
+    "description": "Test your knowledge of CSS fundamentals, selectors, and styling techniques",
+    "questions": [
+      {
+        "id": 1,
+        "question": "What does CSS stand for?",
+        "options": ["Cascading Style Sheets", "Creative Style Sheets", "Computer Style Sheets", "Colorful Style Sheets"],
+        "correct": 0,
+        "category": "Basics"
+      },
+      {
+        "id": 2,
+        "question": "Which HTML attribute is used to define inline styles?",
+        "options": ["class", "style", "styles", "css"],
+        "correct": 1,
+        "category": "Basics"
+      },
+      {
+        "id": 3,
+        "question": "Which CSS property is used to change the text color of an element?",
+        "options": ["color", "text-color", "font-color", "text-style"],
+        "correct": 0,
+        "category": "Text Styling"
+      },
+      {
+        "id": 4,
+        "question": "Which CSS property controls the spacing between elements?",
+        "options": ["padding", "margin", "spacing", "gap"],
+        "correct": 1,
+        "category": "Layout"
+      },
+      {
+        "id": 5,
+        "question": "What is the correct CSS syntax for making all <p> elements bold?",
+        "options": ["p {text-size: bold;}", "p {font-weight: bold;}", "p {text-style: bold;}", "p {font-style: bold;}"],
+        "correct": 1,
+        "category": "Text Styling"
+      },
+      {
+        "id": 6,
+        "question": "Which CSS property is used to control the layout of multiple elements?",
+        "options": ["flexbox", "display", "layout", "position"],
+        "correct": 1,
+        "category": "Layout"
+      },
+      {
+        "id": 7,
+        "question": "What does the 'box-sizing: border-box' property do?",
+        "options": [
+          "Includes padding and border in element's total width and height",
+          "Excludes padding and border from element's width and height", 
+          "Only includes border in the total size",
+          "Only includes padding in the total size"
+        ],
+        "correct": 0,
+        "category": "Box Model"
+      },
+      {
+        "id": 8,
+        "question": "Which CSS selector has the highest specificity?",
+        "options": ["ID selector", "Class selector", "Element selector", "Universal selector"],
+        "correct": 0,
+        "category": "Selectors"
+      },
+      {
+        "id": 9,
+        "question": "What is the default value of the 'position' property?",
+        "options": ["relative", "absolute", "static", "fixed"],
+        "correct": 2,
+        "category": "Layout"
+      },
+      {
+        "id": 10,
+        "question": "Which CSS property is used to create rounded corners?",
+        "options": ["corner-radius", "border-radius", "border-corner", "radius"],
+        "correct": 1,
+        "category": "Visual Effects"
+      }
+    ]
+  }
+}
