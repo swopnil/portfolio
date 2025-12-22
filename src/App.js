@@ -12,7 +12,7 @@ import NeuralNetworkSimulator from './pages/NeuralNetworkSimulator';
 import AILearningDemo from './components/AILearningDemo';
 import TokenizationJourney from './pages/TokenizationJourney';
 import TaskManager from './pages/jira';
-import ImposterGame from './pages/charades'
+import ImposterGame from './pages/charade'
 const App = () => {
   return (
     <Routes>
