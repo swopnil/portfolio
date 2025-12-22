@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Eye, EyeOff, RotateCcw } from 'lucide-react';
+import { Users, Eye, EyeOff, RotateCcw, Plus, Minus } from 'lucide-react';
 
 const COUNTRIES = [
   'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria',
@@ -25,19 +25,20 @@ const COUNTRIES = [
 ];
 
 export default function ImposterGame() {
+  const [numPlayers, setNumPlayers] = useState(3);
   const [gameStarted, setGameStarted] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('');
   const [imposterIndex, setImposterIndex] = useState(-1);
-  const [revealedPlayers, setRevealedPlayers] = useState([false, false, false]);
+  const [revealedPlayers, setRevealedPlayers] = useState([]);
   const [gamePhase, setGamePhase] = useState('setup');
 
   const startGame = () => {
     const country = COUNTRIES[Math.floor(Math.random() * COUNTRIES.length)];
-    const imposter = Math.floor(Math.random() * 3);
+    const imposter = Math.floor(Math.random() * numPlayers);
     setSelectedCountry(country);
     setImposterIndex(imposter);
     setGameStarted(true);
-    setRevealedPlayers([false, false, false]);
+    setRevealedPlayers(new Array(numPlayers).fill(false));
     setGamePhase('reveal');
   };
 
@@ -55,15 +56,22 @@ export default function ImposterGame() {
     setGameStarted(false);
     setSelectedCountry('');
     setImposterIndex(-1);
-    setRevealedPlayers([false, false, false]);
+    setRevealedPlayers([]);
     setGamePhase('setup');
   };
 
-  const players = ['Player 1', 'Player 2', 'Player 3'];
+  const changePlayers = (delta) => {
+    const newNum = numPlayers + delta;
+    if (newNum >= 3 && newNum <= 6) {
+      setNumPlayers(newNum);
+    }
+  };
+
+  const players = Array.from({ length: numPlayers }, (_, i) => `Player ${i + 1}`);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-2 flex items-center justify-center gap-3">
             <Users className="w-12 h-12" />
@@ -77,13 +85,36 @@ export default function ImposterGame() {
             <div className="mb-6">
               <h2 className="text-3xl font-bold text-white mb-4">How to Play</h2>
               <div className="text-left text-blue-100 space-y-3 max-w-2xl mx-auto">
-                <p>🎯 <strong>3 Players:</strong> One is the imposter, two know the secret country</p>
+                <p>🎯 <strong>3-6 Players:</strong> One is the imposter, others know the secret country</p>
                 <p>👁️ <strong>Reveal Phase:</strong> Each player privately checks their card</p>
                 <p>💬 <strong>Discussion:</strong> Players describe the country WITHOUT saying its name</p>
                 <p>🕵️ <strong>Goal:</strong> Regular players find the imposter, imposter guesses the country</p>
                 <p>⚠️ <strong>Imposter:</strong> Must blend in without knowing the country!</p>
               </div>
             </div>
+
+            <div className="mb-8">
+              <p className="text-white text-lg mb-4">Number of Players</p>
+              <div className="flex items-center justify-center gap-4">
+                <button
+                  onClick={() => changePlayers(-1)}
+                  disabled={numPlayers <= 3}
+                  className="bg-white/20 text-white p-3 rounded-lg hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <Minus className="w-6 h-6" />
+                </button>
+                <span className="text-white text-4xl font-bold w-20 text-center">{numPlayers}</span>
+                <button
+                  onClick={() => changePlayers(1)}
+                  disabled={numPlayers >= 6}
+                  className="bg-white/20 text-white p-3 rounded-lg hover:bg-white/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <Plus className="w-6 h-6" />
+                </button>
+              </div>
+              <p className="text-blue-300 text-sm mt-2">Min: 3 | Max: 6</p>
+            </div>
+
             <button
               onClick={startGame}
               className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl text-xl font-bold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all shadow-lg"
@@ -105,7 +136,7 @@ export default function ImposterGame() {
               {players.map((player, index) => (
                 <div
                   key={index}
-                  className={`bg-white/10 backdrop-blur-lg rounded-xl p-6 border-2 transition-all border-purple-500`}
+                  className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border-2 transition-all border-purple-500"
                 >
                   <div className="text-center mb-4">
                     <h3 className="text-2xl font-bold text-white mb-2">{player}</h3>
@@ -152,7 +183,7 @@ export default function ImposterGame() {
               ))}
             </div>
 
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4 justify-center flex-wrap">
               {gamePhase === 'reveal' && (
                 <button
                   onClick={startDiscussion}
