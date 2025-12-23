@@ -3,7 +3,10 @@ import { Users, Eye, EyeOff, RotateCcw, Plus, Minus, Clock, Edit3 } from 'lucide
 
 const CATEGORIES = {
   nepalPlaces: {
-    name: '🇳🇵 Nepal Places',
+    name: 'Nepal Places',
+    emoji: '🇳🇵',
+    color: 'from-green-400 to-green-600',
+    character: '🏔️',
     items: [
       'Kathmandu', 'Pokhara', 'Lumbini', 'Chitwan', 'Bhaktapur', 'Patan', 'Janakpur', 'Biratnagar', 'Dharan',
       'Butwal', 'Nepalgunj', 'Hetauda', 'Itahari', 'Gorkha', 'Mustang', 'Bandipur', 'Nagarkot', 'Dhulikhel',
@@ -19,6 +22,9 @@ const CATEGORIES = {
   },
     countries: {
     name: 'Countries',
+    emoji: '🌍',
+    color: 'from-blue-400 to-blue-600',
+    character: '🌎',
     items: [
     'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria',
       'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bhutan',
@@ -43,7 +49,10 @@ const CATEGORIES = {
     ]
   },
   nepaliSlangWorst: {
-  name: 'Nepali Slang & Roast =',
+  name: 'Nepali Slang',
+  emoji: '😈',
+  color: 'from-red-400 to-red-600',
+  character: '👹',
   items: [
     'Randi',
     'Muji',
@@ -100,7 +109,10 @@ const CATEGORIES = {
 },
 
   professions: {
-    name: '💼 Professions',
+    name: 'Professions',
+    emoji: '💼',
+    color: 'from-purple-400 to-purple-600',
+    character: '👨‍💼',
     items: [
       'Doctor', 'Teacher', 'Engineer', 'Lawyer', 'Police Officer', 'Firefighter', 'Pilot', 'Chef', 'Artist', 'Musician',
       'Farmer', 'Carpenter', 'Electrician', 'Plumber', 'Mechanic', 'Nurse', 'Dentist', 'Pharmacist', 'Architect', 'Journalist',
@@ -116,7 +128,10 @@ const CATEGORIES = {
     ]
   },
   nepaliIndianFood: {
-    name: '🍛 Nepali & Indian Food',
+    name: 'Nepali & Indian Food',
+    emoji: '🍛',
+    color: 'from-yellow-400 to-orange-500',
+    character: '🍽️',
     items: [
       'Dal Bhat', 'Momos', 'Sel Roti', 'Gundruk', 'Dhido', 'Bara', 'Chatamari', 'Yomari', 'Lakhamari', 'Juju Dhau',
       'Sukuti', 'Chhurpi', 'Aloo Tama', 'Saag', 'Kheer', 'Rasgulla', 'Samay Baji', 'Choila', 'Sekuwa', 'Jhol Momo',
@@ -131,7 +146,10 @@ const CATEGORIES = {
     ]
   },
   everydayObjects: {
-    name: '🏠 Everyday Objects',
+    name: 'Everyday Objects',
+    emoji: '🏠',
+    color: 'from-teal-400 to-cyan-500',
+    character: '🔧',
     items: [
       'Mobile Phone', 'Laptop', 'Television', 'Remote Control', 'Charger', 'Headphones', 'Speaker', 'Camera', 'Watch', 'Glasses',
       'Wallet', 'Keys', 'Bag', 'Umbrella', 'Water Bottle', 'Cup', 'Glass', 'Plate', 'Spoon', 'Fork',
@@ -146,7 +164,10 @@ const CATEGORIES = {
     ]
   },
   nepaliSongs: {
-    name: '🎵 Nepali Songs',
+    name: 'Nepali Songs',
+    emoji: '🎵',
+    color: 'from-pink-400 to-rose-500',
+    character: '🎤',
     items: [
       'Resham Firiri', 'Malai Nas Bhane', 'Yo Samjhine Man Chha', 'Jindagi Ko Ke Bharosa', 'Phoolko Aankhama',
       'Saili', 'Chyangba Hoi Chyangba', 'Kutu Ma Kutu', 'Mayalu', 'Gham Saili', 'Asare Tyo Deurali Ma',
@@ -162,7 +183,10 @@ const CATEGORIES = {
     ]
   },
   hindiSongs: {
-    name: '🎶 Hindi Songs',
+    name: 'Hindi Songs',
+    emoji: '🎶',
+    color: 'from-indigo-400 to-purple-500',
+    character: '🎼',
     items: [
       'Tum Hi Ho', 'Kal Ho Naa Ho', 'Tujhe Dekha Toh', 'Kabhi Kabhi Aditi', 'Dil Chahta Hai', 'Yeh Dosti',
       'Tere Naam', 'Main Hoon Na', 'Koi Mil Gaya', 'Rang De Basanti', 'Jai Ho', 'Maa Tujhe Salaam',
@@ -178,7 +202,10 @@ const CATEGORIES = {
     ]
   },
   brands: {
-    name: '🏢 Top Brands (Origin Country)',
+    name: 'Top Brands',
+    emoji: '🏢',
+    color: 'from-gray-400 to-gray-600',
+    character: '🛍️',
     items: [
       'Toyota', 'Honda', 'Sony', 'Nintendo', 'Samsung', 'LG', 'Hyundai', 'Kia', 'Apple', 'Microsoft',
       'Google', 'Tesla', 'Ford', 'Chevrolet', 'Coca-Cola', 'Pepsi', 'McDonalds', 'KFC', 'Starbucks',
@@ -193,7 +220,10 @@ const CATEGORIES = {
     ]
   },
   vehicles: {
-    name: '🚗 Vehicle Companies (Origin Country)',
+    name: 'Vehicle Companies',
+    emoji: '🚗',
+    color: 'from-emerald-400 to-teal-500',
+    character: '🏎️',
     items: [
       'Toyota', 'Honda', 'Nissan', 'Mazda', 'Subaru', 'Mitsubishi', 'Suzuki', 'Lexus', 'Infiniti', 'Acura',
       'Ford', 'Chevrolet', 'Dodge', 'Jeep', 'Tesla', 'Cadillac', 'Buick', 'GMC', 'Lincoln', 'Ram',
@@ -213,7 +243,10 @@ const CATEGORIES = {
     ]
   },
   nepal: {
-    name: '🇳🇵 Nepal - History & Geography',
+    name: 'Nepal History',
+    emoji: '🇳🇵',
+    color: 'from-amber-400 to-orange-500',
+    character: '🏛️',
     items: [
       'Mount Everest', 'Kathmandu', 'Pokhara', 'Lumbini', 'Chitwan National Park', 'Annapurna', 'Pashupatinath Temple',
       'Boudhanath Stupa', 'Swayambhunath', 'Durbar Square', 'Sagarmatha National Park', 'Langtang National Park',
@@ -232,7 +265,10 @@ const CATEGORIES = {
     ]
   },
   bollywood: {
-    name: '🎬 Bollywood Movies (1990-2024)',
+    name: 'Bollywood Movies',
+    emoji: '🎬',
+    color: 'from-violet-400 to-purple-600',
+    character: '🎭',
     items: [
       'Dilwale Dulhania Le Jayenge', 'Kuch Kuch Hota Hai', 'Kabhi Khushi Kabhie Gham', 'Kal Ho Naa Ho',
       'Dil Chahta Hai', 'Lagaan', 'Dangal', 'PK', '3 Idiots', 'Bajrangi Bhaijaan', 'Sultan', 'Tiger Zinda Hai',
@@ -278,6 +314,10 @@ export default function ImposterGame() {
   const [playerNames, setPlayerNames] = useState([]);
   const [customNames, setCustomNames] = useState(false);
   const [editingNames, setEditingNames] = useState(false);
+  const [showHowToPlay, setShowHowToPlay] = useState(false);
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const [currentPlayerRevealed, setCurrentPlayerRevealed] = useState(false);
+  const [currentPlayerHasSeen, setCurrentPlayerHasSeen] = useState(false);
 
   // Timer effect
   useEffect(() => {
@@ -321,6 +361,9 @@ export default function ImposterGame() {
     setGamePhase('reveal');
     setTimeLeft(0);
     setTimerActive(false);
+    setCurrentPlayerIndex(0);
+    setCurrentPlayerRevealed(false);
+    setCurrentPlayerHasSeen(false);
   };
 
   const toggleReveal = (index) => {
@@ -343,6 +386,43 @@ export default function ImposterGame() {
     setGamePhase('setup');
     setTimeLeft(0);
     setTimerActive(false);
+    setCurrentPlayerIndex(0);
+    setCurrentPlayerRevealed(false);
+    setCurrentPlayerHasSeen(false);
+  };
+
+  const restartSameCategory = () => {
+    const items = CATEGORIES[selectedCategory].items;
+    const item = items[Math.floor(Math.random() * items.length)];
+    const imposter = Math.floor(Math.random() * numPlayers);
+    setSelectedItem(item);
+    setImposterIndex(imposter);
+    setRevealedPlayers(new Array(numPlayers).fill(false));
+    setGamePhase('reveal');
+    setTimeLeft(0);
+    setTimerActive(false);
+    setCurrentPlayerIndex(0);
+    setCurrentPlayerRevealed(false);
+    setCurrentPlayerHasSeen(false);
+  };
+
+  const nextPlayer = () => {
+    if (currentPlayerIndex < numPlayers - 1) {
+      setCurrentPlayerIndex(currentPlayerIndex + 1);
+      setCurrentPlayerRevealed(false);
+      setCurrentPlayerHasSeen(false);
+    } else {
+      // All players have seen their cards, move to discussion phase setup
+      setGamePhase('readyForDiscussion');
+    }
+  };
+
+  const toggleCurrentPlayerReveal = () => {
+    if (!currentPlayerRevealed) {
+      // First time revealing - mark as seen
+      setCurrentPlayerHasSeen(true);
+    }
+    setCurrentPlayerRevealed(!currentPlayerRevealed);
   };
 
   const changePlayers = (delta) => {
@@ -398,93 +478,144 @@ export default function ImposterGame() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-3">
-            <Users className="w-12 h-12" />
-            Ultimate Charade Game
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-2 sm:gap-3">
+            <Users className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
+            Ultimate Charade
           </h1>
-          <p className="text-gray-600 text-lg">Find the imposter among you!</p>
+          <p className="text-gray-600 text-base sm:text-lg">Find the imposter among you!</p>
         </div>
 
         {!gameStarted ? (
-          <div className="bg-white border border-gray-200 shadow-xl rounded-2xl p-8">
+          <div className="bg-white border border-gray-200 shadow-xl rounded-2xl p-4 sm:p-6 lg:p-8">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Choose Category</h2>
-              <div className="grid md:grid-cols-3 gap-4">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Choose Category</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl mx-auto">
                 {Object.entries(CATEGORIES).map(([key, cat]) => (
                   <button
                     key={key}
                     onClick={() => setSelectedCategory(key)}
-                    className={`p-6 rounded-xl font-bold text-lg transition-all border ${
+                    className={`relative overflow-hidden rounded-3xl p-6 transition-all duration-300 transform hover:scale-105 min-h-[200px] flex flex-col justify-between ${
                       selectedCategory === key
-                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white scale-105 shadow-lg border-blue-500'
-                        : 'bg-gray-50 text-gray-800 hover:bg-gray-100 border-gray-200'
+                        ? `bg-gradient-to-br ${cat.color} text-white shadow-2xl scale-105`
+                        : `bg-gradient-to-br ${cat.color} opacity-70 hover:opacity-100 text-white shadow-lg`
                     }`}
                   >
-                    {cat.name}
+                    <div className="flex-1 flex flex-col items-center justify-center text-center">
+                      <div className="text-6xl mb-3 transform hover:scale-110 transition-transform">
+                        {cat.character}
+                      </div>
+                      <h3 className="text-lg font-bold mb-1">
+                        {cat.name}
+                      </h3>
+                      <div className="text-xs opacity-80">
+                        Magic Charade
+                      </div>
+                    </div>
+                    <div className="absolute top-3 right-3 text-2xl opacity-50">
+                      {cat.emoji}
+                    </div>
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">How to Play</h2>
-              <div className="text-left text-gray-700 space-y-3 max-w-2xl mx-auto">
-                <p>🎯 <strong>3-6 Players:</strong> One is the imposter, others know the secret word</p>
-                <p>👁️ <strong>Reveal Phase:</strong> Each player privately checks their card</p>
-                <p>💬 <strong>Discussion:</strong> Players describe it WITHOUT saying the name</p>
-                <p>🕵️ <strong>Goal:</strong> Regular players find the imposter, imposter guesses the word</p>
-                <p>⚠️ <strong>Imposter:</strong> Must blend in without knowing what it is!</p>
+            <div className="mb-6 sm:mb-8">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 text-center">Choose Category</h2>
+                <button
+                  onClick={() => setShowHowToPlay(!showHowToPlay)}
+                  className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg flex items-center gap-2 touch-manipulation"
+                >
+                  <span>❓</span>
+                  How to Play
+                </button>
               </div>
+              
+              {showHowToPlay && (
+                <div className="mb-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+                    <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-6 text-white shadow-lg">
+                      <div className="text-4xl mb-3 text-center">🎯</div>
+                      <h3 className="font-bold text-lg mb-2 text-center">Setup</h3>
+                      <p className="text-sm text-center opacity-90">3-6 Players: One becomes the secret imposter, others know the word</p>
+                    </div>
+                    
+                    <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
+                      <div className="text-4xl mb-3 text-center">👁️</div>
+                      <h3 className="font-bold text-lg mb-2 text-center">Reveal</h3>
+                      <p className="text-sm text-center opacity-90">Each player privately checks their card - don't let others see!</p>
+                    </div>
+                    
+                    <div className="bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-6 text-white shadow-lg">
+                      <div className="text-4xl mb-3 text-center">💬</div>
+                      <h3 className="font-bold text-lg mb-2 text-center">Discuss</h3>
+                      <p className="text-sm text-center opacity-90">Describe the word WITHOUT saying its name directly</p>
+                    </div>
+                    
+                    <div className="bg-gradient-to-br from-red-400 to-red-600 rounded-2xl p-6 text-white shadow-lg md:col-span-2 lg:col-span-1">
+                      <div className="text-4xl mb-3 text-center">🕵️</div>
+                      <h3 className="font-bold text-lg mb-2 text-center">Win Goal</h3>
+                      <p className="text-sm text-center opacity-90">Regular players find the imposter, imposter guesses the word</p>
+                    </div>
+                    
+                    <div className="bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl p-6 text-white shadow-lg md:col-span-2">
+                      <div className="text-4xl mb-3 text-center">⚠️</div>
+                      <h3 className="font-bold text-lg mb-2 text-center">Imposter Challenge</h3>
+                      <p className="text-sm text-center opacity-90">You don't know the word - blend in and try to guess what everyone's talking about!</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div className="mb-8">
-              <p className="text-gray-800 text-lg mb-4 text-center">Number of Players</p>
-              <div className="flex items-center justify-center gap-4">
+            <div className="mb-6 sm:mb-8">
+              <p className="text-gray-800 text-base sm:text-lg mb-4 text-center">Number of Players</p>
+              <div className="flex items-center justify-center gap-3 sm:gap-4">
                 <button
                   onClick={() => changePlayers(-1)}
                   disabled={numPlayers <= 3}
-                  className="bg-gray-100 text-gray-800 p-3 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all border border-gray-300"
+                  className="bg-gray-100 text-gray-800 p-2 sm:p-3 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all border border-gray-300 touch-manipulation"
                 >
-                  <Minus className="w-6 h-6" />
+                  <Minus className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
-                <span className="text-gray-800 text-4xl font-bold w-20 text-center">{numPlayers}</span>
+                <span className="text-gray-800 text-3xl sm:text-4xl font-bold w-16 sm:w-20 text-center">{numPlayers}</span>
                 <button
                   onClick={() => changePlayers(1)}
                   disabled={numPlayers >= 6}
-                  className="bg-gray-100 text-gray-800 p-3 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all border border-gray-300"
+                  className="bg-gray-100 text-gray-800 p-2 sm:p-3 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all border border-gray-300 touch-manipulation"
                 >
-                  <Plus className="w-6 h-6" />
+                  <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
                 </button>
               </div>
-              <p className="text-gray-600 text-sm mt-2 text-center">Min: 3 | Max: 6</p>
+              <p className="text-gray-600 text-xs sm:text-sm mt-2 text-center">Min: 3 | Max: 6</p>
             </div>
 
-            <div className="mb-8">
-              <p className="text-gray-800 text-lg mb-4 text-center">Discussion Timer</p>
-              <div className="flex items-center justify-center gap-4">
+            <div className="mb-6 sm:mb-8">
+              <p className="text-gray-800 text-base sm:text-lg mb-4 text-center">Discussion Timer</p>
+              <div className="flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
                 <button
                   onClick={() => setTimerDuration(1)}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all border ${ 
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all border touch-manipulation text-sm sm:text-base ${ 
                     timerDuration === 1 
                       ? 'bg-blue-500 text-white border-blue-500' 
                       : 'bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200'
                   }`}
                 >
-                  <Clock className="w-5 h-5 inline mr-2" />
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 inline mr-1 sm:mr-2" />
                   1 Minute
                 </button>
                 <button
                   onClick={() => setTimerDuration(2)}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all border ${ 
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all border touch-manipulation text-sm sm:text-base ${ 
                     timerDuration === 2 
                       ? 'bg-blue-500 text-white border-blue-500' 
                       : 'bg-gray-100 text-gray-800 border-gray-300 hover:bg-gray-200'
                   }`}
                 >
-                  <Clock className="w-5 h-5 inline mr-2" />
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 inline mr-1 sm:mr-2" />
                   2 Minutes
                 </button>
               </div>
@@ -540,219 +671,206 @@ export default function ImposterGame() {
             <div className="text-center">
               <button
                 onClick={startGame}
-                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-xl text-xl font-bold hover:from-blue-600 hover:to-indigo-700 transform hover:scale-105 transition-all shadow-lg"
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-lg sm:text-xl font-bold hover:from-blue-600 hover:to-indigo-700 transform hover:scale-105 transition-all shadow-lg touch-manipulation"
               >
                 Start New Game
               </button>
             </div>
           </div>
         ) : (
-          <div className="space-y-6">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border-2 border-blue-300">
-              <p className="text-gray-800 text-center text-lg font-semibold">
-                Category: {CATEGORIES[selectedCategory].name}
-              </p>
+          <div className="space-y-4 sm:space-y-6">
+            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-4 sm:p-6 text-white shadow-lg">
+              <div className="flex items-center justify-center gap-3">
+                <span className="text-2xl sm:text-3xl">{CATEGORIES[selectedCategory].character}</span>
+                <div className="text-center">
+                  <p className="text-lg sm:text-xl font-bold">
+                    {CATEGORIES[selectedCategory].name}
+                  </p>
+                  <p className="text-sm opacity-80">Selected Category</p>
+                </div>
+                <span className="text-2xl sm:text-3xl">{CATEGORIES[selectedCategory].emoji}</span>
+              </div>
             </div>
 
             {gamePhase === 'reveal' && (
-              <div className="bg-yellow-50 rounded-xl p-6 border-2 border-yellow-400">
-                <p className="text-yellow-800 text-center text-lg font-semibold">
-                  ⚠️ Each player should privately reveal their card. Don't let others see!
-                </p>
-              </div>
-            )}
+              <div className="max-w-md mx-auto">
+                <div className="bg-gradient-to-r from-amber-400 to-orange-500 rounded-2xl p-4 sm:p-6 text-white shadow-lg mb-6">
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                    <span className="text-2xl">🤫</span>
+                    <h3 className="text-lg sm:text-xl font-bold">Secret Reveal</h3>
+                    <span className="text-2xl">👁️</span>
+                  </div>
+                  <p className="text-center text-sm sm:text-base opacity-90">
+                    {players[currentPlayerIndex]}, it's your turn! Others should look away.
+                  </p>
+                </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {players.map((player, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl p-6 border-2 transition-all border-gray-300 shadow-lg"
-                >
-                  <div className="text-center mb-4">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{player}</h3>
+                <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-gray-200">
+                  <div className="text-center mb-6">
+                    <div className="text-6xl mb-4">
+                      {currentPlayerIndex === imposterIndex ? '🕵️' : '🎯'}
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+                      {players[currentPlayerIndex]}
+                    </h2>
+                    <div className="flex items-center justify-center gap-2 text-gray-500">
+                      <span>Player {currentPlayerIndex + 1} of {numPlayers}</span>
+                      <div className="flex gap-1">
+                        {Array.from({length: numPlayers}).map((_, i) => (
+                          <div 
+                            key={i} 
+                            className={`w-2 h-2 rounded-full ${
+                              i === currentPlayerIndex ? 'bg-blue-500' : 
+                              i < currentPlayerIndex ? 'bg-green-500' : 'bg-gray-300'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </div>
                   </div>
 
-                  <button
-                    onClick={() => toggleReveal(index)}
-                    className={`w-full py-3 px-4 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 border ${
-                      revealedPlayers[index]
-                        ? 'bg-gray-100 text-gray-800 border-gray-300'
-                        : 'bg-blue-500 text-white hover:bg-blue-600 border-blue-500'
-                    }`}
-                  >
-                    {revealedPlayers[index] ? (
-                      <>
-                        <EyeOff className="w-5 h-5" />
-                        Hide Card
-                      </>
-                    ) : (
-                      <>
-                        <Eye className="w-5 h-5" />
-                        Reveal Card
-                      </>
-                    )}
-                  </button>
-
-                  {revealedPlayers[index] && (
-                    <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                      {imposterIndex === index ? (
-                        <div className="text-center">
-                          <p className="text-red-600 font-bold text-xl mb-2">YOU ARE THE IMPOSTER!</p>
-                          <p className="text-gray-700 text-sm">You don't know the word. Try to blend in and guess it!</p>
+                  {!currentPlayerRevealed ? (
+                    <button
+                      onClick={toggleCurrentPlayerReveal}
+                      className="w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl text-xl font-bold hover:from-blue-600 hover:to-indigo-700 transform hover:scale-105 transition-all shadow-lg touch-manipulation flex items-center justify-center gap-3"
+                    >
+                      <Eye className="w-6 h-6" />
+                      Click to Reveal Your Card
+                    </button>
+                  ) : (
+                    <div className="space-y-6">
+                      <button
+                        onClick={toggleCurrentPlayerReveal}
+                        className="w-full py-2 px-4 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300 transition-all flex items-center justify-center gap-2"
+                      >
+                        <span>👁️</span>
+                        Click to Hide Card
+                      </button>
+                      
+                      {imposterIndex === currentPlayerIndex ? (
+                        <div className="text-center p-6 bg-gradient-to-br from-red-400 to-red-600 rounded-2xl text-white">
+                          <div className="text-4xl mb-3">🕵️</div>
+                          <p className="text-2xl font-bold mb-2">YOU ARE THE IMPOSTER!</p>
+                          <p className="text-sm opacity-90">
+                            You don't know the secret word. Listen carefully during discussion and try to guess what everyone's talking about!
+                          </p>
                         </div>
                       ) : (
-                        <div className="text-center">
-                          <p className="text-gray-600 text-sm mb-2">Your word is:</p>
-                          <p className="text-blue-600 font-bold text-2xl break-words">{selectedItem}</p>
-                          <p className="text-gray-700 text-sm mt-2">{getInstructionText()}</p>
+                        <div className="text-center p-6 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl text-white">
+                          <div className="text-4xl mb-3">🎯</div>
+                          <p className="text-lg mb-2 opacity-90">Your secret word is:</p>
+                          <p className="text-3xl font-bold mb-3 break-words">{selectedItem}</p>
+                          <p className="text-sm opacity-90">{getInstructionText()}</p>
                         </div>
                       )}
                     </div>
                   )}
-                </div>
-              ))}
-            </div>
 
-            <div className="flex gap-4 justify-center flex-wrap">
-              {gamePhase === 'reveal' && (
-                <button
-                  onClick={startDiscussion}
-                  className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-4 rounded-xl text-xl font-bold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all shadow-lg"
-                >
-                  Start Discussion Phase
-                </button>
-              )}
-              <button
-                onClick={resetGame}
-                className="bg-gray-100 text-gray-800 px-8 py-4 rounded-xl text-xl font-bold hover:bg-gray-200 transition-all shadow-lg flex items-center gap-2 border border-gray-300"
-              >
-                <RotateCcw className="w-6 h-6" />
-                New Game
-              </button>
-            </div>
+                  {currentPlayerHasSeen && (
+                    <div className="mt-6">
+                      <button
+                        onClick={nextPlayer}
+                        className="w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-xl text-xl font-bold hover:from-purple-600 hover:to-pink-700 transform hover:scale-105 transition-all shadow-lg touch-manipulation flex items-center justify-center gap-3"
+                      >
+                        {currentPlayerIndex === numPlayers - 1 ? (
+                          <>
+                            <Users className="w-6 h-6" />
+                            Ready for Discussion
+                          </>
+                        ) : (
+                          <>
+                            Next Player ({players[currentPlayerIndex + 1]})
+                            <span className="text-2xl">→</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="text-center mt-6">
+                  <button
+                    onClick={resetGame}
+                    className="bg-gray-100 text-gray-800 px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition-all shadow-lg flex items-center gap-2 mx-auto border border-gray-300 touch-manipulation"
+                  >
+                    <RotateCcw className="w-5 h-5" />
+                    New Game
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {gamePhase === 'readyForDiscussion' && (
+              <div className="max-w-md mx-auto text-center">
+                <div className="bg-gradient-to-r from-green-400 to-emerald-600 rounded-2xl p-6 text-white shadow-lg mb-6">
+                  <div className="text-4xl mb-3">🎉</div>
+                  <h3 className="text-2xl font-bold mb-2">All Players Ready!</h3>
+                  <p className="text-sm opacity-90">Everyone has seen their cards. Ready to start the discussion?</p>
+                </div>
+
+                <div className="flex gap-3 justify-center flex-wrap">
+                  <button
+                    onClick={startDiscussion}
+                    className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-xl text-xl font-bold hover:from-blue-600 hover:to-indigo-700 transform hover:scale-105 transition-all shadow-lg touch-manipulation"
+                  >
+                    Start Discussion
+                  </button>
+                  <button
+                    onClick={resetGame}
+                    className="bg-gray-100 text-gray-800 px-8 py-4 rounded-xl text-xl font-bold hover:bg-gray-200 transition-all shadow-lg flex items-center gap-2 border border-gray-300 touch-manipulation"
+                  >
+                    <RotateCcw className="w-6 h-6" />
+                    New Game
+                  </button>
+                </div>
+              </div>
+            )}
 
             {gamePhase === 'discussion' && (
-              <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-lg">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-800">Discussion Phase</h3>
-                  <div className={`flex items-center gap-2 px-4 py-2 rounded-lg font-bold text-lg ${
-                    timeLeft <= 30 ? 'bg-red-100 text-red-600 border border-red-300' 
-                    : timeLeft <= 60 ? 'bg-yellow-100 text-yellow-600 border border-yellow-300'
-                    : 'bg-green-100 text-green-600 border border-green-300'
+              <div className="max-w-md mx-auto text-center">
+                <div className="bg-white rounded-3xl p-8 shadow-2xl border-2 border-gray-200 mb-6">
+                  <div className="text-4xl mb-4">💬</div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6">Discussion Time</h3>
+                  <div className={`inline-flex items-center gap-3 px-6 py-4 rounded-2xl font-bold text-3xl mb-6 ${
+                    timeLeft <= 30 ? 'bg-red-100 text-red-600 border-2 border-red-300' 
+                    : timeLeft <= 60 ? 'bg-yellow-100 text-yellow-600 border-2 border-yellow-300'
+                    : 'bg-green-100 text-green-600 border-2 border-green-300'
                   }`}>
-                    <Clock className="w-5 h-5" />
+                    <Clock className="w-8 h-8" />
                     {formatTime(timeLeft)}
                   </div>
+                  
+                  <button
+                    onClick={() => setGamePhase('timeUp')}
+                    className="w-full py-4 px-6 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl text-xl font-bold hover:from-orange-600 hover:to-red-700 transform hover:scale-105 transition-all shadow-lg touch-manipulation flex items-center justify-center gap-3 mb-4"
+                  >
+                    <span className="text-2xl">🎯</span>
+                    Ready to Guess!
+                  </button>
+                  
+                  <div className="flex gap-3 justify-center">
+                    <button
+                      onClick={restartSameCategory}
+                      className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg touch-manipulation flex items-center justify-center gap-2"
+                    >
+                      <RotateCcw className="w-5 h-5" />
+                      Same Category
+                    </button>
+                    
+                    <button
+                      onClick={resetGame}
+                      className="flex-1 py-3 px-4 bg-gray-500 text-white rounded-xl font-semibold hover:bg-gray-600 transition-all shadow-lg touch-manipulation flex items-center justify-center gap-2"
+                    >
+                      <span className="text-lg">🏠</span>
+                      Go Home
+                    </button>
+                  </div>
                 </div>
-                <div className="space-y-4 text-gray-700">
-                  <p>💬 <strong>Take turns</strong> giving hints about the word:</p>
-                  {selectedCategory === 'countries' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Location/continent</li>
-                      <li>Famous landmarks or cities</li>
-                      <li>Climate or geography</li>
-                      <li>Cultural facts or language</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'foods' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Taste or ingredients</li>
-                      <li>How it's prepared</li>
-                      <li>When it's typically eaten</li>
-                      <li>Country or region it's from</li>
-                    </ul>
-                  )}
-                  {(selectedCategory === 'brands' || selectedCategory === 'vehicles') && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Industry or product type</li>
-                      <li>Famous products or models</li>
-                      <li>Quality or reputation</li>
-                      <li>Target market or customers</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'nepal' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Type (place, person, event, region)</li>
-                      <li>Historical significance or time period</li>
-                      <li>Location or geographical features</li>
-                      <li>Cultural or religious importance</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'nepalPlaces' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Region or province</li>
-                      <li>Famous landmarks</li>
-                      <li>What it's known for</li>
-                      <li>Climate or geography</li>
-                      <li>Cultural significance</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'nepaliSlangWorst' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Slur</li>
-                      <li>Proverb</li>
-                      <li>What it's known for</li>
-                      <li>Use frequency</li>
-                      <li>Significance</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'professions' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>What they do daily</li>
-                      <li>Where they work</li>
-                      <li>Tools or equipment used</li>
-                      <li>Education or skills required</li>
-                      <li>Who they help or serve</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'nepaliIndianFood' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Main ingredients</li>
-                      <li>How it's prepared</li>
-                      <li>Taste or spice level</li>
-                      <li>When it's typically eaten</li>
-                      <li>Cultural or regional origin</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'everydayObjects' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>What it's used for</li>
-                      <li>Where it's typically found</li>
-                      <li>Material it's made of</li>
-                      <li>Size or shape</li>
-                      <li>How often it's used</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'nepaliSongs' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Genre or style</li>
-                      <li>Singer or artist</li>
-                      <li>Era or time period</li>
-                      <li>Theme or emotion</li>
-                      <li>Popular lines or melody</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'hindiSongs' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Music genre or era</li>
-                      <li>Singer or music director</li>
-                      <li>Movie it's from</li>
-                      <li>Mood or theme of song</li>
-                      <li>Popular lyrics or tune</li>
-                    </ul>
-                  )}
-                  {selectedCategory === 'bollywood' && (
-                    <ul className="list-disc list-inside space-y-2 ml-4">
-                      <li>Genre or theme</li>
-                      <li>Lead actors or director</li>
-                      <li>Plot summary (without spoilers)</li>
-                      <li>Year released or era</li>
-                      <li>Famous songs or dialogues</li>
-                    </ul>
-                  )}
-                  <p>🔍 <strong>Watch for:</strong> Players who are vague or hesitant</p>
-                  <p>🎯 <strong>Vote:</strong> When ready, discuss who you think is the imposter</p>
-                  <p>⚡ <strong>Imposter wins if:</strong> They correctly guess the word OR aren't caught</p>
+                
+                <div className="text-center mt-4">
+                  <p className="text-gray-500 text-sm">
+                    Category: {CATEGORIES[selectedCategory].name}
+                  </p>
                 </div>
               </div>
             )}
