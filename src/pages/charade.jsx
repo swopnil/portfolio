@@ -107,7 +107,79 @@ const CATEGORIES = {
     'Negative vibe'
   ]
 },
+  wwePlayers: {
+  name: 'WWE Superstars',
+  emoji: '🤼',
+  color: 'from-red-500 to-yellow-500',
+  character: '💪',
+  items: [
+    // Legends & Attitude Era
+    'The Rock',
+    'Stone Cold Steve Austin',
+    'The Undertaker',
+    'Triple H',
+    'Shawn Michaels',
+    'Kane',
+    'Mick Foley',
+    'Bret Hart',
+    'Randy Savage',
+    'Hulk Hogan',
+    'Ric Flair',
+    'Big Show',
+    'Goldberg',
+    'Edge',
+    'Christian',
 
+    // Ruthless Aggression Era
+    'John Cena',
+    'Batista',
+    'Randy Orton',
+    'Brock Lesnar',
+    'Rey Mysterio',
+    'Eddie Guerrero',
+    'Kurt Angle',
+    'Jeff Hardy',
+    'Matt Hardy',
+    'Rob Van Dam',
+    'The Miz',
+    'CM Punk',
+
+    // PG / Modern Era (2010–2020)
+    'Roman Reigns',
+    'Seth Rollins',
+    'Dean Ambrose',
+    'AJ Styles',
+    'Daniel Bryan',
+    'Bray Wyatt',
+    'Finn Balor',
+    'Kevin Owens',
+    'Samoa Joe',
+    'Shinsuke Nakamura',
+    'Drew McIntyre',
+    'Sheamus',
+    'Cesaro',
+    'Kofi Kingston',
+    'Big E',
+    'Xavier Woods',
+
+    // Tag Teams / Stables
+    'The Shield',
+    'The New Day',
+    'DX',
+    'The Usos',
+
+    // Women (Popular till 2020)
+    'Becky Lynch',
+    'Charlotte Flair',
+    'Sasha Banks',
+    'Bayley',
+    'Alexa Bliss',
+    'Asuka',
+    'Ronda Rousey',
+    'Trish Stratus',
+    'Lita'
+  ]
+},
   professions: {
     name: 'Professions',
     emoji: '💼',
@@ -453,6 +525,10 @@ export default function ImposterGame() {
     if (selectedCategory === 'nepaliIndianFood') {
       return 'Describe WITHOUT saying the food name!';
     }
+        if (selectedCategory === 'wwePlayers') {
+      return 'Describe WITHOUT saying the player name!';
+    }
+    
     if (selectedCategory === 'nepal' || selectedCategory === 'nepalPlaces') {
       return 'Describe WITHOUT saying the exact name!';
     }
