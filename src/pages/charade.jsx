@@ -614,7 +614,7 @@ export default function ImposterGame() {
                 <div className="mb-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
                     <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-6 text-white shadow-lg">
-                      <div className="text-4xl mb-3 text-center">🎯</div>
+                      <div className="text-4xl mb-3 text-center"></div>
                       <h3 className="font-bold text-lg mb-2 text-center">Setup</h3>
                       <p className="text-sm text-center opacity-90">3-6 Players: One becomes the secret imposter, others know the word</p>
                     </div>
@@ -632,7 +632,7 @@ export default function ImposterGame() {
                     </div>
                     
                     <div className="bg-gradient-to-br from-red-400 to-red-600 rounded-2xl p-6 text-white shadow-lg md:col-span-2 lg:col-span-1">
-                      <div className="text-4xl mb-3 text-center">🕵️</div>
+                      <div className="text-4xl mb-3 text-center"></div>
                       <h3 className="font-bold text-lg mb-2 text-center">Win Goal</h3>
                       <p className="text-sm text-center opacity-90">Regular players find the imposter, imposter guesses the word</p>
                     </div>
