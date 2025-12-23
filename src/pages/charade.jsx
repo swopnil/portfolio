@@ -784,7 +784,7 @@ export default function ImposterGame() {
                 <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-gray-200">
                   <div className="text-center mb-6">
                     <div className="text-6xl mb-4">
-                      {currentPlayerIndex === imposterIndex ? '🕵️' : '🎯'}
+                      {currentPlayerIndex === imposterIndex ? '' : ''}
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
                       {players[currentPlayerIndex]}
