@@ -499,7 +499,7 @@ export default function ImposterGame() {
                     onClick={() => setSelectedCategory(key)}
                     className={`relative overflow-hidden rounded-3xl p-6 transition-all duration-300 transform hover:scale-105 min-h-[200px] flex flex-col justify-between ${
                       selectedCategory === key
-                        ? `bg-gradient-to-br ${cat.color} text-white shadow-2xl scale-105`
+                        ? `bg-gradient-to-br ${cat.color} text-white shadow-2xl scale-105 ring-4 ring-yellow-400 ring-opacity-75`
                         : `bg-gradient-to-br ${cat.color} opacity-70 hover:opacity-100 text-white shadow-lg`
                     }`}
                   >
@@ -681,14 +681,14 @@ export default function ImposterGame() {
           <div className="space-y-4 sm:space-y-6">
             <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-4 sm:p-6 text-white shadow-lg">
               <div className="flex items-center justify-center gap-3">
-                <span className="text-2xl sm:text-3xl">{CATEGORIES[selectedCategory].character}</span>
+                <span className="text-3xl sm:text-4xl">{CATEGORIES[selectedCategory].character}</span>
                 <div className="text-center">
-                  <p className="text-lg sm:text-xl font-bold">
+                  <p className="text-xl sm:text-2xl font-bold">
                     {CATEGORIES[selectedCategory].name}
                   </p>
-                  <p className="text-sm opacity-80">Selected Category</p>
+                  <p className="text-sm opacity-90 font-medium">🎯 Selected Category</p>
                 </div>
-                <span className="text-2xl sm:text-3xl">{CATEGORIES[selectedCategory].emoji}</span>
+                <span className="text-3xl sm:text-4xl">{CATEGORIES[selectedCategory].emoji}</span>
               </div>
             </div>
 
@@ -876,34 +876,39 @@ export default function ImposterGame() {
             )}
 
             {gamePhase === 'timeUp' && (
-              <div className="bg-red-50 rounded-xl p-8 border border-red-300 shadow-lg">
-                <div className="text-center">
-                  <div className="mb-4">
-                    <Clock className="w-16 h-16 text-red-500 mx-auto mb-4" />
-                    <h3 className="text-3xl font-bold text-red-600 mb-2">Time's Up!</h3>
-                    <p className="text-red-700 text-lg">Discussion period is over.</p>
+              <div className="max-w-md mx-auto text-center">
+                <div className="bg-white rounded-3xl p-8 shadow-2xl border-2 border-gray-200 mb-6">
+                  <div className="text-4xl mb-4">🎉</div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-4">Voting Time!</h3>
+                  <div className="text-gray-600 text-sm space-y-2 mb-6">
+                    <p>🗳️ Discuss and vote for who you think is the imposter</p>
+                    <p>🤔 Imposter: Try to guess the secret word to win</p>
+                    <p>🎯 Regular players: Find the imposter to win</p>
                   </div>
                   
-                  <div className="bg-white rounded-lg p-6 border border-red-200 mb-6">
-                    <p className="text-gray-700 text-lg mb-4">
-                      <strong>Now it's time to vote!</strong>
-                    </p>
-                    <p className="text-gray-600">
-                      🗳️ Discuss and vote for who you think is the imposter<br/>
-                      🤔 Imposter: Try to guess the secret word to win<br/>
-                      🎯 Regular players: Find the imposter to win
-                    </p>
-                  </div>
-                  
-                  <div className="text-center">
+                  <div className="flex gap-3 justify-center mb-4">
+                    <button
+                      onClick={restartSameCategory}
+                      className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all shadow-lg touch-manipulation flex items-center justify-center gap-2"
+                    >
+                      <RotateCcw className="w-5 h-5" />
+                      Same Category
+                    </button>
+                    
                     <button
                       onClick={resetGame}
-                      className="bg-red-500 text-white px-8 py-4 rounded-xl text-xl font-bold hover:bg-red-600 transform hover:scale-105 transition-all shadow-lg flex items-center gap-2 mx-auto"
+                      className="flex-1 py-3 px-4 bg-gray-500 text-white rounded-xl font-semibold hover:bg-gray-600 transition-all shadow-lg touch-manipulation flex items-center justify-center gap-2"
                     >
-                      <RotateCcw className="w-6 h-6" />
-                      Play Again
+                      <span className="text-lg">🏠</span>
+                      Go Home
                     </button>
                   </div>
+                </div>
+                
+                <div className="text-center">
+                  <p className="text-gray-500 text-sm">
+                    Category: {CATEGORIES[selectedCategory].name}
+                  </p>
                 </div>
               </div>
             )}
