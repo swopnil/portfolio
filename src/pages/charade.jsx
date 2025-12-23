@@ -42,6 +42,62 @@ const CATEGORIES = {
       'Vanuatu', 'Vatican City', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'
     ]
   },
+  nepaliSlangWorst: {
+  name: 'Nepali Slang & Roast =',
+  items: [
+    'Randi',
+    'Muji',
+    'Chutiya',
+    'Gandu',
+    'Lado',
+    'Boka',
+    'Bhalu',
+    'Kukur',
+    'Tharki',
+    'Khate',
+    'Pakhe',
+    'Jh*nte',
+    'Beshya',
+    'Kukur jasto',
+    'Boka',
+    'Kaale',
+    'Kanda',
+    'Pakhe',
+    'Chapri',
+    'Cheap Mindset',
+    'Attention Seeker',
+    'Overacting',
+    'Galli Celebrity',
+    'Instagram Gyan',
+    'Zero Accountability',
+    'Dimag chaina',
+    'Halla matra',
+    'Over-smart',
+    'Thulo guff',
+    'Nautanki',
+    'Show-off',
+    'Drama Queen',
+    'Hero banne',
+    'Cool banna khojne',
+    'Jhyau lagne',
+    'Na kaam ko',
+    'Time waste',
+    'Mitho bolera kaam chaina',
+    'Ek number ko',
+    'Two-faced',
+    'Fake nice',
+    'Bina logic',
+    'Bheda jasto',
+    'Guffadi',
+    'Ego trip',
+    'Self-obsessed',
+    'Respect zero',
+    'Trust issue',
+    'Walking red flag',
+    'Loose character',
+    'Negative vibe'
+  ]
+},
 
   professions: {
     name: '💼 Professions',
@@ -328,6 +384,9 @@ export default function ImposterGame() {
     }
     if (selectedCategory === 'hindiSongs' || selectedCategory === 'nepaliSongs') {
       return 'Describe WITHOUT saying the song name!';
+    }
+    if (selectedCategory === 'nepaliSlangWorst') {
+      return 'Describe WITHOUT saying the slang name!';
     }
     if (selectedCategory === 'professions') {
       return 'Describe WITHOUT saying the profession name!';
@@ -626,6 +685,15 @@ export default function ImposterGame() {
                       <li>What it's known for</li>
                       <li>Climate or geography</li>
                       <li>Cultural significance</li>
+                    </ul>
+                  )}
+                  {selectedCategory === 'nepaliSlangWorst' && (
+                    <ul className="list-disc list-inside space-y-2 ml-4">
+                      <li>Slur</li>
+                      <li>Proverb</li>
+                      <li>What it's known for</li>
+                      <li>Use frequency</li>
+                      <li>Significance</li>
                     </ul>
                   )}
                   {selectedCategory === 'professions' && (
