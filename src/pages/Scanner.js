@@ -111,6 +111,7 @@ const Scanner = () => {
   const [mac2, setMac2] = useState('');
   const [records, setRecords] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [lastRoomNumber, setLastRoomNumber] = useState('');
   const fileInputRef = useRef(null);
 
   const productModelRef = useRef(null);
@@ -125,12 +126,22 @@ const Scanner = () => {
     if (saved) {
       setRecords(JSON.parse(saved));
     }
+    const savedRoom = localStorage.getItem('lastRoomNumber');
+    if (savedRoom) {
+      setLastRoomNumber(savedRoom);
+      setRoomNumber(savedRoom);
+    }
   }, []);
 
   // Save records to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('scannerRecords', JSON.stringify(records));
   }, [records]);
+
+  // Save last room number to localStorage
+  useEffect(() => {
+    localStorage.setItem('lastRoomNumber', lastRoomNumber);
+  }, [lastRoomNumber]);
 
   const handleKeyDown = (e, nextRef, isLast = false) => {
     if (e.key === 'Enter') {
@@ -187,13 +198,15 @@ const Scanner = () => {
       setRecords((prev) => [...prev, newRecord]);
     }
 
-    // Clear only barcode fields, keep dropdowns
+    // Save room number for next scan
+    setLastRoomNumber(roomNumber.trim());
+
+    // Clear only barcode fields, keep dropdowns and room number
     setProductModel('');
     setPartNumber('');
     setSerialNumber('');
     setMac1('');
     setMac2('');
-    setRoomNumber('');
 
     // Focus back to first scan field
     productModelRef.current?.focus();
@@ -220,7 +233,7 @@ const Scanner = () => {
     setSerialNumber('');
     setMac1('');
     setMac2('');
-    setRoomNumber('');
+    // Keep room number when resetting
     setEditingIndex(null);
     productModelRef.current?.focus();
   };
@@ -356,10 +369,18 @@ const Scanner = () => {
 
     XLSX.utils.book_append_sheet(wb, ws, 'UTS - Classroom Technologies A');
 
+    // Generate filename based on location and room
+    let filename = 'UTS_Classroom_Assets';
+    if (location) {
+      const locationShort = location.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 30);
+      filename = locationShort;
+      if (lastRoomNumber) {
+        filename += `_Room_${lastRoomNumber}`;
+      }
+    }
     const date = new Date();
     const dateStr = date.toISOString().split('T')[0];
-    const timeStr = date.toTimeString().split(' ')[0].replace(/:/g, '-');
-    const filename = `UTS_Classroom_Assets_${dateStr}_${timeStr}.xlsx`;
+    filename += `_${dateStr}.xlsx`;
 
     XLSX.writeFile(wb, filename);
   };
@@ -375,7 +396,7 @@ const Scanner = () => {
         <div className="bg-slate-800/50 rounded-2xl p-6 md:p-8 mb-8 border border-emerald-500/30">
           <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-6">
             <p className="text-amber-400 text-sm">
-              Select Manufacturer and Location first (they stay selected). Then scan barcodes in order.
+              Select Manufacturer and Location (they persist). Enter Room Number once - it auto-fills for next scans.
               Press Enter after each scan to move to the next field.
             </p>
           </div>
