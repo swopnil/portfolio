@@ -113,6 +113,7 @@ const Scanner = () => {
   const [editingIndex, setEditingIndex] = useState(null);
   const [lastRoomNumber, setLastRoomNumber] = useState('');
   const fileInputRef = useRef(null);
+  const exportFileInputRef = useRef(null);
 
   const productModelRef = useRef(null);
   const partNumberRef = useRef(null);
@@ -303,13 +304,68 @@ const Scanner = () => {
     e.target.value = '';
   };
 
-  const exportToExcel = () => {
+  const mergeAndExport = (existingFile = null) => {
     if (records.length === 0) {
       alert('No records to export.');
       return;
     }
 
-    const excelData = records.map((record) => ({
+    let allRecords = [...records];
+
+    // If an existing file was provided, merge it
+    if (existingFile) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const existingData = XLSX.utils.sheet_to_json(worksheet);
+
+          const existingRecords = existingData.map((row) => ({
+            id: row['ID'] || '',
+            status: row['Status'] || '',
+            name: row['Name'] || '',
+            manufacturer: row['Manufacturer'] || '',
+            productModel: row['Product Model'] || '',
+            partNumber: row['Part Number'] || '',
+            serialNumber: row['Serial Number'] || '',
+            supplier: row['Supplier'] || '',
+            location: row['Location'] || '',
+            room: row['Room'] || '',
+            owningAcctDept: row['Owning Acct/Dept'] || 'UTS Classroom Technology',
+            owner: row['Owner'] || '',
+            requestor: row['Requestor'] || '',
+            externalId: row['External ID'] || '',
+            purchaseCost: row['Purchase Cost'] || '',
+            acquired: row['Acquired'] || '',
+            installationDate: row['Installation Date'] || '',
+            expectedReplacement: row['Expected Replacement'] || '',
+            warrantyStart: row['Warranty Start'] || '',
+            warrantyEnd: row['Warranty End'] || '',
+            warrantyDescription: row['Warranty Description'] || '',
+            macAddresses: row['MAC Addresses'] || '',
+            ipAddresses: row['IP Addresses'] || '',
+            dnsNames: row['DNS Names'] || '',
+          }));
+
+          // Merge: existing records first, then new records
+          allRecords = [...existingRecords, ...records];
+          performExport(allRecords);
+        } catch (error) {
+          alert('Error reading existing file. Exporting new records only.');
+          performExport(records);
+        }
+      };
+      reader.readAsArrayBuffer(existingFile);
+    } else {
+      performExport(allRecords);
+    }
+  };
+
+  const performExport = (recordsToExport) => {
+    const excelData = recordsToExport.map((record) => ({
       ID: record.id,
       Status: record.status,
       Name: record.name,
@@ -383,6 +439,18 @@ const Scanner = () => {
     filename += `_${dateStr}.xlsx`;
 
     XLSX.writeFile(wb, filename);
+  };
+
+  const exportToExcel = () => {
+    mergeAndExport(null);
+  };
+
+  const handleMergeExport = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      mergeAndExport(file);
+    }
+    e.target.value = '';
   };
 
   return (
@@ -673,6 +741,13 @@ const Scanner = () => {
               accept=".xlsx,.xls"
               className="hidden"
             />
+            <input
+              type="file"
+              ref={exportFileInputRef}
+              onChange={handleMergeExport}
+              accept=".xlsx,.xls"
+              className="hidden"
+            />
             <button
               onClick={() => fileInputRef.current?.click()}
               className="py-3 px-6 bg-amber-500 text-slate-900 font-bold rounded-lg hover:bg-amber-400 transition-all"
@@ -684,7 +759,14 @@ const Scanner = () => {
               disabled={records.length === 0}
               className="flex-1 py-3 px-6 bg-emerald-600 text-white font-bold rounded-lg hover:bg-emerald-500 transition-all disabled:bg-gray-600 disabled:cursor-not-allowed"
             >
-              Export to Excel
+              Export New
+            </button>
+            <button
+              onClick={() => exportFileInputRef.current?.click()}
+              disabled={records.length === 0}
+              className="py-3 px-6 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition-all disabled:bg-gray-600 disabled:cursor-not-allowed"
+            >
+              Merge & Export
             </button>
             <button
               onClick={clearAllRecords}
