@@ -13,6 +13,7 @@ import AILearningDemo from './components/AILearningDemo';
 import TokenizationJourney from './pages/TokenizationJourney';
 import TaskManager from './pages/jira';
 import ImposterGame from './pages/charade'
+import Scanner from './pages/Scanner'
 const App = () => {
   return (
     <Routes>
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="tokenization-journey" element={<TokenizationJourney />} />
       <Route path="jira" element={<TaskManager />} />
       <Route path="quiz" element={<ImposterGame />} />
+      <Route path="scan" element={<Scanner />} />
 
       <Route element={<Layout />}>
         <Route index element={<Home />} />
