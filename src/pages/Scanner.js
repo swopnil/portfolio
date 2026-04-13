@@ -111,6 +111,7 @@ const Scanner = () => {
   const [mac2, setMac2] = useState('');
   const [records, setRecords] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
+  const fileInputRef = useRef(null);
 
   const productModelRef = useRef(null);
   const partNumberRef = useRef(null);
@@ -235,6 +236,58 @@ const Scanner = () => {
     if (window.confirm('Are you sure you want to delete ALL records?')) {
       setRecords([]);
     }
+  };
+
+  const importFromExcel = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try {
+        const data = new Uint8Array(evt.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+        const importedRecords = jsonData.map((row) => ({
+          id: row['ID'] || '',
+          status: row['Status'] || '',
+          name: row['Name'] || '',
+          manufacturer: row['Manufacturer'] || '',
+          productModel: row['Product Model'] || '',
+          partNumber: row['Part Number'] || '',
+          serialNumber: row['Serial Number'] || '',
+          supplier: row['Supplier'] || '',
+          location: row['Location'] || '',
+          room: row['Room'] || '',
+          owningAcctDept: row['Owning Acct/Dept'] || 'UTS Classroom Technology',
+          owner: row['Owner'] || '',
+          requestor: row['Requestor'] || '',
+          externalId: row['External ID'] || '',
+          purchaseCost: row['Purchase Cost'] || '',
+          acquired: row['Acquired'] || '',
+          installationDate: row['Installation Date'] || '',
+          expectedReplacement: row['Expected Replacement'] || '',
+          warrantyStart: row['Warranty Start'] || '',
+          warrantyEnd: row['Warranty End'] || '',
+          warrantyDescription: row['Warranty Description'] || '',
+          macAddresses: row['MAC Addresses'] || '',
+          ipAddresses: row['IP Addresses'] || '',
+          dnsNames: row['DNS Names'] || '',
+          timestamp: new Date().toISOString(),
+        }));
+
+        setRecords((prev) => [...prev, ...importedRecords]);
+        alert(`Imported ${importedRecords.length} records successfully!`);
+      } catch (error) {
+        alert('Error reading file. Please make sure it\'s a valid Excel file with the correct format.');
+        console.error(error);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    e.target.value = '';
   };
 
   const exportToExcel = () => {
@@ -592,6 +645,19 @@ const Scanner = () => {
           </div>
 
           <div className="flex flex-wrap gap-4 mb-6">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={importFromExcel}
+              accept=".xlsx,.xls"
+              className="hidden"
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="py-3 px-6 bg-amber-500 text-slate-900 font-bold rounded-lg hover:bg-amber-400 transition-all"
+            >
+              Import Excel
+            </button>
             <button
               onClick={exportToExcel}
               disabled={records.length === 0}
